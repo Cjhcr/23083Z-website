@@ -181,7 +181,6 @@
         #home {
             padding-top: 0;
             flex-direction: column;
-            /* 改回 center，讓整體置中 */
             justify-content: center; 
             align-items: center;
             text-align: center;
@@ -193,11 +192,9 @@
         .home-active { display: flex !important; }
 
         .hero-content {
-            /* 修改：大幅增加 margin-top 讓標題更往下移 (原本是 120px -> 300px) */
             margin-top: 300px; 
             width: 100%;
             padding: 0 20px;
-            /* 讓內容垂直排列 */
             display: flex;
             flex-direction: column;
             align-items: center;
@@ -216,14 +213,12 @@
         .hero-content h2 { 
             font-size: 1.8rem; 
             color: var(--primary-color); 
-            /* 修改：減少 margin-bottom，讓下方的 REAPER 標題往上靠近 (原本是 20px) */
             margin-bottom: 5px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
         }
 
         /* Countdown Timer CSS */
         .countdown-wrapper {
-            /* 修改：減少 margin-top 讓倒數計時器往上移 (原本是 60px) */
             margin-top: 25px; 
             animation: fadeIn 1s ease-out 0.5s backwards;
         }
@@ -237,7 +232,7 @@
         }
 
         .countdown-item {
-            background: rgba(0, 0, 0, 0.5); /* 更透明一點，避免擋到背景太多 */
+            background: rgba(0, 0, 0, 0.5);
             padding: 8px 12px;
             border: 1px solid var(--primary-color);
             min-width: 70px;
@@ -259,6 +254,7 @@
             text-transform: uppercase;
         }
 
+        /* 修改後的倒數計時標題樣式 (變成連結) */
         .countdown-title {
             color: #eee;
             font-size: 0.9rem; 
@@ -266,6 +262,20 @@
             text-shadow: 1px 1px 3px black;
             font-weight: bold;
             text-transform: uppercase;
+            
+            /* 新增連結樣式 */
+            text-decoration: none;
+            display: inline-block;
+            margin-bottom: 10px;
+            transition: all 0.3s ease;
+            border-bottom: 1px solid transparent;
+        }
+
+        /* 滑鼠移上去的效果 */
+        .countdown-title:hover {
+            color: var(--primary-color);
+            border-bottom: 1px solid var(--primary-color);
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
         }
         
         .btn {
@@ -680,7 +690,10 @@
 
             <!-- 再顯示倒數計時器 (放在最下方) -->
             <div class="countdown-wrapper">
-                <p class="countdown-title">2025-2026 VEX TAIWAN OPEN V5RC HS</p>
+                <!-- 修改：將標題改成超連結 -->
+                <a href="https://www.robotevents.com/zh-TW/robot-competitions/vex-robotics-competition/RE-V5RC-25-0059.html#%E5%9F%BA%E6%9C%AC%E8%A8%8A%E6%81%AF" target="_blank" class="countdown-title">
+                    2025-2026 VEX TAIWAN OPEN V5RC HS
+                </a>
                 <div class="countdown-container" id="countdown">
                     <div class="countdown-item">
                         <span class="countdown-number" id="days">00</span>
@@ -900,7 +913,7 @@
             </a>
             <a href="https://www.instagram.com/23083_wego_robotics/" target="_blank" class="contact-link">
                 <svg class="contact-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M7.8,2H16.2C19.4,2 22,4.6 22,7.8V16.2A5.8,5.8 0 0,1 16.2,22H7.8C4.6,22 2,19.4 2,16.2V7.8A5.8,5.8 0 0,1 7.8,2M7.6,4A3.6,3.6 0 0,0 4,7.6V16.4C4,18.39 5.61,20 7.6,20H16.4A3.6,3.6 0 0,0 20,16.4V7.6C20,5.61 18.39,4 16.4,4H7.6M17.25,5.5A1.25,1.25 0 0,1 18.5,6.75A1.25,1.25 0 0,1 16,6.75A1.25,1.25 0 0,1 17.25,5.5M12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9Z"/>
+                    <path d="M7.8,2H16.2C19.4,2 22,4.6 22,7.8V16.2A5.8,5.8 0 0,1 16.2,22H7.8C4.6,22 2,19.4 2,16.2V7.8A5.8,5.8 0 0,1 7.8,2M7.6,4A3.6,3.6 0 0,0 4,7.6V16.4C4,18.39 5.61,20 7.6,20H16.4A3.6,3.6 0 0,0 20,16.4V7.6C20,5.61 18.39,4 16.4,4H7.6M17.25,5.5A1.25,1.25 0 0,1 18.5,6.75A1.25,1.25 0 0,1 17.25,8A1.25,1.25 0 0,1 16,6.75A1.25,1.25 0 0,1 17.25,5.5M12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9Z"/>
                 </svg>
                 <span>Instagram: @23083_wego_robotics</span>
             </a>
