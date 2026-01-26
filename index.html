@@ -32,6 +32,25 @@
             font-size: 19px;
         }
 
+        /* --- NEW: 自訂黑金捲軸 (Custom Scrollbar) --- */
+        /* 捲軸寬度 */
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+        /* 捲軸軌道 (黑色) */
+        ::-webkit-scrollbar-track {
+            background: #111; 
+        }
+        /* 捲軸拉桿 (金色) */
+        ::-webkit-scrollbar-thumb {
+            background: var(--primary-color); 
+            border-radius: 5px;
+        }
+        /* 滑鼠移到拉桿上時變深一點 */
+        ::-webkit-scrollbar-thumb:hover {
+            background: #d4b000; 
+        }
+
         /* 使用 Nasalization 字體 */
         h1, h2, h3, .nav-item, .btn, .stat-number, .event-date, .countdown-number {
             font-family: 'Nasalization', sans-serif; 
@@ -139,11 +158,11 @@
 
         /* 新增：用於 Team Members 上方 Logo 的樣式 */
         .section-logo {
-            width: 100px; /* 可根據需要調整大小 */
+            width: 100px; 
             height: auto;
-            margin: 0 auto 20px; /* 置中並與下方標題保持距離 */
+            margin: 0 auto 20px; 
             display: block;
-            filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.3)); /* 稍微加一點金色光暈 */
+            filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.3));
         }
 
         /* --- HOME PAGE & COUNTDOWN --- */
@@ -178,7 +197,69 @@
                 0 0 40px var(--primary-color);
             line-height: 1;
             color: white;
+            position: relative; /* For Glitch Effect */
+            display: inline-block;
         }
+
+        /* --- NEW: Glitch Effect on Hover (故障特效) --- */
+        .hero-content h1:hover {
+            animation: glitch-skew 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite;
+            color: var(--primary-color);
+        }
+
+        .hero-content h1:hover::before,
+        .hero-content h1:hover::after {
+            content: "REAPER";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent; /* 重要：保持透明背景 */
+        }
+
+        .hero-content h1:hover::before {
+            left: 2px;
+            text-shadow: -2px 0 #ff00c1;
+            clip: rect(44px, 450px, 56px, 0);
+            animation: glitch-anim 2s infinite linear alternate-reverse;
+        }
+
+        .hero-content h1:hover::after {
+            left: -2px;
+            text-shadow: -2px 0 #00fff9;
+            clip: rect(44px, 450px, 56px, 0);
+            animation: glitch-anim2 2s infinite linear alternate-reverse;
+        }
+
+        @keyframes glitch-anim {
+            0% { clip: rect(30px, 9999px, 10px, 0); }
+            20% { clip: rect(80px, 9999px, 90px, 0); }
+            40% { clip: rect(10px, 9999px, 50px, 0); }
+            60% { clip: rect(60px, 9999px, 20px, 0); }
+            80% { clip: rect(40px, 9999px, 70px, 0); }
+            100% { clip: rect(90px, 9999px, 30px, 0); }
+        }
+
+        @keyframes glitch-anim2 {
+            0% { clip: rect(10px, 9999px, 80px, 0); }
+            20% { clip: rect(50px, 9999px, 20px, 0); }
+            40% { clip: rect(90px, 9999px, 60px, 0); }
+            60% { clip: rect(30px, 9999px, 40px, 0); }
+            80% { clip: rect(70px, 9999px, 10px, 0); }
+            100% { clip: rect(20px, 9999px, 90px, 0); }
+        }
+
+        @keyframes glitch-skew {
+            0% { transform: skew(0deg); }
+            20% { transform: skew(-2deg); }
+            40% { transform: skew(2deg); }
+            60% { transform: skew(-1deg); }
+            80% { transform: skew(1deg); }
+            100% { transform: skew(0deg); }
+        }
+        /* --- End Glitch Effect --- */
+
         .hero-content h2 { 
             font-size: 1.8rem; 
             color: var(--primary-color); 
@@ -889,17 +970,6 @@
 
     <!-- Logic -->
     <script>
-        // 1. Loading Screen Logic
-        window.addEventListener('load', () => {
-            const preloader = document.getElementById('preloader');
-            // 頁面載入完成後，先淡出
-            preloader.style.opacity = '0';
-            // 等待 CSS 動畫結束後，完全移除
-            setTimeout(() => {
-                preloader.style.display = 'none';
-            }, 800);
-        });
-
         // 2. Countdown Timer Logic
         function startCountdown() {
             // 設定目標日期：Feb 3, 2026 09:00:00
