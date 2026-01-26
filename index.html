@@ -57,6 +57,7 @@
             text-decoration: none;
             display: flex;
             align-items: center;
+            z-index: 1002; /* 確保 Logo 在選單之上 */
         }
 
         /* Logo 圖片設定 */
@@ -67,6 +68,12 @@
         }
         
         .nav-logo:hover img { filter: drop-shadow(0 0 8px var(--primary-color)); }
+
+        /* Navigation Menu Container */
+        .nav-menu {
+            display: flex;
+            align-items: center;
+        }
 
         nav ul { display: flex; list-style: none; gap: 30px; }
         
@@ -85,6 +92,22 @@
             color: var(--primary-color);
             border-bottom: 2px solid var(--primary-color);
             text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        /* Hamburger Menu Button (Hidden on Desktop) */
+        .menu-toggle {
+            display: none;
+            cursor: pointer;
+            z-index: 1002;
+        }
+
+        .bar {
+            display: block;
+            width: 25px;
+            height: 3px;
+            margin: 5px auto;
+            transition: all 0.3s ease-in-out;
+            background-color: white;
         }
 
         /* --- Page Switching --- */
@@ -171,7 +194,6 @@
             gap: 60px;
         }
 
-        /* 關鍵：偶數行反轉 (讓照片跑到右邊) */
         .about-row:nth-child(even) {
             flex-direction: row-reverse;
         }
@@ -224,13 +246,13 @@
             justify-content: center;
             padding: 0 20px;
             margin-bottom: 80px;
-            gap: 30px; /* 讓兩個 Mentor 之間有間距 */
-            flex-wrap: wrap; /* 手機版自動換行 */
+            gap: 30px;
+            flex-wrap: wrap;
         }
 
         .mentor-wrapper .member-card {
             width: 100%;
-            max-width: 380px; /* 限制寬度，讓它跟上面 Grid 的卡片大小差不多 */
+            max-width: 380px;
         }
 
         /* --- Member Card Styles --- */
@@ -272,7 +294,7 @@
             overflow: hidden;
             position: relative;
             border: 1px solid #333;
-            cursor: zoom-in; /* 滑鼠變成放大鏡圖示 */
+            cursor: zoom-in;
             transition: transform 0.3s ease;
         }
 
@@ -290,10 +312,10 @@
         }
 
         .gallery-item:hover img {
-            opacity: 1; /* 保持不透明 */
+            opacity: 1;
         }
 
-        /* Lightbox (放大圖片視窗) CSS */
+        /* Lightbox CSS */
         #lightbox {
             position: fixed;
             top: 0;
@@ -337,7 +359,38 @@
             color: var(--primary-color);
         }
 
-        /* --- EVENTS PAGE (Updated Styles) --- */
+        /* Back to Top Button CSS */
+        #back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: var(--primary-color);
+            color: black;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+            transition: opacity 0.3s, transform 0.3s;
+        }
+
+        #back-to-top:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+        }
+
+        #back-to-top svg {
+            width: 24px;
+            height: 24px;
+            fill: black;
+        }
+
+        /* --- EVENTS PAGE --- */
         .timeline { max-width: 900px; margin: 40px auto; padding: 0 20px; position: relative; }
         .timeline::before {
             content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 2px;
@@ -364,25 +417,23 @@
             transform: translateY(-5px);
         }
 
-        /* Event Image Styles */
         .event-image {
             width: 100%;
             height: 200px;
             overflow: hidden;
             border-bottom: 1px solid #222;
-            background: #000; /* 給正方形圖片留白時的背景色 */
+            background: #000;
         }
 
         .event-image img {
             width: 100%;
             height: 100%;
-            object-fit: cover; /* 預設填滿 */
+            object-fit: cover;
             transition: transform 0.5s ease;
         }
 
-        /* 新增：正方形圖片專用樣式 */
         .event-image img.square-img {
-            object-fit: contain; /* 完整顯示，不裁切 */
+            object-fit: contain;
         }
 
         .event-card:hover .event-image img {
@@ -405,13 +456,9 @@
         .event-card h3 { font-size: 1.3rem; margin-bottom: 10px; line-height: 1.4; color: white;}
         .event-card p { font-size: 1rem; color: #aaa; }
 
-        /* --- ROBOT SPECS (Now a Gallery) --- */
-        /* Reusing gallery-grid styles */
-
         footer { background: #050505; padding: 40px; text-align: center; border-top: 1px solid #222; margin-top: 50px; }
         footer p { color: #666; margin-bottom: 5px; }
 
-        /* --- Contact Icons (New) --- */
         .contact-link {
             display: flex;
             align-items: center;
@@ -425,7 +472,7 @@
         }
         .contact-link:hover {
             color: var(--primary-color);
-            transform: translateX(5px); /* 滑鼠移過去稍微往右動一點 */
+            transform: translateX(5px); 
         }
         .contact-icon {
             width: 24px;
@@ -433,7 +480,6 @@
             fill: currentColor;
         }
 
-        /* Footer Logo Style */
         .footer-logo {
             max-width: 250px; 
             height: auto;
@@ -441,25 +487,81 @@
             display: inline-block;
         }
 
+        /* --- MOBILE RESPONSIVE STYLES --- */
         @media (max-width: 768px) {
             .hero-content h1 { font-size: 3rem; }
             .team-grid { grid-template-columns: 1fr; gap: 40px; }
             .mentor-wrapper { margin-bottom: 40px; }
             .gallery-grid { grid-template-columns: 1fr; }
             
-            /* About Section Mobile: Stack vertically */
+            /* About Section Mobile */
             .about-row, .about-row:nth-child(even) { flex-direction: column !important; gap: 30px; }
             .about-text-content { text-align: left; }
             
+            /* Event Timeline Mobile */
             .timeline::before { left: 20px; }
             .event-card { 
                 width: 85%; margin-left: 50px !important; margin-right: 0 !important;
                 text-align: left !important; border-left: 3px solid var(--primary-color) !important; border-right: none !important; 
             }
             .event-card::after { left: -38px !important; right: auto !important; }
-            nav ul { gap: 15px; }
-            .nav-item { font-size: 0.75rem; }
+            
             .nav-logo img { height: 40px; }
+
+            /* --- Hamburger Menu Logic --- */
+            .menu-toggle {
+                display: block; /* Show hamburger on mobile */
+            }
+
+            .menu-toggle.active .bar:nth-child(2) {
+                opacity: 0;
+            }
+            .menu-toggle.active .bar:nth-child(1) {
+                transform: translateY(8px) rotate(45deg);
+            }
+            .menu-toggle.active .bar:nth-child(3) {
+                transform: translateY(-8px) rotate(-45deg);
+            }
+
+            .nav-menu {
+                position: fixed;
+                left: -100%;
+                top: 60px; /* Adjust based on header height */
+                gap: 0;
+                flex-direction: column;
+                background-color: rgba(0,0,0,0.98);
+                width: 100%;
+                text-align: center;
+                transition: 0.3s;
+                border-bottom: 2px solid var(--primary-color);
+                z-index: 1001;
+                padding-bottom: 20px;
+                box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+            }
+
+            .nav-menu.active {
+                left: 0;
+            }
+
+            nav ul {
+                flex-direction: column;
+                padding: 20px 0;
+                width: 100%;
+                gap: 0;
+            }
+
+            .nav-item {
+                display: block;
+                font-size: 1.5rem; /* Larger font for touch */
+                padding: 20px 0;
+                border-bottom: 1px solid #222;
+                width: 100%;
+            }
+            
+            .nav-item:hover, .nav-item.active {
+                background: #111;
+                border-bottom: 1px solid var(--primary-color);
+            }
         }
     </style>
 </head>
@@ -469,7 +571,15 @@
         <a href="#" class="nav-logo" onclick="switchTab('home')">
             <img src="logo.png" alt="23083Z Reaper Logo">
         </a>
-        <nav>
+        
+        <!-- Hamburger Menu Button -->
+        <div class="menu-toggle" id="mobile-menu-btn">
+            <span class="bar"></span>
+            <span class="bar"></span>
+            <span class="bar"></span>
+        </div>
+
+        <nav class="nav-menu" id="nav-menu">
             <ul>
                 <li><a class="nav-item active" onclick="switchTab('home')">HOME</a></li>
                 <li><a class="nav-item" onclick="switchTab('about')">ABOUT & TEAM</a></li>
@@ -501,7 +611,6 @@
             <!-- Row 1: Image Left, Text Right -->
             <div class="about-row">
                 <div class="about-image-wrapper">
-                    <!-- Image 1 -->
                     <img src="about-1.jpg" alt="Team 23083Z Origin">
                 </div>
                 <div class="about-text-content">
@@ -515,10 +624,9 @@
                 </div>
             </div>
 
-            <!-- Row 2: Text Left, Image Right (Reversed via CSS) -->
+            <!-- Row 2: Text Left, Image Right -->
             <div class="about-row">
                 <div class="about-image-wrapper">
-                    <!-- Image 2 -->
                     <img src="about-2.jpg" alt="Team 23083Z Mission">
                 </div>
                 <div class="about-text-content">
@@ -534,65 +642,47 @@
         </div>
 
         <div class="section-header">
-            <!-- Modified Title -->
             <h2>The <span>Team Members</span></h2>
         </div>
 
         <!-- Member Cards Grid (6 Members) -->
         <div class="team-grid">
-            <!-- Member 1 -->
             <div class="member-card">
-                <!-- 修改路徑: members/pennlaine.jpg -->
                 <div class="member-photo" style="background-image: url('members/pennlaine.jpg');"></div>
                 <div class="member-info">
                     <div class="member-name">Pennlaine</div>
                     <div class="member-role">Club President & Team Leader</div>
                 </div>
             </div>
-
-            <!-- Member 2 -->
             <div class="member-card">
-                <!-- 修改路徑: members/adam.jpg -->
                 <div class="member-photo" style="background-image: url('members/adam.jpg');"></div>
                 <div class="member-info">
                     <div class="member-name">Adam</div>
                     <div class="member-role">Programmer/main driver</div>
                 </div>
             </div>
-
-            <!-- Member 3 -->
             <div class="member-card">
-                <!-- 修改路徑: members/anthony.jpg -->
                 <div class="member-photo" style="background-image: url('members/anthony.jpg');"></div>
                 <div class="member-info">
                     <div class="member-name">Anthony</div>
                     <div class="member-role">Builder/CAD/Art Lead</div>
                 </div>
             </div>
-
-            <!-- Member 4 -->
             <div class="member-card">
-                <!-- 修改路徑: members/benjamin.jpg -->
                 <div class="member-photo" style="background-image: url('members/benjamin.jpg');"></div>
                 <div class="member-info">
                     <div class="member-name">Benjamin</div>
                     <div class="member-role"> Builder/Planning/Programming  </div>
                 </div>
             </div>
-
-            <!-- Member 5 -->
             <div class="member-card">
-                <!-- 修改路徑: members/jefferson.jpg -->
                 <div class="member-photo" style="background-image: url('members/jefferson.jpg');"></div>
                 <div class="member-info">
                     <div class="member-name">Jefferson</div>
                     <div class="member-role">Builder</div>
                 </div>
             </div>
-
-            <!-- Member 6 -->
             <div class="member-card">
-                <!-- 修改路徑: members/cecilia.jpg -->
                 <div class="member-photo" style="background-image: url('members/cecilia.jpg');"></div>
                 <div class="member-info">
                     <div class="member-name">Cecilia</div>
@@ -601,47 +691,37 @@
             </div>
         </div>
 
-        <!-- NEW MENTOR SECTION (Pluralized Title) -->
+        <!-- NEW MENTOR SECTION -->
         <div class="section-header">
             <h2>The <span>Mentors</span></h2>
         </div>
 
-        <!-- Mentor Wrapper (Flex Center with 2 items) -->
+        <!-- Mentor Wrapper -->
         <div class="mentor-wrapper">
-            <!-- Mentor 1: Justin -->
             <div class="member-card">
-                <!-- 修改路徑: members/justin.jpg -->
                 <div class="member-photo" style="background-image: url('members/justin.jpg');"></div>
                 <div class="member-info">
                     <div class="member-name">Justin</div>
                     <div class="member-role">Coach, Mentor</div>
                 </div>
             </div>
-            
-            <!-- Mentor 2: 肉包 -->
             <div class="member-card">
-                <!-- Image path: members/mentor-2.jpg -->
                 <div class="member-photo" style="background-image: url('members/mentor-2.jpg');"></div>
                 <div class="member-info">
                     <div class="member-name">肉包</div>
-                    <!-- 更新為 Coach, Mentor -->
                     <div class="member-role">Coach, Mentor</div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- 3. MEDIA PAGE (Updated: Auto-generated by JS) -->
+    <!-- 3. MEDIA PAGE -->
     <div id="media" class="page-section">
         <div class="section-header">
             <h2>Media <span>Gallery</span></h2>
             <p>Documenting our journey and every exciting moment.</p>
         </div>
-
-        <!-- 這裡變成空的容器，交給下面的 JS 來填滿 -->
-        <div id="media-gallery" class="gallery-grid">
-            <!-- Photos will be inserted here by JavaScript -->
-        </div>
+        <div id="media-gallery" class="gallery-grid"></div>
     </div>
 
     <!-- 4. EVENTS PAGE -->
@@ -652,10 +732,9 @@
         </div>
 
         <div class="timeline">
-            <!-- Event 1: TAI-VEX Scrimmage -->
+            <!-- Event 1 -->
             <a href="https://www.robotevents.com/zh-TW/robot-competitions/vex-robotics-competition/RE-V5RC-25-0319.html#%E5%9F%BA%E6%9C%AC%E8%A8%8A%E6%81%AF" target="_blank" class="event-card">
                 <div class="event-image">
-                    <!-- class="square-img" 用於正方形圖片 -->
                     <img src="event/tai.jpg" alt="TAI-VEX Scrimmage" class="square-img">
                 </div>
                 <div class="event-content">
@@ -665,10 +744,9 @@
                 </div>
             </a>
 
-            <!-- Event 2: TAI-VEX Tournament -->
+            <!-- Event 2 -->
             <a href="https://www.robotevents.com/zh-TW/robot-competitions/vex-robotics-competition/RE-V5RC-25-0320.html#%E5%9F%BA%E6%9C%AC%E8%A8%8A%E6%81%AF" target="_blank" class="event-card">
                 <div class="event-image">
-                    <!-- class="square-img" 用於正方形圖片 -->
                     <img src="event/tai.jpg" alt="TAI-VEX Tournament" class="square-img">
                 </div>
                 <div class="event-content">
@@ -678,7 +756,7 @@
                 </div>
             </a>
 
-            <!-- Event 3: PAS-VEX Signature Event -->
+            <!-- Event 3 -->
             <a href="https://www.robotevents.com/zh-TW/robot-competitions/vex-robotics-competition/RE-V5RC-25-0121.html#%E5%9F%BA%E6%9C%AC%E8%A8%8A%E6%81%AF" target="_blank" class="event-card">
                 <div class="event-image">
                     <img src="event/pas.jpg" alt="PAS-VEX Signature">
@@ -690,10 +768,9 @@
                 </div>
             </a>
 
-            <!-- Event 4: VEX Taiwan Open -->
+            <!-- Event 4 -->
             <a href="https://www.robotevents.com/zh-TW/robot-competitions/vex-robotics-competition/RE-V5RC-25-0059.html#%E5%9F%BA%E6%9C%AC%E8%A8%8A%E6%81%AF" target="_blank" class="event-card">
                 <div class="event-image">
-                    <!-- class="square-img" 用於正方形圖片 -->
                     <img src="event/vto.jpg" alt="VEX Taiwan Open" class="square-img">
                 </div>
                 <div class="event-content">
@@ -705,46 +782,40 @@
         </div>
     </div>
 
-    <!-- 5. ROBOT PAGE (Updated: Auto-generated by JS) -->
+    <!-- 5. ROBOT PAGE -->
     <div id="specs" class="page-section">
         <div class="section-header">
             <h2>Our <span>Robot</span></h2>
             <p>Engineering perfection in detail.</p>
         </div>
-        
-        <!-- 這裡也是空的容器，交給下面的 JS 來填滿 -->
-        <div id="robot-gallery" class="gallery-grid">
-            <!-- Photos will be inserted here by JavaScript -->
-        </div>
+        <div id="robot-gallery" class="gallery-grid"></div>
     </div>
 
     <footer id="contact">
-        <!-- 新增: 社團 Logo (放在最上方，改成 .svg) -->
         <img src="club_logo.svg" alt="Club Logo" class="footer-logo">
-
         <h2 style="color: white; margin-bottom: 1.5rem;">Contact Us</h2>
-        
         <div style="display: flex; flex-direction: column; align-items: center;">
-            <!-- Gmail -->
             <a href="mailto:wegorobotics@gmail.com" class="contact-link">
-                <!-- SVG Icon for Mail -->
                 <svg class="contact-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
                 <span>Gmail: wegorobotics@gmail.com</span>
             </a>
-
-            <!-- Instagram -->
             <a href="https://www.instagram.com/23083_wego_robotics/" target="_blank" class="contact-link">
-                <!-- SVG Icon for Instagram (修復版) -->
                 <svg class="contact-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
                     <path d="M7.8,2H16.2C19.4,2 22,4.6 22,7.8V16.2A5.8,5.8 0 0,1 16.2,22H7.8C4.6,22 2,19.4 2,16.2V7.8A5.8,5.8 0 0,1 7.8,2M7.6,4A3.6,3.6 0 0,0 4,7.6V16.4C4,18.39 5.61,20 7.6,20H16.4A3.6,3.6 0 0,0 20,16.4V7.6C20,5.61 18.39,4 16.4,4H7.6M17.25,5.5A1.25,1.25 0 0,1 18.5,6.75A1.25,1.25 0 0,1 17.25,8A1.25,1.25 0 0,1 16,6.75A1.25,1.25 0 0,1 17.25,5.5M12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9Z"/>
                 </svg>
                 <span>Instagram: @23083_wego_robotics</span>
             </a>
         </div>
-
         <br>
         <p style="font-size: 0.8rem; color: #444;">&copy; 2025-2026 Team Reaper 23083Z. Designed for Victory.</p>
     </footer>
+
+    <!-- Back to Top Button -->
+    <button id="back-to-top" title="Go to top">
+        <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+            <path d="M12 4l-8 8h6v8h4v-8h6z"/>
+        </svg>
+    </button>
 
     <!-- Lightbox Logic & Image Loader -->
     <script>
@@ -769,6 +840,14 @@
             const clickedLink = document.querySelector(`a[onclick="switchTab('${tabId}')"]`);
             if(clickedLink) clickedLink.classList.add('active');
 
+            // Close mobile menu if open
+            const menuToggle = document.getElementById('mobile-menu-btn');
+            const navMenu = document.getElementById('nav-menu');
+            if(menuToggle && navMenu) {
+                menuToggle.classList.remove('active');
+                navMenu.classList.remove('active');
+            }
+
             window.scrollTo(0,0);
         }
 
@@ -783,7 +862,6 @@
 
         const lightboxImg = document.getElementById('lightbox-img');
 
-        // Function to bind click event to NEWLY created images
         function bindLightboxEvents() {
             const galleryImages = document.querySelectorAll('.gallery-item img');
             galleryImages.forEach(img => {
@@ -800,14 +878,13 @@
             }
         });
 
-        // 3. AUTO LOAD IMAGES LOGIC (自動生成圖片)
+        // 3. AUTO LOAD IMAGES LOGIC
         function loadGallery(containerId, folderName, totalCount, filePrefix) {
             const container = document.getElementById(containerId);
             if (!container) return;
 
             let html = '';
             for (let i = 1; i <= totalCount; i++) {
-                // 產生 HTML: <div class="gallery-item"><img src="folder/prefix-i.jpg"></div>
                 html += `
                     <div class="gallery-item">
                         <img src="${folderName}/${filePrefix}-${i}.jpg" alt="Photo ${i}">
@@ -817,17 +894,42 @@
             container.innerHTML = html;
         }
 
-        // --- 設定區：請在這裡修改照片數量 ---
-        const mediaCount = 12; // Media 資料夾裡有 12 張 (media-1.jpg ~ media-12.jpg)
-        const robotCount = 22; // Robot 資料夾裡有 22 張 (robot-1.jpg ~ robot-22.jpg)
+        // --- 設定區 ---
+        const mediaCount = 12; 
+        const robotCount = 22; 
 
         // 執行生成
         document.addEventListener('DOMContentLoaded', () => {
             loadGallery('media-gallery', 'media', mediaCount, 'media');
             loadGallery('robot-gallery', 'robot', robotCount, 'robot');
-            
-            // 生成完畢後，綁定點擊放大功能
             bindLightboxEvents();
+
+            // Mobile Menu Toggle
+            const menuToggle = document.getElementById('mobile-menu-btn');
+            const navMenu = document.getElementById('nav-menu');
+
+            menuToggle.addEventListener('click', () => {
+                menuToggle.classList.toggle('active');
+                navMenu.classList.toggle('active');
+            });
+        });
+
+        // 4. Back to Top Logic
+        const backToTopBtn = document.getElementById('back-to-top');
+
+        window.addEventListener('scroll', () => {
+            if (window.scrollY > 300) {
+                backToTopBtn.style.display = 'flex';
+            } else {
+                backToTopBtn.style.display = 'none';
+            }
+        });
+
+        backToTopBtn.addEventListener('click', () => {
+            window.scrollTo({
+                top: 0,
+                behavior: 'smooth'
+            });
         });
 
     </script>
