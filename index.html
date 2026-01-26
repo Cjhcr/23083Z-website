@@ -1,0 +1,777 @@
+<!DOCTYPE html>
+<html lang="zh-TW">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Team 23083Z | REAPER</title>
+    
+    <!-- 1. 引入 Rajdhani (內文) -->
+    <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
+    
+    <!-- 2. 引入 Nasalization (NASA Font) -->
+    <link href="https://fonts.cdnfonts.com/css/nasalization-2" rel="stylesheet">
+    
+    <style>
+        :root {
+            --primary-color: #FFD700; /* Reaper Gold */
+            --dark-bg: #000000;       /* Pure Black */
+            --card-bg: #0f0f0f;       /* Dark Grey */
+            --text-color: #ffffff;
+            --text-muted: #cccccc;
+            --border-color: #333;
+        }
+
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        
+        body {
+            font-family: 'Rajdhani', sans-serif;
+            background-color: var(--dark-bg);
+            color: var(--text-color);
+            line-height: 1.6;
+            overflow-x: hidden;
+            font-size: 19px;
+        }
+
+        /* 使用 Nasalization 字體 */
+        h1, h2, h3, .nav-item, .btn, .stat-number, .event-date {
+            font-family: 'Nasalization', sans-serif; 
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        /* --- Navigation --- */
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            padding: 10px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            border-bottom: 2px solid #222;
+        }
+
+        .nav-logo {
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+        }
+
+        /* Logo 圖片設定 */
+        .nav-logo img {
+            height: 55px;
+            width: auto;
+            transition: filter 0.3s;
+        }
+        
+        .nav-logo:hover img { filter: drop-shadow(0 0 8px var(--primary-color)); }
+
+        nav ul { display: flex; list-style: none; gap: 30px; }
+        
+        .nav-item {
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            padding-bottom: 5px;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        /* --- Page Switching --- */
+        .page-section {
+            display: none;
+            min-height: 100vh;
+            padding-top: 80px;
+            animation: fadeIn 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+        }
+
+        .page-section.active-page { display: block; }
+
+        @keyframes fadeIn {
+            from { opacity: 0; transform: translateY(20px); }
+            to { opacity: 1; transform: translateY(0); }
+        }
+
+        .section-header { text-align: center; padding: 60px 20px 40px; }
+        .section-header h2 { font-size: 2.8rem; color: white; margin-bottom: 10px; line-height: 1.4; }
+        .section-header span { color: var(--primary-color); }
+        .section-header p { color: var(--text-muted); max-width: 800px; margin: 0 auto; font-size: 1.1rem; }
+
+        /* --- HOME PAGE --- */
+        #home {
+            padding-top: 0;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('team.jpg');
+            background-size: cover;
+            background-position: center;
+        }
+        .home-active { display: flex !important; }
+
+        .hero-content {
+            margin-top: 40vh;
+        }
+
+        .hero-content h1 {
+            font-size: 5rem;
+            margin-bottom: 20px;
+            text-shadow: 
+                3px 3px 0px rgba(0, 0, 0, 0.8),
+                0 0 20px var(--primary-color),
+                0 0 40px var(--primary-color);
+            line-height: 1;
+            color: white;
+        }
+        .hero-content h2 { 
+            font-size: 1.8rem; 
+            color: var(--primary-color); 
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+        }
+        
+        .btn {
+            display: inline-block;
+            padding: 15px 40px;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 900;
+            margin-top: 30px;
+            transition: 0.3s;
+            background: rgba(0,0,0,0.7);
+            cursor: pointer;
+        }
+        .btn:hover { background: var(--primary-color); color: black; box-shadow: 0 0 30px var(--primary-color); }
+
+        /* --- ABOUT (Alternating Layout) --- */
+        .about-container {
+            max-width: 1200px;
+            margin: 0 auto 80px;
+            padding: 0 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 100px;
+        }
+
+        .about-row {
+            display: flex;
+            align-items: center;
+            gap: 60px;
+        }
+
+        /* 關鍵：偶數行反轉 (讓照片跑到右邊) */
+        .about-row:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .about-image-wrapper {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .about-image-wrapper img {
+            width: 100%;
+            height: auto;
+            border-radius: 4px;
+            border: 2px solid var(--primary-color);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.15);
+            display: block;
+        }
+
+        .about-text-content {
+            flex: 1;
+            min-width: 300px;
+            font-size: 1.15rem;
+            color: #ddd;
+        }
+
+        .about-text-content h3 {
+            color: white;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--primary-color);
+            padding-left: 15px;
+            line-height: 1.2;
+        }
+
+        .about-text-content p { margin-bottom: 1.5rem; }
+
+        /* --- TEAM Grid (Students) --- */
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto 80px;
+            padding: 0 20px;
+        }
+
+        /* --- Mentor Section (Centered & Flex) --- */
+        .mentor-wrapper {
+            display: flex;
+            justify-content: center;
+            padding: 0 20px;
+            margin-bottom: 80px;
+            gap: 30px; /* 讓兩個 Mentor 之間有間距 */
+            flex-wrap: wrap; /* 手機版自動換行 */
+        }
+
+        .mentor-wrapper .member-card {
+            width: 100%;
+            max-width: 380px; /* 限制寬度，讓它跟上面 Grid 的卡片大小差不多 */
+        }
+
+        /* --- Member Card Styles --- */
+        .member-card {
+            background: var(--card-bg);
+            border: 1px solid #222;
+            overflow: hidden;
+            transition: 0.3s;
+            position: relative;
+        }
+        .member-card:hover { transform: translateY(-10px); border-color: var(--primary-color); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
+
+        .member-photo {
+            width: 100%;
+            height: 350px;
+            background-color: #222;
+            background-size: cover;
+            background-position: center;
+            transition: 0.5s;
+        }
+        
+        .member-info { padding: 20px; text-align: left; border-top: 1px solid #222; }
+        .member-name { font-size: 1.3rem; color: white; margin-bottom: 5px; font-weight: 700; font-family: 'Nasalization', sans-serif; }
+        .member-role { color: var(--primary-color); font-size: 0.9rem; text-transform: uppercase; font-weight: 500; font-family: 'Rajdhani', sans-serif; letter-spacing: 2px;}
+
+        /* --- MEDIA PAGE (純照片模式) --- */
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+            padding: 20px 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
+
+        .gallery-item {
+            height: 250px;
+            background: #222;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid #333;
+            cursor: zoom-in; /* 滑鼠變成放大鏡圖示 */
+            transition: transform 0.3s ease;
+        }
+
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: 0.5s;
+        }
+
+        .gallery-item:hover {
+            transform: scale(1.02);
+            border-color: var(--primary-color);
+            z-index: 10;
+        }
+
+        .gallery-item:hover img {
+            opacity: 1; /* 保持不透明 */
+        }
+
+        /* Lightbox (放大圖片視窗) CSS */
+        #lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        #lightbox.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        #lightbox img {
+            max-width: 90%;
+            max-height: 90%;
+            border: 2px solid var(--primary-color);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+            object-fit: contain;
+        }
+
+        #lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 40px;
+            color: white;
+            font-size: 3rem;
+            cursor: pointer;
+            font-family: sans-serif;
+            transition: color 0.3s;
+        }
+
+        #lightbox-close:hover {
+            color: var(--primary-color);
+        }
+
+        /* --- EVENTS PAGE --- */
+        .timeline { max-width: 900px; margin: 40px auto; padding: 0 20px; position: relative; }
+        .timeline::before {
+            content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 2px;
+            background: var(--primary-color); transform: translateX(-50%); opacity: 0.3;
+        }
+        .event-card {
+            width: 45%; background: var(--card-bg); padding: 30px; margin-bottom: 50px;
+            border: 1px solid #333; position: relative; transition: 0.3s;
+        }
+        .event-card:hover { border-color: var(--primary-color); box-shadow: 0 0 20px rgba(255, 215, 0, 0.1); }
+        .event-card:nth-child(odd) { margin-left: auto; text-align: left; border-left: 3px solid var(--primary-color); }
+        .event-card:nth-child(even) { margin-right: auto; text-align: right; border-left: none; border-right: 3px solid var(--primary-color); }
+        .event-card::after {
+            content: ''; position: absolute; top: 20px; width: 15px; height: 15px;
+            background: var(--primary-color); border-radius: 50%; box-shadow: 0 0 10px var(--primary-color);
+        }
+        .event-card:nth-child(odd)::after { left: -59px; }
+        .event-card:nth-child(even)::after { right: -59px; }
+        .event-date { color: var(--primary-color); font-weight: 900; font-size: 1.2rem; margin-bottom: 10px; display: block; }
+        .event-card h3 { font-size: 1.3rem; margin-bottom: 10px; line-height: 1.4; }
+
+        /* --- ROBOT SPECS --- */
+        .specs-wrapper {
+            display: flex; flex-wrap: wrap; justify-content: center; gap: 30px;
+            padding: 20px 10%; max-width: 1400px; margin: 0 auto;
+        }
+        .spec-box {
+            flex: 1; min-width: 300px; background: #111; padding: 40px;
+            border: 1px solid #333; text-align: left; position: relative;
+        }
+        .spec-box::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: var(--primary-color); }
+        .spec-box h3 { color: white; margin-bottom: 15px; font-size: 1.3rem; }
+        .spec-box p { color: #aaa; }
+
+        footer { background: #050505; padding: 40px; text-align: center; border-top: 1px solid #222; margin-top: 50px; }
+        footer p { color: #666; margin-bottom: 5px; }
+
+        /* --- Contact Icons (New) --- */
+        .contact-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            color: #ccc;
+            text-decoration: none;
+            margin-bottom: 12px;
+            transition: color 0.3s, transform 0.2s;
+            font-size: 1.1rem;
+        }
+        .contact-link:hover {
+            color: var(--primary-color);
+            transform: translateX(5px); /* 滑鼠移過去稍微往右動一點 */
+        }
+        .contact-icon {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
+        }
+
+        @media (max-width: 768px) {
+            .hero-content h1 { font-size: 3rem; }
+            .team-grid { grid-template-columns: 1fr; gap: 40px; }
+            .mentor-wrapper { margin-bottom: 40px; }
+            .gallery-grid { grid-template-columns: 1fr; }
+            
+            /* About Section Mobile: Stack vertically */
+            .about-row, .about-row:nth-child(even) { flex-direction: column !important; gap: 30px; }
+            .about-text-content { text-align: left; }
+            
+            .timeline::before { left: 20px; }
+            .event-card { 
+                width: 85%; margin-left: 50px !important; margin-right: 0 !important;
+                text-align: left !important; border-left: 3px solid var(--primary-color) !important; border-right: none !important; 
+            }
+            .event-card::after { left: -38px !important; right: auto !important; }
+            nav ul { gap: 15px; }
+            .nav-item { font-size: 0.75rem; }
+            .nav-logo img { height: 40px; }
+        }
+    </style>
+</head>
+<body>
+
+    <header>
+        <a href="#" class="nav-logo" onclick="switchTab('home')">
+            <img src="logo.png" alt="23083Z Reaper Logo">
+        </a>
+        <nav>
+            <ul>
+                <li><a class="nav-item active" onclick="switchTab('home')">HOME</a></li>
+                <li><a class="nav-item" onclick="switchTab('about')">ABOUT & TEAM</a></li>
+                <li><a class="nav-item" onclick="switchTab('media')">MEDIA</a></li>
+                <li><a class="nav-item" onclick="switchTab('events')">EVENTS</a></li>
+                <li><a class="nav-item" onclick="switchTab('specs')">ROBOT</a></li>
+            </ul>
+        </nav>
+    </header>
+
+    <!-- 1. HOME PAGE -->
+    <div id="home" class="page-section active-page home-active">
+        <div class="hero-content">
+            <h2>VEX TEAM 23083Z</h2>
+            <h1>REAPER</h1>
+            <a onclick="switchTab('about')" class="btn">MEET THE TEAM</a>
+        </div>
+    </div>
+
+    <!-- 2. ABOUT & TEAM PAGE -->
+    <div id="about" class="page-section">
+        <div class="section-header">
+            <h2>About <span>Reaper</span></h2>
+            <p>23083Z is a VEX robotics team striving for perfection. Black represents calm, Gold represents glory.</p>
+        </div>
+
+        <!-- Alternating Layout for About Section -->
+        <div class="about-container">
+            <!-- Row 1: Image Left, Text Right -->
+            <div class="about-row">
+                <div class="about-image-wrapper">
+                    <!-- Image 1 -->
+                    <img src="about-1.jpg" alt="Team 23083Z Origin">
+                </div>
+                <div class="about-text-content">
+                    <h3>Our Origin</h3>
+                    <p>
+                        Welcome to the official website of <strong>Team Reaper (23083Z)</strong>, a competitive VEX Robotics team representing <strong>Wego High School</strong> in Taipei, Taiwan. Founded in 2023, our team consists of six passionate students dedicated to pushing the boundaries of engineering, design, and programming.
+                    </p>
+                    <p>
+                        Inspired by the precision of a "Reaper," we approach every challenge with strategic focus and unwavering determination. Following the VRC Spin Up and Over Under seasons, we have honed our skills and built a strong foundation in the VEX V5 system. Our goal is not just to build efficient robots, but to represent Taiwan on the global stage at the VEX Robotics World Championship.
+                    </p>
+                </div>
+            </div>
+
+            <!-- Row 2: Text Left, Image Right (Reversed via CSS) -->
+            <div class="about-row">
+                <div class="about-image-wrapper">
+                    <!-- Image 2 -->
+                    <img src="about-2.jpg" alt="Team 23083Z Mission">
+                </div>
+                <div class="about-text-content">
+                    <h3>COLLABORATIVE ATMOSPHERE</h3>
+                    <p>
+                        Our team members are all from the same class, but the club, with three VEX teams this year are composed of different classes and across different grades. Some have participated in previous VEX seasons and some have not. Because our school emphasizes academic performances and have strict rules of when we can practice robotics and have club time, like previous years, we would often only have 2 or 3 people at the room practicing because everyone’s schedule is different. We set rules so that everyone would follow and prevent mistakes and conflicts that have happened in previous seasons. 
+                    </p>
+                    <p>
+                        We believe that robotics is more than just building machines; it is about building character, resilience, and a future where technology serves humanity. Every gear we place and every line of code we write brings us one step closer to that future.
+                    </p>
+                </div>
+            </div>
+        </div>
+
+        <div class="section-header">
+            <!-- Modified Title -->
+            <h2>The <span>Team Members</span></h2>
+        </div>
+
+        <!-- Member Cards Grid (6 Members) -->
+        <div class="team-grid">
+            <!-- Member 1 -->
+            <div class="member-card">
+                <div class="member-photo" style="background-image: url('members/pennlaine.jpg');"></div>
+                <div class="member-info">
+                    <div class="member-name">Pennlaine</div>
+                    <div class="member-role">Club President & Team Leader</div>
+                </div>
+            </div>
+
+            <!-- Member 2 -->
+            <div class="member-card">
+                <div class="member-photo" style="background-image: url('members/adam.jpg');"></div>
+                <div class="member-info">
+                    <div class="member-name">Adam</div>
+                    <div class="member-role">Programmer/main driver</div>
+                </div>
+            </div>
+
+            <!-- Member 3 -->
+            <div class="member-card">
+                <div class="member-photo" style="background-image: url('members/anthony.jpg');"></div>
+                <div class="member-info">
+                    <div class="member-name">Anthony</div>
+                    <div class="member-role">Builder/CAD/Art Lead</div>
+                </div>
+            </div>
+
+            <!-- Member 4 -->
+            <div class="member-card">
+                <div class="member-photo" style="background-image: url('members/benjamin.jpg');"></div>
+                <div class="member-info">
+                    <div class="member-name">Benjamin</div>
+                    <div class="member-role"> Builder/Planning/Programming  </div>
+                </div>
+            </div>
+
+            <!-- Member 5 -->
+            <div class="member-card">
+                <div class="member-photo" style="background-image: url('members/jefferson.jpg');"></div>
+                <div class="member-info">
+                    <div class="member-name">Jefferson</div>
+                    <div class="member-role">Builder</div>
+                </div>
+            </div>
+
+            <!-- Member 6 -->
+            <div class="member-card">
+                <div class="member-photo" style="background-image: url('members/cecilia.jpg');"></div>
+                <div class="member-info">
+                    <div class="member-name">Cecilia</div>
+                    <div class="member-role">Scout/PR/Notebook taker</div>
+                </div>
+            </div>
+        </div>
+
+        <!-- NEW MENTOR SECTION (Pluralized Title) -->
+        <div class="section-header">
+            <h2>The <span>Mentors</span></h2>
+        </div>
+
+        <!-- Mentor Wrapper (Flex Center with 2 items) -->
+        <div class="mentor-wrapper">
+            <!-- Mentor 1: Justin -->
+            <div class="member-card">
+                <div class="member-photo" style="background-image: url('members/justin.jpg');"></div>
+                <div class="member-info">
+                    <div class="member-name">Justin</div>
+                    <div class="member-role">Coach, Mentor</div>
+                </div>
+            </div>
+            
+            <!-- Mentor 2: 肉包 -->
+            <div class="member-card">
+                <!-- Image path: members/mentor-2.jpg -->
+                <div class="member-photo" style="background-image: url('members/mentor-2.jpg');"></div>
+                <div class="member-info">
+                    <div class="member-name">肉包</div>
+                    <div class="member-role"> Coach, Mentor</div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <!-- 3. MEDIA PAGE (Updated: Plain Gallery with Lightbox) -->
+    <div id="media" class="page-section">
+        <div class="section-header">
+            <h2>Media <span>Gallery</span></h2>
+            <p>Documenting our journey and every exciting moment.</p>
+        </div>
+
+        <div class="gallery-grid">
+            <div class="gallery-item">
+                <img src="media/media-1.jpg" alt="Gallery Photo">
+            </div>
+            <div class="gallery-item">
+                <img src="media/media-2.jpg" alt="Gallery Photo">
+            </div>
+            <div class="gallery-item">
+                <img src="media/media-3.jpg" alt="Gallery Photo">
+            </div>
+            <div class="gallery-item">
+                <img src="media/media-4.jpg" alt="Gallery Photo">
+            </div>
+            <div class="gallery-item">
+                <img src="media/media-5.jpg" alt="Gallery Photo">
+            </div>
+            <div class="gallery-item">
+                <img src="media/media-6.jpg" alt="Gallery Photo">
+            </div>
+            <div class="gallery-item">
+                <img src="media/media-7.jpg" alt="Gallery Photo">
+            </div>
+            <div class="gallery-item">
+                <img src="media/media-8.jpg" alt="Gallery Photo">
+            </div>
+            <div class="gallery-item">
+                <img src="media/media-9.jpg" alt="Gallery Photo">
+            </div>
+            <div class="gallery-item">
+                <img src="media/media-10.jpg" alt="Gallery Photo">
+            </div>
+            <div class="gallery-item">
+                <img src="media/media-11.jpg" alt="Gallery Photo">
+            </div>
+            <div class="gallery-item">
+                <img src="media/media-12.jpg" alt="Gallery Photo">
+            </div>
+        </div>
+    </div>
+
+    <!-- 4. EVENTS PAGE -->
+    <div id="events" class="page-section">
+        <div class="section-header">
+            <h2>Season <span>Timeline</span></h2>
+            <p>Push Back 2025-2026 Season Plan</p>
+        </div>
+
+        <div class="timeline">
+            <!-- Event 1 -->
+            <div class="event-card">
+                <span class="event-date">SEP 2025</span>
+                <h3>Season Kickoff</h3>
+                <p>Season starts, rule analysis and initial design brainstorming. The whole team brainstorms to determine the mechanism design direction for this season.</p>
+            </div>
+
+            <!-- Event 2 -->
+            <div class="event-card">
+                <span class="event-date">NOV 2025</span>
+                <h3>First Scrimmage</h3>
+                <p>First practice match to test chassis stability and autonomous paths. Collecting real-world data for mechanism improvements.</p>
+            </div>
+
+            <!-- Event 3 -->
+            <div class="event-card">
+                <span class="event-date">JAN 2026</span>
+                <h3>Taiwan Nationals</h3>
+                <p>Taiwan Regional Finals. This is the key battle for the world stage, we will go all out to win the qualification.</p>
+            </div>
+
+            <!-- Event 4 -->
+            <div class="event-card">
+                <span class="event-date">APR 2026</span>
+                <h3>VEX Worlds</h3>
+                <p>Heading to the US for the World Championship. Competing with top teams globally, showcasing Reaper's strength.</p>
+            </div>
+        </div>
+    </div>
+
+    <!-- 5. ROBOT PAGE -->
+    <div id="specs" class="page-section">
+        <div class="section-header">
+            <h2>Technical <span>Specs</span></h2>
+            <p>Engineered for Push Back</p>
+        </div>
+        
+        <div class="specs-wrapper">
+            <div class="spec-box">
+                <h3>Drive System</h3>
+                <p>
+                    Optimized C-channel chassis for the Push Back season, ensuring stability while scoring, and agility to navigate field challenges. Uses high-strength aluminum structure for lightweight durability.
+                </p>
+            </div>
+            <div class="spec-box">
+                <h3>Scoring Mech</h3>
+                <p>
+                    Exclusive rapid scoring mechanism design. Combined with sensor assistance to complete stacking and pushing tasks in the shortest time. Uses high-torque motors to reduce jamming risks.
+                </p>
+            </div>
+            <div class="spec-box">
+                <h3>Autonomous</h3>
+                <p>
+                    Utilizing inertial navigation and PID control to achieve precise path planning for the 15-second autonomous period, securing every point. Equipped with multiple auto strategies adaptable to teammates and opponents.
+                </p>
+            </div>
+        </div>
+    </div>
+
+    <footer id="contact">
+        <h2 style="color: white; margin-bottom: 1.5rem;">Contact Us</h2>
+        
+        <div style="display: flex; flex-direction: column; align-items: center;">
+            <!-- Gmail -->
+            <a href="mailto:wegorobotics@gmail.com" class="contact-link">
+                <!-- SVG Icon for Mail -->
+                <svg class="contact-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                <span>Gmail: wegorobotics@gmail.com</span>
+            </a>
+
+            <!-- Instagram -->
+            <a href="https://www.instagram.com/23083_wego_robotics/" target="_blank" class="contact-link">
+                <!-- SVG Icon for Instagram (修復版) -->
+                <svg class="contact-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path d="M7.8,2H16.2C19.4,2 22,4.6 22,7.8V16.2A5.8,5.8 0 0,1 16.2,22H7.8C4.6,22 2,19.4 2,16.2V7.8A5.8,5.8 0 0,1 7.8,2M7.6,4A3.6,3.6 0 0,0 4,7.6V16.4C4,18.39 5.61,20 7.6,20H16.4A3.6,3.6 0 0,0 20,16.4V7.6C20,5.61 18.39,4 16.4,4H7.6M17.25,5.5A1.25,1.25 0 0,1 18.5,6.75A1.25,1.25 0 0,1 17.25,8A1.25,1.25 0 0,1 16,6.75A1.25,1.25 0 0,1 17.25,5.5M12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9Z"/>
+                </svg>
+                <span>Instagram: @23083_wego_robotics</span>
+            </a>
+        </div>
+
+        <br>
+        <p style="font-size: 0.8rem; color: #444;">&copy; 2025-2026 Team Reaper 23083Z. Designed for Victory.</p>
+    </footer>
+
+    <!-- Lightbox Logic -->
+    <script>
+        // 1. Page Switching Logic
+        function switchTab(tabId) {
+            const sections = document.querySelectorAll('.page-section');
+            sections.forEach(section => {
+                section.classList.remove('active-page');
+                if(section.id === 'home') section.classList.remove('home-active');
+            });
+
+            const navItems = document.querySelectorAll('.nav-item');
+            navItems.forEach(item => item.classList.remove('active'));
+
+            const targetSection = document.getElementById(tabId);
+            targetSection.classList.add('active-page');
+            
+            if(tabId === 'home') {
+                targetSection.classList.add('home-active');
+            }
+
+            const clickedLink = document.querySelector(`a[onclick="switchTab('${tabId}')"]`);
+            if(clickedLink) clickedLink.classList.add('active');
+
+            window.scrollTo(0,0);
+        }
+
+        // 2. Lightbox Logic
+        // Create Lightbox Elements
+        const lightbox = document.createElement('div');
+        lightbox.id = 'lightbox';
+        lightbox.innerHTML = `
+            <span id="lightbox-close">&times;</span>
+            <img id="lightbox-img" src="" alt="Enlarged Image">
+        `;
+        document.body.appendChild(lightbox);
+
+        const lightboxImg = document.getElementById('lightbox-img');
+        const galleryImages = document.querySelectorAll('.gallery-item img');
+
+        // Add Click Event to Gallery Images
+        galleryImages.forEach(img => {
+            img.addEventListener('click', e => {
+                lightboxImg.src = e.target.src;
+                lightbox.classList.add('active');
+            });
+        });
+
+        // Close Lightbox
+        lightbox.addEventListener('click', e => {
+            if (e.target !== lightboxImg) {
+                lightbox.classList.remove('active');
+            }
+        });
+    </script>
+
+</body>
+</html>
