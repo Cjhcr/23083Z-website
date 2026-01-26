@@ -256,7 +256,7 @@
         .member-name { font-size: 1.3rem; color: white; margin-bottom: 5px; font-weight: 700; font-family: 'Nasalization', sans-serif; }
         .member-role { color: var(--primary-color); font-size: 0.9rem; text-transform: uppercase; font-weight: 500; font-family: 'Rajdhani', sans-serif; letter-spacing: 2px;}
 
-        /* --- MEDIA PAGE (純照片模式) --- */
+        /* --- GALLERY (MEDIA & ROBOT) --- */
         .gallery-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
@@ -337,40 +337,76 @@
             color: var(--primary-color);
         }
 
-        /* --- EVENTS PAGE --- */
+        /* --- EVENTS PAGE (Updated Styles) --- */
         .timeline { max-width: 900px; margin: 40px auto; padding: 0 20px; position: relative; }
         .timeline::before {
             content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 2px;
             background: var(--primary-color); transform: translateX(-50%); opacity: 0.3;
         }
+        
         .event-card {
-            width: 45%; background: var(--card-bg); padding: 30px; margin-bottom: 50px;
-            border: 1px solid #333; position: relative; transition: 0.3s;
+            width: 45%; 
+            background: var(--card-bg); 
+            margin-bottom: 50px;
+            border: 1px solid #333; 
+            position: relative; 
+            transition: 0.3s;
+            display: block; 
+            text-decoration: none; 
+            color: inherit; 
+            padding: 0; 
+            overflow: hidden; 
         }
-        .event-card:hover { border-color: var(--primary-color); box-shadow: 0 0 20px rgba(255, 215, 0, 0.1); }
+        
+        .event-card:hover { 
+            border-color: var(--primary-color); 
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.1); 
+            transform: translateY(-5px);
+        }
+
+        /* Event Image Styles */
+        .event-image {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            border-bottom: 1px solid #222;
+            background: #000; /* 給正方形圖片留白時的背景色 */
+        }
+
+        .event-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover; /* 預設填滿 */
+            transition: transform 0.5s ease;
+        }
+
+        /* 新增：正方形圖片專用樣式 */
+        .event-image img.square-img {
+            object-fit: contain; /* 完整顯示，不裁切 */
+        }
+
+        .event-card:hover .event-image img {
+            transform: scale(1.1); 
+        }
+
+        .event-content { padding: 25px; text-align: inherit; }
+
         .event-card:nth-child(odd) { margin-left: auto; text-align: left; border-left: 3px solid var(--primary-color); }
         .event-card:nth-child(even) { margin-right: auto; text-align: right; border-left: none; border-right: 3px solid var(--primary-color); }
+        
         .event-card::after {
             content: ''; position: absolute; top: 20px; width: 15px; height: 15px;
             background: var(--primary-color); border-radius: 50%; box-shadow: 0 0 10px var(--primary-color);
         }
         .event-card:nth-child(odd)::after { left: -59px; }
         .event-card:nth-child(even)::after { right: -59px; }
+        
         .event-date { color: var(--primary-color); font-weight: 900; font-size: 1.2rem; margin-bottom: 10px; display: block; }
-        .event-card h3 { font-size: 1.3rem; margin-bottom: 10px; line-height: 1.4; }
+        .event-card h3 { font-size: 1.3rem; margin-bottom: 10px; line-height: 1.4; color: white;}
+        .event-card p { font-size: 1rem; color: #aaa; }
 
-        /* --- ROBOT SPECS --- */
-        .specs-wrapper {
-            display: flex; flex-wrap: wrap; justify-content: center; gap: 30px;
-            padding: 20px 10%; max-width: 1400px; margin: 0 auto;
-        }
-        .spec-box {
-            flex: 1; min-width: 300px; background: #111; padding: 40px;
-            border: 1px solid #333; text-align: left; position: relative;
-        }
-        .spec-box::before { content: ''; position: absolute; top: 0; left: 0; width: 100%; height: 2px; background: var(--primary-color); }
-        .spec-box h3 { color: white; margin-bottom: 15px; font-size: 1.3rem; }
-        .spec-box p { color: #aaa; }
+        /* --- ROBOT SPECS (Now a Gallery) --- */
+        /* Reusing gallery-grid styles */
 
         footer { background: #050505; padding: 40px; text-align: center; border-top: 1px solid #222; margin-top: 50px; }
         footer p { color: #666; margin-bottom: 5px; }
@@ -395,6 +431,14 @@
             width: 24px;
             height: 24px;
             fill: currentColor;
+        }
+
+        /* Footer Logo Style */
+        .footer-logo {
+            max-width: 250px; 
+            height: auto;
+            margin-bottom: 30px;
+            display: inline-block;
         }
 
         @media (max-width: 768px) {
@@ -498,6 +542,7 @@
         <div class="team-grid">
             <!-- Member 1 -->
             <div class="member-card">
+                <!-- 修改路徑: members/pennlaine.jpg -->
                 <div class="member-photo" style="background-image: url('members/pennlaine.jpg');"></div>
                 <div class="member-info">
                     <div class="member-name">Pennlaine</div>
@@ -507,6 +552,7 @@
 
             <!-- Member 2 -->
             <div class="member-card">
+                <!-- 修改路徑: members/adam.jpg -->
                 <div class="member-photo" style="background-image: url('members/adam.jpg');"></div>
                 <div class="member-info">
                     <div class="member-name">Adam</div>
@@ -516,6 +562,7 @@
 
             <!-- Member 3 -->
             <div class="member-card">
+                <!-- 修改路徑: members/anthony.jpg -->
                 <div class="member-photo" style="background-image: url('members/anthony.jpg');"></div>
                 <div class="member-info">
                     <div class="member-name">Anthony</div>
@@ -525,6 +572,7 @@
 
             <!-- Member 4 -->
             <div class="member-card">
+                <!-- 修改路徑: members/benjamin.jpg -->
                 <div class="member-photo" style="background-image: url('members/benjamin.jpg');"></div>
                 <div class="member-info">
                     <div class="member-name">Benjamin</div>
@@ -534,6 +582,7 @@
 
             <!-- Member 5 -->
             <div class="member-card">
+                <!-- 修改路徑: members/jefferson.jpg -->
                 <div class="member-photo" style="background-image: url('members/jefferson.jpg');"></div>
                 <div class="member-info">
                     <div class="member-name">Jefferson</div>
@@ -543,6 +592,7 @@
 
             <!-- Member 6 -->
             <div class="member-card">
+                <!-- 修改路徑: members/cecilia.jpg -->
                 <div class="member-photo" style="background-image: url('members/cecilia.jpg');"></div>
                 <div class="member-info">
                     <div class="member-name">Cecilia</div>
@@ -560,6 +610,7 @@
         <div class="mentor-wrapper">
             <!-- Mentor 1: Justin -->
             <div class="member-card">
+                <!-- 修改路徑: members/justin.jpg -->
                 <div class="member-photo" style="background-image: url('members/justin.jpg');"></div>
                 <div class="member-info">
                     <div class="member-name">Justin</div>
@@ -573,56 +624,23 @@
                 <div class="member-photo" style="background-image: url('members/mentor-2.jpg');"></div>
                 <div class="member-info">
                     <div class="member-name">肉包</div>
-                    <div class="member-role"> Coach, Mentor</div>
+                    <!-- 更新為 Coach, Mentor -->
+                    <div class="member-role">Coach, Mentor</div>
                 </div>
             </div>
         </div>
     </div>
 
-    <!-- 3. MEDIA PAGE (Updated: Plain Gallery with Lightbox) -->
+    <!-- 3. MEDIA PAGE (Updated: Auto-generated by JS) -->
     <div id="media" class="page-section">
         <div class="section-header">
             <h2>Media <span>Gallery</span></h2>
             <p>Documenting our journey and every exciting moment.</p>
         </div>
 
-        <div class="gallery-grid">
-            <div class="gallery-item">
-                <img src="media/media-1.jpg" alt="Gallery Photo">
-            </div>
-            <div class="gallery-item">
-                <img src="media/media-2.jpg" alt="Gallery Photo">
-            </div>
-            <div class="gallery-item">
-                <img src="media/media-3.jpg" alt="Gallery Photo">
-            </div>
-            <div class="gallery-item">
-                <img src="media/media-4.jpg" alt="Gallery Photo">
-            </div>
-            <div class="gallery-item">
-                <img src="media/media-5.jpg" alt="Gallery Photo">
-            </div>
-            <div class="gallery-item">
-                <img src="media/media-6.jpg" alt="Gallery Photo">
-            </div>
-            <div class="gallery-item">
-                <img src="media/media-7.jpg" alt="Gallery Photo">
-            </div>
-            <div class="gallery-item">
-                <img src="media/media-8.jpg" alt="Gallery Photo">
-            </div>
-            <div class="gallery-item">
-                <img src="media/media-9.jpg" alt="Gallery Photo">
-            </div>
-            <div class="gallery-item">
-                <img src="media/media-10.jpg" alt="Gallery Photo">
-            </div>
-            <div class="gallery-item">
-                <img src="media/media-11.jpg" alt="Gallery Photo">
-            </div>
-            <div class="gallery-item">
-                <img src="media/media-12.jpg" alt="Gallery Photo">
-            </div>
+        <!-- 這裡變成空的容器，交給下面的 JS 來填滿 -->
+        <div id="media-gallery" class="gallery-grid">
+            <!-- Photos will be inserted here by JavaScript -->
         </div>
     </div>
 
@@ -634,66 +652,76 @@
         </div>
 
         <div class="timeline">
-            <!-- Event 1 -->
-            <div class="event-card">
-                <span class="event-date">SEP 2025</span>
-                <h3>Season Kickoff</h3>
-                <p>Season starts, rule analysis and initial design brainstorming. The whole team brainstorms to determine the mechanism design direction for this season.</p>
-            </div>
+            <!-- Event 1: TAI-VEX Scrimmage -->
+            <a href="https://www.robotevents.com/zh-TW/robot-competitions/vex-robotics-competition/RE-V5RC-25-0319.html#%E5%9F%BA%E6%9C%AC%E8%A8%8A%E6%81%AF" target="_blank" class="event-card">
+                <div class="event-image">
+                    <!-- class="square-img" 用於正方形圖片 -->
+                    <img src="event/tai.jpg" alt="TAI-VEX Scrimmage" class="square-img">
+                </div>
+                <div class="event-content">
+                    <span class="event-date">SEP 2025</span>
+                    <h3>TAI-VEX 25-26 Push Back Scrimmage</h3>
+                    <p>The first scrimmage of the new season! A great opportunity to test our initial robot design and strategy against other local teams in a friendly environment.</p>
+                </div>
+            </a>
 
-            <!-- Event 2 -->
-            <div class="event-card">
-                <span class="event-date">NOV 2025</span>
-                <h3>First Scrimmage</h3>
-                <p>First practice match to test chassis stability and autonomous paths. Collecting real-world data for mechanism improvements.</p>
-            </div>
+            <!-- Event 2: TAI-VEX Tournament -->
+            <a href="https://www.robotevents.com/zh-TW/robot-competitions/vex-robotics-competition/RE-V5RC-25-0320.html#%E5%9F%BA%E6%9C%AC%E8%A8%8A%E6%81%AF" target="_blank" class="event-card">
+                <div class="event-image">
+                    <!-- class="square-img" 用於正方形圖片 -->
+                    <img src="event/tai.jpg" alt="TAI-VEX Tournament" class="square-img">
+                </div>
+                <div class="event-content">
+                    <span class="event-date">OCT 2025</span>
+                    <h3>TAI-VEX Tournament MS 25-26 Push Back</h3>
+                    <p>Participating in the TAI-VEX Tournament. Our goal is to refine our autonomous routines and driver skills, aiming for excellence in the qualification matches.</p>
+                </div>
+            </a>
 
-            <!-- Event 3 -->
-            <div class="event-card">
-                <span class="event-date">JAN 2026</span>
-                <h3>Taiwan Nationals</h3>
-                <p>Taiwan Regional Finals. This is the key battle for the world stage, we will go all out to win the qualification.</p>
-            </div>
+            <!-- Event 3: PAS-VEX Signature Event -->
+            <a href="https://www.robotevents.com/zh-TW/robot-competitions/vex-robotics-competition/RE-V5RC-25-0121.html#%E5%9F%BA%E6%9C%AC%E8%A8%8A%E6%81%AF" target="_blank" class="event-card">
+                <div class="event-image">
+                    <img src="event/pas.jpg" alt="PAS-VEX Signature">
+                </div>
+                <div class="event-content">
+                    <span class="event-date">DEC 2025</span>
+                    <h3>2025-2026 PAS-VEX V5RC Signature Event</h3>
+                    <p>Competing in the prestigious PAS-VEX Signature Event. We will face top-tier teams from around the region, striving to secure an early qualification for Worlds.</p>
+                </div>
+            </a>
 
-            <!-- Event 4 -->
-            <div class="event-card">
-                <span class="event-date">APR 2026</span>
-                <h3>VEX Worlds</h3>
-                <p>Heading to the US for the World Championship. Competing with top teams globally, showcasing Reaper's strength.</p>
-            </div>
+            <!-- Event 4: VEX Taiwan Open -->
+            <a href="https://www.robotevents.com/zh-TW/robot-competitions/vex-robotics-competition/RE-V5RC-25-0059.html#%E5%9F%BA%E6%9C%AC%E8%A8%8A%E6%81%AF" target="_blank" class="event-card">
+                <div class="event-image">
+                    <!-- class="square-img" 用於正方形圖片 -->
+                    <img src="event/vto.jpg" alt="VEX Taiwan Open" class="square-img">
+                </div>
+                <div class="event-content">
+                    <span class="event-date">FEB 2026</span>
+                    <h3>2025-2026 VEX TAIWAN OPEN V5RC HS</h3>
+                    <p>The VEX Taiwan Open Championship. This is the final regional showdown to secure our spot at the World Championship. All systems go!</p>
+                </div>
+            </a>
         </div>
     </div>
 
-    <!-- 5. ROBOT PAGE -->
+    <!-- 5. ROBOT PAGE (Updated: Auto-generated by JS) -->
     <div id="specs" class="page-section">
         <div class="section-header">
-            <h2>Technical <span>Specs</span></h2>
-            <p>Engineered for Push Back</p>
+            <h2>Our <span>Robot</span></h2>
+            <p>Engineering perfection in detail.</p>
         </div>
         
-        <div class="specs-wrapper">
-            <div class="spec-box">
-                <h3>Drive System</h3>
-                <p>
-                    Optimized C-channel chassis for the Push Back season, ensuring stability while scoring, and agility to navigate field challenges. Uses high-strength aluminum structure for lightweight durability.
-                </p>
-            </div>
-            <div class="spec-box">
-                <h3>Scoring Mech</h3>
-                <p>
-                    Exclusive rapid scoring mechanism design. Combined with sensor assistance to complete stacking and pushing tasks in the shortest time. Uses high-torque motors to reduce jamming risks.
-                </p>
-            </div>
-            <div class="spec-box">
-                <h3>Autonomous</h3>
-                <p>
-                    Utilizing inertial navigation and PID control to achieve precise path planning for the 15-second autonomous period, securing every point. Equipped with multiple auto strategies adaptable to teammates and opponents.
-                </p>
-            </div>
+        <!-- 這裡也是空的容器，交給下面的 JS 來填滿 -->
+        <div id="robot-gallery" class="gallery-grid">
+            <!-- Photos will be inserted here by JavaScript -->
         </div>
     </div>
 
     <footer id="contact">
+        <!-- 新增: 社團 Logo (放在最上方，改成 .svg) -->
+        <img src="club_logo.svg" alt="Club Logo" class="footer-logo">
+
         <h2 style="color: white; margin-bottom: 1.5rem;">Contact Us</h2>
         
         <div style="display: flex; flex-direction: column; align-items: center;">
@@ -718,7 +746,7 @@
         <p style="font-size: 0.8rem; color: #444;">&copy; 2025-2026 Team Reaper 23083Z. Designed for Victory.</p>
     </footer>
 
-    <!-- Lightbox Logic -->
+    <!-- Lightbox Logic & Image Loader -->
     <script>
         // 1. Page Switching Logic
         function switchTab(tabId) {
@@ -745,7 +773,6 @@
         }
 
         // 2. Lightbox Logic
-        // Create Lightbox Elements
         const lightbox = document.createElement('div');
         lightbox.id = 'lightbox';
         lightbox.innerHTML = `
@@ -755,22 +782,54 @@
         document.body.appendChild(lightbox);
 
         const lightboxImg = document.getElementById('lightbox-img');
-        const galleryImages = document.querySelectorAll('.gallery-item img');
 
-        // Add Click Event to Gallery Images
-        galleryImages.forEach(img => {
-            img.addEventListener('click', e => {
-                lightboxImg.src = e.target.src;
-                lightbox.classList.add('active');
+        // Function to bind click event to NEWLY created images
+        function bindLightboxEvents() {
+            const galleryImages = document.querySelectorAll('.gallery-item img');
+            galleryImages.forEach(img => {
+                img.addEventListener('click', e => {
+                    lightboxImg.src = e.target.src;
+                    lightbox.classList.add('active');
+                });
             });
-        });
+        }
 
-        // Close Lightbox
         lightbox.addEventListener('click', e => {
             if (e.target !== lightboxImg) {
                 lightbox.classList.remove('active');
             }
         });
+
+        // 3. AUTO LOAD IMAGES LOGIC (自動生成圖片)
+        function loadGallery(containerId, folderName, totalCount, filePrefix) {
+            const container = document.getElementById(containerId);
+            if (!container) return;
+
+            let html = '';
+            for (let i = 1; i <= totalCount; i++) {
+                // 產生 HTML: <div class="gallery-item"><img src="folder/prefix-i.jpg"></div>
+                html += `
+                    <div class="gallery-item">
+                        <img src="${folderName}/${filePrefix}-${i}.jpg" alt="Photo ${i}">
+                    </div>
+                `;
+            }
+            container.innerHTML = html;
+        }
+
+        // --- 設定區：請在這裡修改照片數量 ---
+        const mediaCount = 12; // Media 資料夾裡有 12 張 (media-1.jpg ~ media-12.jpg)
+        const robotCount = 22; // Robot 資料夾裡有 22 張 (robot-1.jpg ~ robot-22.jpg)
+
+        // 執行生成
+        document.addEventListener('DOMContentLoaded', () => {
+            loadGallery('media-gallery', 'media', mediaCount, 'media');
+            loadGallery('robot-gallery', 'robot', robotCount, 'robot');
+            
+            // 生成完畢後，綁定點擊放大功能
+            bindLightboxEvents();
+        });
+
     </script>
 
 </body>
