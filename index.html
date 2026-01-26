@@ -110,19 +110,26 @@
             background-color: white;
         }
 
-        /* --- Page Switching --- */
+        /* --- Page Switching (Updated for Smooth Transition) --- */
         .page-section {
-            display: none;
+            display: none; /* 預設不顯示 */
             min-height: 100vh;
             padding-top: 80px;
-            animation: fadeIn 0.6s cubic-bezier(0.22, 1, 0.36, 1);
+            
+            /* 關鍵：設定轉場效果 */
+            opacity: 0; 
+            transform: translateY(20px);
+            transition: opacity 0.4s ease-out, transform 0.4s ease-out;
         }
 
-        .page-section.active-page { display: block; }
+        .page-section.active-page { 
+            display: block; /* 顯示佔位，但此時可能還是透明的 */
+        }
 
-        @keyframes fadeIn {
-            from { opacity: 0; transform: translateY(20px); }
-            to { opacity: 1; transform: translateY(0); }
+        /* 當加上 visible 時，才真正浮現 */
+        .page-section.visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         .section-header { text-align: center; padding: 60px 20px 40px; }
@@ -552,7 +559,7 @@
     </header>
 
     <!-- 1. HOME PAGE -->
-    <div id="home" class="page-section active-page home-active">
+    <div id="home" class="page-section active-page home-active visible">
         <div class="hero-content">
             <h2>VEX TEAM 23083Z</h2>
             <h1>REAPER</h1>
@@ -774,51 +781,78 @@
 
     <!-- Logic -->
     <script>
-        // 1. Page Switching Logic with History Support
+        // 1. Page Switching Logic with Smooth Fade Transition
         function switchTab(tabId, updateHistory = true) {
-            const sections = document.querySelectorAll('.page-section');
-            sections.forEach(section => {
-                section.classList.remove('active-page');
-                if(section.id === 'home') section.classList.remove('home-active');
-            });
-
-            const navItems = document.querySelectorAll('.nav-item');
-            navItems.forEach(item => item.classList.remove('active'));
-
             const targetSection = document.getElementById(tabId);
-            if (!targetSection) return;
-            
-            targetSection.classList.add('active-page');
-            
-            if(tabId === 'home') {
-                targetSection.classList.add('home-active');
+            const currentSection = document.querySelector('.page-section.active-page');
+
+            // 如果已經在該頁面，或目標不存在，則不動作
+            if (!targetSection || currentSection === targetSection) return;
+
+            // 定義：顯示新頁面的函式
+            const showNewSection = () => {
+                // 清除所有人的 active-page 與 visible 狀態
+                document.querySelectorAll('.page-section').forEach(sec => {
+                    sec.classList.remove('active-page', 'visible');
+                });
+
+                // 1. 把新頁面設為 active-page (此時它是 display: block 但 opacity: 0)
+                targetSection.classList.add('active-page');
+
+                // 2. 稍微等待瀏覽器 Render 後，再加上 visible (觸發 opacity: 1 的轉場)
+                setTimeout(() => {
+                    targetSection.classList.add('visible');
+                    window.scrollTo({ top: 0, behavior: 'smooth' }); // 捲動到最上面
+                }, 50);
+
+                // 更新導覽列狀態
+                const navItems = document.querySelectorAll('.nav-item');
+                navItems.forEach(item => item.classList.remove('active'));
+                const clickedLink = document.querySelector(`a[onclick="switchTab('${tabId}')"]`);
+                if(clickedLink) clickedLink.classList.add('active');
+
+                // 如果是手機版，收起選單
+                const menuToggle = document.getElementById('mobile-menu-btn');
+                const navMenu = document.getElementById('nav-menu');
+                if(menuToggle && navMenu) {
+                    menuToggle.classList.remove('active');
+                    navMenu.classList.remove('active');
+                }
+
+                // 處理首頁的特殊樣式
+                if(tabId === 'home') {
+                    targetSection.classList.add('home-active');
+                } else {
+                    document.querySelectorAll('.home-active').forEach(el => el.classList.remove('home-active'));
+                    if(tabId === 'home') targetSection.classList.add('home-active');
+                }
+
+                // 更新網址歷史紀錄
+                if(updateHistory) {
+                    history.pushState({tabId: tabId}, null, `#${tabId}`);
+                }
+            };
+
+            // 執行切換邏輯
+            if (currentSection) {
+                // 如果有舊頁面，先讓它 Fade Out
+                currentSection.classList.remove('visible'); // 移除 visible 會觸發 opacity -> 0 的動畫
+
+                // 等待 400ms (CSS transition 時間) 後，再切換新頁面
+                setTimeout(() => {
+                    showNewSection();
+                }, 400);
+            } else {
+                // 如果是第一次載入 (沒有舊頁面)，直接顯示
+                showNewSection();
             }
-
-            const clickedLink = document.querySelector(`a[onclick="switchTab('${tabId}')"]`);
-            if(clickedLink) clickedLink.classList.add('active');
-
-            // Close mobile menu if open
-            const menuToggle = document.getElementById('mobile-menu-btn');
-            const navMenu = document.getElementById('nav-menu');
-            if(menuToggle && navMenu) {
-                menuToggle.classList.remove('active');
-                navMenu.classList.remove('active');
-            }
-
-            // --- 新增：更新網址列，但不重新整理網頁 ---
-            if(updateHistory) {
-                history.pushState({tabId: tabId}, null, `#${tabId}`);
-            }
-
-            window.scrollTo(0,0);
         }
 
-        // --- 新增：監聽瀏覽器「上一頁/下一頁」按鈕 ---
+        // --- 監聽瀏覽器「上一頁/下一頁」按鈕 ---
         window.addEventListener('popstate', (event) => {
             if (event.state && event.state.tabId) {
-                switchTab(event.state.tabId, false); // 傳入 false 避免重複堆疊歷史紀錄
+                switchTab(event.state.tabId, false);
             } else {
-                // 如果沒有狀態 (例如回到了首頁)，切換回 home
                 switchTab('home', false);
             }
         });
@@ -885,12 +919,18 @@
                 navMenu.classList.toggle('active');
             });
 
-            // --- 新增：檢查網址是否有 hash (例如 #media)，直接跳轉該分頁 ---
-            const hash = window.location.hash.substring(1); // 移除 #
+            // 檢查網址是否有 hash，直接跳轉該分頁
+            const hash = window.location.hash.substring(1); 
             if (hash) {
+                // 為了避免初次載入也是 fade-in，我們可以快速切換
+                // 但為了效果一致，我們還是呼叫 switchTab
                 switchTab(hash, false);
             } else {
-                switchTab('home', false);
+                // 預設載入 Home，並加上 visible 讓它顯示
+                const home = document.getElementById('home');
+                if(home) {
+                    home.classList.add('active-page', 'visible');
+                }
             }
         });
 
