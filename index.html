@@ -57,7 +57,7 @@
             text-decoration: none;
             display: flex;
             align-items: center;
-            z-index: 1002; /* 確保 Logo 在選單之上 */
+            z-index: 1002;
         }
 
         /* Logo 圖片設定 */
@@ -94,7 +94,7 @@
             text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
         }
 
-        /* Hamburger Menu Button (Hidden on Desktop) */
+        /* Hamburger Menu Button */
         .menu-toggle {
             display: none;
             cursor: pointer;
@@ -178,7 +178,7 @@
         }
         .btn:hover { background: var(--primary-color); color: black; box-shadow: 0 0 30px var(--primary-color); }
 
-        /* --- ABOUT (Alternating Layout) --- */
+        /* --- ABOUT --- */
         .about-container {
             max-width: 1200px;
             margin: 0 auto 80px;
@@ -230,7 +230,7 @@
 
         .about-text-content p { margin-bottom: 1.5rem; }
 
-        /* --- TEAM Grid (Students) --- */
+        /* --- TEAM Grid --- */
         .team-grid {
             display: grid;
             grid-template-columns: repeat(3, 1fr);
@@ -240,7 +240,6 @@
             padding: 0 20px;
         }
 
-        /* --- Mentor Section (Centered & Flex) --- */
         .mentor-wrapper {
             display: flex;
             justify-content: center;
@@ -255,7 +254,6 @@
             max-width: 380px;
         }
 
-        /* --- Member Card Styles --- */
         .member-card {
             background: var(--card-bg);
             border: 1px solid #222;
@@ -278,7 +276,7 @@
         .member-name { font-size: 1.3rem; color: white; margin-bottom: 5px; font-weight: 700; font-family: 'Nasalization', sans-serif; }
         .member-role { color: var(--primary-color); font-size: 0.9rem; text-transform: uppercase; font-weight: 500; font-family: 'Rajdhani', sans-serif; letter-spacing: 2px;}
 
-        /* --- GALLERY (MEDIA & ROBOT) --- */
+        /* --- GALLERY --- */
         .gallery-grid {
             display: grid;
             grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
@@ -315,7 +313,7 @@
             opacity: 1;
         }
 
-        /* Lightbox CSS */
+        /* Lightbox */
         #lightbox {
             position: fixed;
             top: 0;
@@ -359,7 +357,7 @@
             color: var(--primary-color);
         }
 
-        /* Back to Top Button CSS */
+        /* Back to Top Button */
         #back-to-top {
             position: fixed;
             bottom: 30px;
@@ -371,28 +369,23 @@
             border-radius: 50%;
             border: none;
             cursor: pointer;
-            
-            /* 使用 opacity 來做漸顯效果 */
             display: flex;
             justify-content: center;
             align-items: center;
             z-index: 1000;
             box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-            
-            /* 預設隱藏狀態 */
             opacity: 0; 
-            pointer-events: none; /* 隱藏時不能被點擊 */
+            pointer-events: none;
             transition: opacity 0.5s ease, transform 0.3s ease, box-shadow 0.3s ease;
         }
 
-        /* 當按鈕顯示時的狀態 */
         #back-to-top.show {
-            opacity: 0.6; /* 平常是半透明 */
-            pointer-events: auto; /* 可以被點擊 */
+            opacity: 0.6;
+            pointer-events: auto;
         }
 
         #back-to-top:hover {
-            opacity: 1; /* 滑鼠移上去變清楚 */
+            opacity: 1;
             transform: translateY(-5px);
             box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
         }
@@ -403,8 +396,13 @@
             fill: black;
         }
 
-        /* --- EVENTS PAGE (Updated Styles) --- */
-        /* 修正處：加入了 .event-card 選擇器 */
+        /* --- EVENTS --- */
+        .timeline { max-width: 900px; margin: 40px auto; padding: 0 20px; position: relative; }
+        .timeline::before {
+            content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 2px;
+            background: var(--primary-color); transform: translateX(-50%); opacity: 0.3;
+        }
+        
         .event-card {
             width: 45%; 
             background: var(--card-bg); 
@@ -495,92 +493,47 @@
             display: inline-block;
         }
 
-        /* --- MOBILE RESPONSIVE STYLES --- */
+        /* --- MOBILE RESPONSIVE --- */
         @media (max-width: 768px) {
             .hero-content h1 { font-size: 3rem; }
             .team-grid { grid-template-columns: 1fr; gap: 40px; }
             .mentor-wrapper { margin-bottom: 40px; }
             .gallery-grid { grid-template-columns: 1fr; }
-            
-            /* About Section Mobile */
             .about-row, .about-row:nth-child(even) { flex-direction: column !important; gap: 30px; }
             .about-text-content { text-align: left; }
-            
-            /* Event Timeline Mobile */
             .timeline::before { left: 20px; }
             .event-card { 
                 width: 85%; margin-left: 50px !important; margin-right: 0 !important;
                 text-align: left !important; border-left: 3px solid var(--primary-color) !important; border-right: none !important; 
             }
             .event-card::after { left: -38px !important; right: auto !important; }
-            
             .nav-logo img { height: 40px; }
 
-            /* --- Hamburger Menu Logic --- */
-            .menu-toggle {
-                display: block; /* Show hamburger on mobile */
-            }
-
-            .menu-toggle.active .bar:nth-child(2) {
-                opacity: 0;
-            }
-            .menu-toggle.active .bar:nth-child(1) {
-                transform: translateY(8px) rotate(45deg);
-            }
-            .menu-toggle.active .bar:nth-child(3) {
-                transform: translateY(-8px) rotate(-45deg);
-            }
+            .menu-toggle { display: block; }
+            .menu-toggle.active .bar:nth-child(2) { opacity: 0; }
+            .menu-toggle.active .bar:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+            .menu-toggle.active .bar:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
 
             .nav-menu {
-                position: fixed;
-                left: -100%;
-                top: 60px; /* Adjust based on header height */
-                gap: 0;
-                flex-direction: column;
-                background-color: rgba(0,0,0,0.98);
-                width: 100%;
-                text-align: center;
-                transition: 0.3s;
-                border-bottom: 2px solid var(--primary-color);
-                z-index: 1001;
-                padding-bottom: 20px;
-                box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+                position: fixed; left: -100%; top: 60px; gap: 0; flex-direction: column;
+                background-color: rgba(0,0,0,0.98); width: 100%; text-align: center;
+                transition: 0.3s; border-bottom: 2px solid var(--primary-color); z-index: 1001;
+                padding-bottom: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.5);
             }
-
-            .nav-menu.active {
-                left: 0;
-            }
-
-            nav ul {
-                flex-direction: column;
-                padding: 20px 0;
-                width: 100%;
-                gap: 0;
-            }
-
-            .nav-item {
-                display: block;
-                font-size: 1.5rem; /* Larger font for touch */
-                padding: 20px 0;
-                border-bottom: 1px solid #222;
-                width: 100%;
-            }
-            
-            .nav-item:hover, .nav-item.active {
-                background: #111;
-                border-bottom: 1px solid var(--primary-color);
-            }
+            .nav-menu.active { left: 0; }
+            nav ul { flex-direction: column; padding: 20px 0; width: 100%; gap: 0; }
+            .nav-item { display: block; font-size: 1.5rem; padding: 20px 0; border-bottom: 1px solid #222; width: 100%; }
+            .nav-item:hover, .nav-item.active { background: #111; border-bottom: 1px solid var(--primary-color); }
         }
     </style>
 </head>
 <body>
 
     <header>
-        <a href="#" class="nav-logo" onclick="switchTab('home')">
+        <a href="#home" class="nav-logo" onclick="switchTab('home')">
             <img src="logo.png" alt="23083Z Reaper Logo">
         </a>
         
-        <!-- Hamburger Menu Button -->
         <div class="menu-toggle" id="mobile-menu-btn">
             <span class="bar"></span>
             <span class="bar"></span>
@@ -614,9 +567,7 @@
             <p>23083Z is a VEX robotics team striving for perfection. Black represents calm, Gold represents glory.</p>
         </div>
 
-        <!-- Alternating Layout for About Section -->
         <div class="about-container">
-            <!-- Row 1: Image Left, Text Right -->
             <div class="about-row">
                 <div class="about-image-wrapper">
                     <img src="about-1.jpg" alt="Team 23083Z Origin">
@@ -632,7 +583,6 @@
                 </div>
             </div>
 
-            <!-- Row 2: Text Left, Image Right -->
             <div class="about-row">
                 <div class="about-image-wrapper">
                     <img src="about-2.jpg" alt="Team 23083Z Mission">
@@ -653,7 +603,6 @@
             <h2>The <span>Team Members</span></h2>
         </div>
 
-        <!-- Member Cards Grid (6 Members) -->
         <div class="team-grid">
             <div class="member-card">
                 <div class="member-photo" style="background-image: url('members/pennlaine.jpg');"></div>
@@ -699,12 +648,10 @@
             </div>
         </div>
 
-        <!-- NEW MENTOR SECTION -->
         <div class="section-header">
             <h2>The <span>Mentors</span></h2>
         </div>
 
-        <!-- Mentor Wrapper -->
         <div class="mentor-wrapper">
             <div class="member-card">
                 <div class="member-photo" style="background-image: url('members/justin.jpg');"></div>
@@ -825,10 +772,10 @@
         </svg>
     </button>
 
-    <!-- Lightbox Logic & Image Loader -->
+    <!-- Logic -->
     <script>
-        // 1. Page Switching Logic
-        function switchTab(tabId) {
+        // 1. Page Switching Logic with History Support
+        function switchTab(tabId, updateHistory = true) {
             const sections = document.querySelectorAll('.page-section');
             sections.forEach(section => {
                 section.classList.remove('active-page');
@@ -839,6 +786,8 @@
             navItems.forEach(item => item.classList.remove('active'));
 
             const targetSection = document.getElementById(tabId);
+            if (!targetSection) return;
+            
             targetSection.classList.add('active-page');
             
             if(tabId === 'home') {
@@ -856,8 +805,23 @@
                 navMenu.classList.remove('active');
             }
 
+            // --- 新增：更新網址列，但不重新整理網頁 ---
+            if(updateHistory) {
+                history.pushState({tabId: tabId}, null, `#${tabId}`);
+            }
+
             window.scrollTo(0,0);
         }
+
+        // --- 新增：監聽瀏覽器「上一頁/下一頁」按鈕 ---
+        window.addEventListener('popstate', (event) => {
+            if (event.state && event.state.tabId) {
+                switchTab(event.state.tabId, false); // 傳入 false 避免重複堆疊歷史紀錄
+            } else {
+                // 如果沒有狀態 (例如回到了首頁)，切換回 home
+                switchTab('home', false);
+            }
+        });
 
         // 2. Lightbox Logic
         const lightbox = document.createElement('div');
@@ -906,7 +870,7 @@
         const mediaCount = 12; 
         const robotCount = 22; 
 
-        // 執行生成
+        // 執行生成 & 初始化
         document.addEventListener('DOMContentLoaded', () => {
             loadGallery('media-gallery', 'media', mediaCount, 'media');
             loadGallery('robot-gallery', 'robot', robotCount, 'robot');
@@ -920,6 +884,14 @@
                 menuToggle.classList.toggle('active');
                 navMenu.classList.toggle('active');
             });
+
+            // --- 新增：檢查網址是否有 hash (例如 #media)，直接跳轉該分頁 ---
+            const hash = window.location.hash.substring(1); // 移除 #
+            if (hash) {
+                switchTab(hash, false);
+            } else {
+                switchTab('home', false);
+            }
         });
 
         // 4. Back to Top Logic
