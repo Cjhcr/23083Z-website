@@ -39,45 +39,7 @@
             letter-spacing: 1px;
         }
 
-        /* --- 1. Loading Screen CSS --- */
-        #preloader {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background-color: #000;
-            z-index: 9999;
-            display: flex;
-            flex-direction: column;
-            justify-content: center;
-            align-items: center;
-            transition: opacity 0.8s ease-out;
-        }
-
-        .loader-content img {
-            width: 120px;
-            margin-bottom: 20px;
-            animation: breathe 2s infinite ease-in-out;
-        }
-
-        .loader-text {
-            color: var(--primary-color);
-            font-family: 'Nasalization', sans-serif;
-            letter-spacing: 3px;
-            font-size: 1.2rem;
-            animation: blink 1s infinite;
-        }
-
-        @keyframes breathe {
-            0%, 100% { transform: scale(1); opacity: 0.8; }
-            50% { transform: scale(1.1); opacity: 1; filter: drop-shadow(0 0 10px var(--primary-color)); }
-        }
-
-        @keyframes blink {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0.5; }
-        }
+        /* (已移除 Loading Screen CSS) */
 
         /* --- 2. Scroll Animation Class --- */
         .scroll-hidden {
@@ -648,14 +610,7 @@
 </head>
 <body>
 
-    <!-- 1. LOADING SCREEN -->
-    <div id="preloader">
-        <div class="loader-content">
-            <!-- 確保你有 logo.png -->
-            <img src="logo.png" alt="Loading...">
-            <div class="loader-text">SYSTEM INITIALIZING...</div>
-        </div>
-    </div>
+    <!-- (已移除 Loading Screen) -->
 
     <header>
         <a href="#home" class="nav-logo" onclick="switchTab('home')">
@@ -931,16 +886,7 @@
 
     <!-- Logic -->
     <script>
-        // 1. Loading Screen Logic
-        window.addEventListener('load', () => {
-            const preloader = document.getElementById('preloader');
-            // 頁面載入完成後，先淡出
-            preloader.style.opacity = '0';
-            // 等待 CSS 動畫結束後，完全移除
-            setTimeout(() => {
-                preloader.style.display = 'none';
-            }, 800);
-        });
+        // 1. Loading Screen Logic (已移除)
 
         // 2. Countdown Timer Logic
         function startCountdown() {
