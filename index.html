@@ -33,23 +33,19 @@
         }
 
         /* --- NEW: 自訂黑金捲軸 (更隱形版) --- */
-        /* 捲軸寬度 */
         ::-webkit-scrollbar {
             width: 10px;
         }
-        /* 捲軸軌道 (黑色) */
         ::-webkit-scrollbar-track {
             background: #050505; 
         }
-        /* 捲軸拉桿 (平時幾乎透明) */
         ::-webkit-scrollbar-thumb {
-            background: rgba(255, 215, 0, 0.2); /* 20% 透明度的金色 */
+            background: rgba(255, 215, 0, 0.2); 
             border-radius: 5px;
-            border: 2px solid #050505; /* 加個邊框讓它看起來更細緻 */
+            border: 2px solid #050505; 
         }
-        /* 滑鼠移到捲軸上時變明顯 */
         ::-webkit-scrollbar-thumb:hover {
-            background: var(--primary-color); /* 變回實心金色 */
+            background: var(--primary-color); 
         }
 
         /* 使用 Nasalization 字體 */
@@ -57,6 +53,20 @@
             font-family: 'Nasalization', sans-serif; 
             text-transform: uppercase;
             letter-spacing: 1px;
+        }
+
+        /* --- Typewriter Cursor Animation --- */
+        .typewriter-cursor {
+            display: inline-block;
+            color: var(--primary-color);
+            margin-left: 2px;
+            animation: blink-cursor 0.8s step-end infinite;
+            font-weight: bold;
+        }
+
+        @keyframes blink-cursor {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
         }
 
         /* --- 2. Scroll Animation Class --- */
@@ -202,9 +212,8 @@
             display: inline-block;
         }
 
-        /* --- NEW: INTENSE Glitch Effect (更明顯的故障效果) --- */
+        /* --- INTENSE Glitch Effect (更明顯的故障效果) --- */
         .hero-content h1:hover {
-            /* 增加 skew 的變化幅度 */
             animation: glitch-skew 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite;
             color: var(--primary-color);
         }
@@ -221,17 +230,17 @@
         }
 
         .hero-content h1:hover::before {
-            left: 4px; /* 位移加大 */
-            text-shadow: 4px 0 #ff00c1; /* 陰影加深 */
+            left: 4px;
+            text-shadow: 4px 0 #ff00c1;
             clip: rect(44px, 450px, 56px, 0);
-            animation: glitch-anim 1.5s infinite linear alternate-reverse; /* 速度變快 */
+            animation: glitch-anim 1.5s infinite linear alternate-reverse;
         }
 
         .hero-content h1:hover::after {
-            left: -4px; /* 位移加大 */
-            text-shadow: -4px 0 #00fff9; /* 陰影加深 */
+            left: -4px;
+            text-shadow: -4px 0 #00fff9;
             clip: rect(44px, 450px, 56px, 0);
-            animation: glitch-anim2 1.5s infinite linear alternate-reverse; /* 速度變快 */
+            animation: glitch-anim2 1.5s infinite linear alternate-reverse;
         }
 
         @keyframes glitch-anim {
@@ -254,19 +263,20 @@
 
         @keyframes glitch-skew {
             0% { transform: skew(0deg); }
-            20% { transform: skew(-10deg); } /* 角度加大 */
-            40% { transform: skew(10deg); }  /* 角度加大 */
+            20% { transform: skew(-10deg); }
+            40% { transform: skew(10deg); }
             60% { transform: skew(-5deg); }
             80% { transform: skew(5deg); }
             100% { transform: skew(0deg); }
         }
-        /* --- End Glitch Effect --- */
 
         .hero-content h2 { 
             font-size: 1.8rem; 
             color: var(--primary-color); 
             margin-bottom: 5px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
+            /* 保持高度，避免打字時跳動 */
+            min-height: 1.8rem; 
         }
 
         /* Countdown Timer CSS */
@@ -724,6 +734,11 @@
             <h2>VEX TEAM 23083Z</h2>
             <h1>REAPER</h1>
             
+            <!-- Typewriter Effect Section -->
+            <h2>
+                <span id="typewriter-text"></span><span class="typewriter-cursor">_</span>
+            </h2>
+            
             <!-- 先顯示按鈕 -->
             <a onclick="switchTab('about')" class="btn">MEET THE TEAM</a>
 
@@ -972,9 +987,21 @@
 
     <!-- Logic -->
     <script>
+        // 1. Typewriter Effect Logic
+        const textToType = "VEX TEAM 23083Z";
+        const typeWriterElement = document.getElementById('typewriter-text');
+        let typeIndex = 0;
+
+        function typeWriter() {
+            if (typeIndex < textToType.length) {
+                typeWriterElement.textContent += textToType.charAt(typeIndex);
+                typeIndex++;
+                setTimeout(typeWriter, 100); // 每個字的間隔時間 (毫秒)
+            }
+        }
+
         // 2. Countdown Timer Logic
         function startCountdown() {
-            // 設定目標日期：Feb 3, 2026 09:00:00
             const targetDate = new Date('Feb 03, 2026 09:00:00').getTime();
 
             const timerInterval = setInterval(() => {
@@ -1002,19 +1029,17 @@
 
         // 3. Scroll Animation Logic (Intersection Observer)
         const observerOptions = {
-            threshold: 0.1 // 當元素出現 10% 時觸發
+            threshold: 0.1 
         };
 
         const scrollObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('scroll-visible');
-                    // 可選：如果希望只觸發一次，可以加上 observer.unobserve(entry.target);
                 }
             });
         }, observerOptions);
 
-        // 綁定所有帶有 scroll-hidden 的元素
         document.querySelectorAll('.scroll-hidden').forEach(el => {
             scrollObserver.observe(el);
         });
@@ -1115,7 +1140,6 @@
 
             let html = '';
             for (let i = 1; i <= totalCount; i++) {
-                // 加入 scroll-hidden 讓圖片也有進場動畫
                 html += `
                     <div class="gallery-item scroll-hidden">
                         <img src="${folderName}/${filePrefix}-${i}.jpg" alt="Photo ${i}">
@@ -1124,7 +1148,6 @@
             }
             container.innerHTML = html;
             
-            // 重要：動態生成的元素需要重新加入 Observer
             container.querySelectorAll('.scroll-hidden').forEach(el => {
                 scrollObserver.observe(el);
             });
@@ -1134,6 +1157,9 @@
         const robotCount = 22; 
 
         document.addEventListener('DOMContentLoaded', () => {
+            // Start Typewriter
+            setTimeout(typeWriter, 500); 
+
             loadGallery('media-gallery', 'media', mediaCount, 'media');
             loadGallery('robot-gallery', 'robot', robotCount, 'robot');
             bindLightboxEvents();
