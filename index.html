@@ -796,13 +796,15 @@
                     sec.classList.remove('active-page', 'visible');
                 });
 
+                // 捲動邏輯修改：在新頁面內容載入前，瞬間回到頂部
+                window.scrollTo(0, 0);
+
                 // 1. 把新頁面設為 active-page (此時它是 display: block 但 opacity: 0)
                 targetSection.classList.add('active-page');
 
                 // 2. 稍微等待瀏覽器 Render 後，再加上 visible (觸發 opacity: 1 的轉場)
                 setTimeout(() => {
                     targetSection.classList.add('visible');
-                    window.scrollTo({ top: 0, behavior: 'smooth' }); // 捲動到最上面
                 }, 50);
 
                 // 更新導覽列狀態
