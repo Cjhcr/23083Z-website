@@ -39,8 +39,6 @@
             letter-spacing: 1px;
         }
 
-        /* (已移除 Loading Screen CSS) */
-
         /* --- 2. Scroll Animation Class --- */
         .scroll-hidden {
             opacity: 0;
@@ -139,6 +137,15 @@
         .section-header span { color: var(--primary-color); }
         .section-header p { color: var(--text-muted); max-width: 800px; margin: 0 auto; font-size: 1.1rem; }
 
+        /* 新增：用於 Team Members 上方 Logo 的樣式 */
+        .section-logo {
+            width: 100px; /* 可根據需要調整大小 */
+            height: auto;
+            margin: 0 auto 20px; /* 置中並與下方標題保持距離 */
+            display: block;
+            filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.3)); /* 稍微加一點金色光暈 */
+        }
+
         /* --- HOME PAGE & COUNTDOWN --- */
         #home {
             padding-top: 0;
@@ -216,7 +223,6 @@
             text-transform: uppercase;
         }
 
-        /* 修改後的倒數計時標題樣式 (變成連結) */
         .countdown-title {
             color: #eee;
             font-size: 0.9rem; 
@@ -224,8 +230,6 @@
             text-shadow: 1px 1px 3px black;
             font-weight: bold;
             text-transform: uppercase;
-            
-            /* 新增連結樣式 */
             text-decoration: none;
             display: inline-block;
             margin-bottom: 10px;
@@ -233,7 +237,6 @@
             border-bottom: 1px solid transparent;
         }
 
-        /* 滑鼠移上去的效果 */
         .countdown-title:hover {
             color: var(--primary-color);
             border-bottom: 1px solid var(--primary-color);
@@ -610,8 +613,6 @@
 </head>
 <body>
 
-    <!-- (已移除 Loading Screen) -->
-
     <header>
         <a href="#home" class="nav-logo" onclick="switchTab('home')">
             <img src="logo.png" alt="23083Z Reaper Logo">
@@ -712,6 +713,8 @@
         </div>
 
         <div class="section-header scroll-hidden">
+            <!-- 新增: Reaper Logo 放在 The Team Members 上方 -->
+            <img src="reaper.svg" alt="Reaper Logo" class="section-logo">
             <h2>The <span>Team Members</span></h2>
         </div>
 
@@ -886,7 +889,16 @@
 
     <!-- Logic -->
     <script>
-        // 1. Loading Screen Logic (已移除)
+        // 1. Loading Screen Logic
+        window.addEventListener('load', () => {
+            const preloader = document.getElementById('preloader');
+            // 頁面載入完成後，先淡出
+            preloader.style.opacity = '0';
+            // 等待 CSS 動畫結束後，完全移除
+            setTimeout(() => {
+                preloader.style.display = 'none';
+            }, 800);
+        });
 
         // 2. Countdown Timer Logic
         function startCountdown() {
