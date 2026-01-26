@@ -33,10 +33,62 @@
         }
 
         /* 使用 Nasalization 字體 */
-        h1, h2, h3, .nav-item, .btn, .stat-number, .event-date {
+        h1, h2, h3, .nav-item, .btn, .stat-number, .event-date, .countdown-number {
             font-family: 'Nasalization', sans-serif; 
             text-transform: uppercase;
             letter-spacing: 1px;
+        }
+
+        /* --- 1. Loading Screen CSS --- */
+        #preloader {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background-color: #000;
+            z-index: 9999;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            transition: opacity 0.8s ease-out;
+        }
+
+        .loader-content img {
+            width: 120px;
+            margin-bottom: 20px;
+            animation: breathe 2s infinite ease-in-out;
+        }
+
+        .loader-text {
+            color: var(--primary-color);
+            font-family: 'Nasalization', sans-serif;
+            letter-spacing: 3px;
+            font-size: 1.2rem;
+            animation: blink 1s infinite;
+        }
+
+        @keyframes breathe {
+            0%, 100% { transform: scale(1); opacity: 0.8; }
+            50% { transform: scale(1.1); opacity: 1; filter: drop-shadow(0 0 10px var(--primary-color)); }
+        }
+
+        @keyframes blink {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0.5; }
+        }
+
+        /* --- 2. Scroll Animation Class --- */
+        .scroll-hidden {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .scroll-visible {
+            opacity: 1;
+            transform: translateY(0);
         }
 
         /* --- Navigation --- */
@@ -60,7 +112,6 @@
             z-index: 1002;
         }
 
-        /* Logo 圖片設定 */
         .nav-logo img {
             height: 55px;
             width: auto;
@@ -69,7 +120,6 @@
         
         .nav-logo:hover img { filter: drop-shadow(0 0 8px var(--primary-color)); }
 
-        /* Navigation Menu Container */
         .nav-menu {
             display: flex;
             align-items: center;
@@ -94,7 +144,6 @@
             text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
         }
 
-        /* Hamburger Menu Button */
         .menu-toggle {
             display: none;
             cursor: pointer;
@@ -110,53 +159,50 @@
             background-color: white;
         }
 
-        /* --- Page Switching (Updated for Smooth Transition) --- */
+        /* --- Page Switching --- */
         .page-section {
-            display: none; /* 預設不顯示 */
+            display: none; 
             min-height: 100vh;
             padding-top: 80px;
-            
-            /* 關鍵：設定轉場效果 */
             opacity: 0; 
             transform: translateY(20px);
             transition: opacity 0.4s ease-out, transform 0.4s ease-out;
         }
 
-        .page-section.active-page { 
-            display: block; /* 顯示佔位，但此時可能還是透明的 */
-        }
-
-        /* 當加上 visible 時，才真正浮現 */
-        .page-section.visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        .page-section.active-page { display: block; }
+        .page-section.visible { opacity: 1; transform: translateY(0); }
 
         .section-header { text-align: center; padding: 60px 20px 40px; }
         .section-header h2 { font-size: 2.8rem; color: white; margin-bottom: 10px; line-height: 1.4; }
         .section-header span { color: var(--primary-color); }
         .section-header p { color: var(--text-muted); max-width: 800px; margin: 0 auto; font-size: 1.1rem; }
 
-        /* --- HOME PAGE --- */
+        /* --- HOME PAGE & COUNTDOWN --- */
         #home {
             padding-top: 0;
             flex-direction: column;
-            justify-content: center;
+            /* 修改：原本是 center，改為 flex-end 讓內容靠下 */
+            justify-content: flex-end; 
             align-items: center;
             text-align: center;
-            background: linear-gradient(rgba(0,0,0,0.4), rgba(0,0,0,0.4)), url('team.jpg');
+            background: linear-gradient(rgba(0,0,0,0.1), rgba(0,0,0,0.6)), url('team.jpg'); /* 上淡下深，突顯文字 */
             background-size: cover;
             background-position: center;
+            /* 增加底部間距，讓文字不要貼底 */
+            padding-bottom: 120px; 
         }
         .home-active { display: flex !important; }
 
         .hero-content {
-            margin-top: 40vh;
+            /* 移除原本的 margin-top，因為現在是用 flex-end 對齊 */
+            margin-top: 0; 
+            width: 100%;
+            padding: 0 20px;
         }
 
         .hero-content h1 {
             font-size: 5rem;
-            margin-bottom: 20px;
+            margin-bottom: 10px;
             text-shadow: 
                 3px 3px 0px rgba(0, 0, 0, 0.8),
                 0 0 20px var(--primary-color),
@@ -170,6 +216,48 @@
             margin-bottom: 10px;
             text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
         }
+
+        /* Countdown Timer CSS */
+        .countdown-container {
+            display: flex;
+            justify-content: center;
+            gap: 20px;
+            margin: 30px 0;
+            flex-wrap: wrap;
+        }
+
+        .countdown-item {
+            background: rgba(0, 0, 0, 0.7);
+            padding: 15px 20px;
+            border: 1px solid var(--primary-color);
+            min-width: 100px;
+            backdrop-filter: blur(5px);
+            /* 修改：圓角化 */
+            border-radius: 8px;
+        }
+
+        .countdown-number {
+            display: block;
+            font-size: 2.5rem;
+            color: var(--primary-color);
+            font-weight: bold;
+            line-height: 1;
+        }
+
+        .countdown-label {
+            font-size: 0.9rem;
+            color: #ccc;
+            text-transform: uppercase;
+        }
+
+        .countdown-title {
+            color: #fff;
+            font-size: 1.1rem; /* 稍微加大一點 */
+            letter-spacing: 2px;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px black;
+            font-weight: bold;
+        }
         
         .btn {
             display: inline-block;
@@ -182,6 +270,8 @@
             transition: 0.3s;
             background: rgba(0,0,0,0.7);
             cursor: pointer;
+            /* 修改：圓角化 */
+            border-radius: 6px; 
         }
         .btn:hover { background: var(--primary-color); color: black; box-shadow: 0 0 30px var(--primary-color); }
 
@@ -421,7 +511,9 @@
             text-decoration: none; 
             color: inherit; 
             padding: 0; 
-            overflow: hidden; 
+            overflow: hidden;
+            /* 修改：圓角化 */
+            border-radius: 8px;
         }
         
         .event-card:hover { 
@@ -531,10 +623,22 @@
             nav ul { flex-direction: column; padding: 20px 0; width: 100%; gap: 0; }
             .nav-item { display: block; font-size: 1.5rem; padding: 20px 0; border-bottom: 1px solid #222; width: 100%; }
             .nav-item:hover, .nav-item.active { background: #111; border-bottom: 1px solid var(--primary-color); }
+            
+            .countdown-number { font-size: 1.8rem; }
+            .countdown-item { padding: 10px; min-width: 70px; }
         }
     </style>
 </head>
 <body>
+
+    <!-- 1. LOADING SCREEN -->
+    <div id="preloader">
+        <div class="loader-content">
+            <!-- 確保你有 logo.png -->
+            <img src="logo.png" alt="Loading...">
+            <div class="loader-text">SYSTEM INITIALIZING...</div>
+        </div>
+    </div>
 
     <header>
         <a href="#home" class="nav-logo" onclick="switchTab('home')">
@@ -563,19 +667,41 @@
         <div class="hero-content">
             <h2>VEX TEAM 23083Z</h2>
             <h1>REAPER</h1>
+            
+            <!-- 2. COUNTDOWN TIMER -->
+            <p class="countdown-title">2025-2026 VEX TAIWAN OPEN V5RC HS</p>
+            <div class="countdown-container" id="countdown">
+                <div class="countdown-item">
+                    <span class="countdown-number" id="days">00</span>
+                    <span class="countdown-label">Days</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="hours">00</span>
+                    <span class="countdown-label">Hrs</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="minutes">00</span>
+                    <span class="countdown-label">Mins</span>
+                </div>
+                <div class="countdown-item">
+                    <span class="countdown-number" id="seconds">00</span>
+                    <span class="countdown-label">Secs</span>
+                </div>
+            </div>
+
             <a onclick="switchTab('about')" class="btn">MEET THE TEAM</a>
         </div>
     </div>
 
     <!-- 2. ABOUT & TEAM PAGE -->
     <div id="about" class="page-section">
-        <div class="section-header">
+        <div class="section-header scroll-hidden">
             <h2>About <span>Reaper</span></h2>
             <p>23083Z is a VEX robotics team striving for perfection. Black represents calm, Gold represents glory.</p>
         </div>
 
         <div class="about-container">
-            <div class="about-row">
+            <div class="about-row scroll-hidden">
                 <div class="about-image-wrapper">
                     <img src="about-1.jpg" alt="Team 23083Z Origin">
                 </div>
@@ -590,7 +716,7 @@
                 </div>
             </div>
 
-            <div class="about-row">
+            <div class="about-row scroll-hidden">
                 <div class="about-image-wrapper">
                     <img src="about-2.jpg" alt="Team 23083Z Mission">
                 </div>
@@ -606,47 +732,47 @@
             </div>
         </div>
 
-        <div class="section-header">
+        <div class="section-header scroll-hidden">
             <h2>The <span>Team Members</span></h2>
         </div>
 
         <div class="team-grid">
-            <div class="member-card">
+            <div class="member-card scroll-hidden">
                 <div class="member-photo" style="background-image: url('members/pennlaine.jpg');"></div>
                 <div class="member-info">
                     <div class="member-name">Pennlaine</div>
                     <div class="member-role">Club President & Team Leader</div>
                 </div>
             </div>
-            <div class="member-card">
+            <div class="member-card scroll-hidden">
                 <div class="member-photo" style="background-image: url('members/adam.jpg');"></div>
                 <div class="member-info">
                     <div class="member-name">Adam</div>
                     <div class="member-role">Programmer/main driver</div>
                 </div>
             </div>
-            <div class="member-card">
+            <div class="member-card scroll-hidden">
                 <div class="member-photo" style="background-image: url('members/anthony.jpg');"></div>
                 <div class="member-info">
                     <div class="member-name">Anthony</div>
                     <div class="member-role">Builder/CAD/Art Lead</div>
                 </div>
             </div>
-            <div class="member-card">
+            <div class="member-card scroll-hidden">
                 <div class="member-photo" style="background-image: url('members/benjamin.jpg');"></div>
                 <div class="member-info">
                     <div class="member-name">Benjamin</div>
                     <div class="member-role"> Builder/Planning/Programming  </div>
                 </div>
             </div>
-            <div class="member-card">
+            <div class="member-card scroll-hidden">
                 <div class="member-photo" style="background-image: url('members/jefferson.jpg');"></div>
                 <div class="member-info">
                     <div class="member-name">Jefferson</div>
                     <div class="member-role">Builder</div>
                 </div>
             </div>
-            <div class="member-card">
+            <div class="member-card scroll-hidden">
                 <div class="member-photo" style="background-image: url('members/cecilia.jpg');"></div>
                 <div class="member-info">
                     <div class="member-name">Cecilia</div>
@@ -655,19 +781,19 @@
             </div>
         </div>
 
-        <div class="section-header">
+        <div class="section-header scroll-hidden">
             <h2>The <span>Mentors</span></h2>
         </div>
 
         <div class="mentor-wrapper">
-            <div class="member-card">
+            <div class="member-card scroll-hidden">
                 <div class="member-photo" style="background-image: url('members/justin.jpg');"></div>
                 <div class="member-info">
                     <div class="member-name">Justin</div>
                     <div class="member-role">Coach, Mentor</div>
                 </div>
             </div>
-            <div class="member-card">
+            <div class="member-card scroll-hidden">
                 <div class="member-photo" style="background-image: url('members/mentor-2.jpg');"></div>
                 <div class="member-info">
                     <div class="member-name">肉包</div>
@@ -679,7 +805,7 @@
 
     <!-- 3. MEDIA PAGE -->
     <div id="media" class="page-section">
-        <div class="section-header">
+        <div class="section-header scroll-hidden">
             <h2>Media <span>Gallery</span></h2>
             <p>Documenting our journey and every exciting moment.</p>
         </div>
@@ -688,14 +814,14 @@
 
     <!-- 4. EVENTS PAGE -->
     <div id="events" class="page-section">
-        <div class="section-header">
+        <div class="section-header scroll-hidden">
             <h2>Season <span>Timeline</span></h2>
             <p>Push Back 2025-2026 Season Plan</p>
         </div>
 
         <div class="timeline">
             <!-- Event 1 -->
-            <a href="https://www.robotevents.com/zh-TW/robot-competitions/vex-robotics-competition/RE-V5RC-25-0319.html#%E5%9F%BA%E6%9C%AC%E8%A8%8A%E6%81%AF" target="_blank" class="event-card">
+            <a href="https://www.robotevents.com/zh-TW/robot-competitions/vex-robotics-competition/RE-V5RC-25-0319.html#%E5%9F%BA%E6%9C%AC%E8%A8%8A%E6%81%AF" target="_blank" class="event-card scroll-hidden">
                 <div class="event-image">
                     <img src="event/tai.jpg" alt="TAI-VEX Scrimmage" class="square-img">
                 </div>
@@ -707,7 +833,7 @@
             </a>
 
             <!-- Event 2 -->
-            <a href="https://www.robotevents.com/zh-TW/robot-competitions/vex-robotics-competition/RE-V5RC-25-0320.html#%E5%9F%BA%E6%9C%AC%E8%A8%8A%E6%81%AF" target="_blank" class="event-card">
+            <a href="https://www.robotevents.com/zh-TW/robot-competitions/vex-robotics-competition/RE-V5RC-25-0320.html#%E5%9F%BA%E6%9C%AC%E8%A8%8A%E6%81%AF" target="_blank" class="event-card scroll-hidden">
                 <div class="event-image">
                     <img src="event/tai.jpg" alt="TAI-VEX Tournament" class="square-img">
                 </div>
@@ -719,7 +845,7 @@
             </a>
 
             <!-- Event 3 -->
-            <a href="https://www.robotevents.com/zh-TW/robot-competitions/vex-robotics-competition/RE-V5RC-25-0121.html#%E5%9F%BA%E6%9C%AC%E8%A8%8A%E6%81%AF" target="_blank" class="event-card">
+            <a href="https://www.robotevents.com/zh-TW/robot-competitions/vex-robotics-competition/RE-V5RC-25-0121.html#%E5%9F%BA%E6%9C%AC%E8%A8%8A%E6%81%AF" target="_blank" class="event-card scroll-hidden">
                 <div class="event-image">
                     <img src="event/pas.jpg" alt="PAS-VEX Signature">
                 </div>
@@ -731,7 +857,7 @@
             </a>
 
             <!-- Event 4 -->
-            <a href="https://www.robotevents.com/zh-TW/robot-competitions/vex-robotics-competition/RE-V5RC-25-0059.html#%E5%9F%BA%E6%9C%AC%E8%A8%8A%E6%81%AF" target="_blank" class="event-card">
+            <a href="https://www.robotevents.com/zh-TW/robot-competitions/vex-robotics-competition/RE-V5RC-25-0059.html#%E5%9F%BA%E6%9C%AC%E8%A8%8A%E6%81%AF" target="_blank" class="event-card scroll-hidden">
                 <div class="event-image">
                     <img src="event/vto.jpg" alt="VEX Taiwan Open" class="square-img">
                 </div>
@@ -746,7 +872,7 @@
 
     <!-- 5. ROBOT PAGE -->
     <div id="specs" class="page-section">
-        <div class="section-header">
+        <div class="section-header scroll-hidden">
             <h2>Our <span>Robot</span></h2>
             <p>Engineering perfection in detail.</p>
         </div>
@@ -781,39 +907,89 @@
 
     <!-- Logic -->
     <script>
-        // 1. Page Switching Logic with Smooth Fade Transition
+        // 1. Loading Screen Logic
+        window.addEventListener('load', () => {
+            const preloader = document.getElementById('preloader');
+            // 頁面載入完成後，先淡出
+            preloader.style.opacity = '0';
+            // 等待 CSS 動畫結束後，完全移除
+            setTimeout(() => {
+                preloader.style.display = 'none';
+            }, 800);
+        });
+
+        // 2. Countdown Timer Logic
+        function startCountdown() {
+            // 設定目標日期：Feb 3, 2026 09:00:00
+            const targetDate = new Date('Feb 03, 2026 09:00:00').getTime();
+
+            const timerInterval = setInterval(() => {
+                const now = new Date().getTime();
+                const distance = targetDate - now;
+
+                if (distance < 0) {
+                    clearInterval(timerInterval);
+                    document.getElementById("countdown").innerHTML = "EVENT STARTED!";
+                    return;
+                }
+
+                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
+                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
+                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
+
+                document.getElementById("days").innerText = days < 10 ? '0' + days : days;
+                document.getElementById("hours").innerText = hours < 10 ? '0' + hours : hours;
+                document.getElementById("minutes").innerText = minutes < 10 ? '0' + minutes : minutes;
+                document.getElementById("seconds").innerText = seconds < 10 ? '0' + seconds : seconds;
+            }, 1000);
+        }
+        startCountdown();
+
+        // 3. Scroll Animation Logic (Intersection Observer)
+        const observerOptions = {
+            threshold: 0.1 // 當元素出現 10% 時觸發
+        };
+
+        const scrollObserver = new IntersectionObserver((entries) => {
+            entries.forEach(entry => {
+                if (entry.isIntersecting) {
+                    entry.target.classList.add('scroll-visible');
+                    // 可選：如果希望只觸發一次，可以加上 observer.unobserve(entry.target);
+                }
+            });
+        }, observerOptions);
+
+        // 綁定所有帶有 scroll-hidden 的元素
+        document.querySelectorAll('.scroll-hidden').forEach(el => {
+            scrollObserver.observe(el);
+        });
+
+        // 4. Page Switching Logic
         function switchTab(tabId, updateHistory = true) {
             const targetSection = document.getElementById(tabId);
             const currentSection = document.querySelector('.page-section.active-page');
 
-            // 如果已經在該頁面，或目標不存在，則不動作
             if (!targetSection || currentSection === targetSection) return;
 
-            // 定義：顯示新頁面的函式
             const showNewSection = () => {
-                // 清除所有人的 active-page 與 visible 狀態
                 document.querySelectorAll('.page-section').forEach(sec => {
                     sec.classList.remove('active-page', 'visible');
                 });
 
-                // 捲動邏輯修改：在新頁面內容載入前，瞬間回到頂部
                 window.scrollTo(0, 0);
 
-                // 1. 把新頁面設為 active-page (此時它是 display: block 但 opacity: 0)
                 targetSection.classList.add('active-page');
 
-                // 2. 稍微等待瀏覽器 Render 後，再加上 visible (觸發 opacity: 1 的轉場)
                 setTimeout(() => {
                     targetSection.classList.add('visible');
                 }, 50);
 
-                // 更新導覽列狀態
                 const navItems = document.querySelectorAll('.nav-item');
                 navItems.forEach(item => item.classList.remove('active'));
                 const clickedLink = document.querySelector(`a[onclick="switchTab('${tabId}')"]`);
                 if(clickedLink) clickedLink.classList.add('active');
 
-                // 如果是手機版，收起選單
                 const menuToggle = document.getElementById('mobile-menu-btn');
                 const navMenu = document.getElementById('nav-menu');
                 if(menuToggle && navMenu) {
@@ -821,7 +997,6 @@
                     navMenu.classList.remove('active');
                 }
 
-                // 處理首頁的特殊樣式
                 if(tabId === 'home') {
                     targetSection.classList.add('home-active');
                 } else {
@@ -829,28 +1004,21 @@
                     if(tabId === 'home') targetSection.classList.add('home-active');
                 }
 
-                // 更新網址歷史紀錄
                 if(updateHistory) {
                     history.pushState({tabId: tabId}, null, `#${tabId}`);
                 }
             };
 
-            // 執行切換邏輯
             if (currentSection) {
-                // 如果有舊頁面，先讓它 Fade Out
-                currentSection.classList.remove('visible'); // 移除 visible 會觸發 opacity -> 0 的動畫
-
-                // 等待 400ms (CSS transition 時間) 後，再切換新頁面
+                currentSection.classList.remove('visible');
                 setTimeout(() => {
                     showNewSection();
                 }, 400);
             } else {
-                // 如果是第一次載入 (沒有舊頁面)，直接顯示
                 showNewSection();
             }
         }
 
-        // --- 監聽瀏覽器「上一頁/下一頁」按鈕 ---
         window.addEventListener('popstate', (event) => {
             if (event.state && event.state.tabId) {
                 switchTab(event.state.tabId, false);
@@ -859,7 +1027,7 @@
             }
         });
 
-        // 2. Lightbox Logic
+        // 5. Lightbox Logic
         const lightbox = document.createElement('div');
         lightbox.id = 'lightbox';
         lightbox.innerHTML = `
@@ -886,33 +1054,36 @@
             }
         });
 
-        // 3. AUTO LOAD IMAGES LOGIC
+        // 6. AUTO LOAD IMAGES Logic
         function loadGallery(containerId, folderName, totalCount, filePrefix) {
             const container = document.getElementById(containerId);
             if (!container) return;
 
             let html = '';
             for (let i = 1; i <= totalCount; i++) {
+                // 加入 scroll-hidden 讓圖片也有進場動畫
                 html += `
-                    <div class="gallery-item">
+                    <div class="gallery-item scroll-hidden">
                         <img src="${folderName}/${filePrefix}-${i}.jpg" alt="Photo ${i}">
                     </div>
                 `;
             }
             container.innerHTML = html;
+            
+            // 重要：動態生成的元素需要重新加入 Observer
+            container.querySelectorAll('.scroll-hidden').forEach(el => {
+                scrollObserver.observe(el);
+            });
         }
 
-        // --- 設定區 ---
         const mediaCount = 12; 
         const robotCount = 22; 
 
-        // 執行生成 & 初始化
         document.addEventListener('DOMContentLoaded', () => {
             loadGallery('media-gallery', 'media', mediaCount, 'media');
             loadGallery('robot-gallery', 'robot', robotCount, 'robot');
             bindLightboxEvents();
 
-            // Mobile Menu Toggle
             const menuToggle = document.getElementById('mobile-menu-btn');
             const navMenu = document.getElementById('nav-menu');
 
@@ -921,14 +1092,10 @@
                 navMenu.classList.toggle('active');
             });
 
-            // 檢查網址是否有 hash，直接跳轉該分頁
             const hash = window.location.hash.substring(1); 
             if (hash) {
-                // 為了避免初次載入也是 fade-in，我們可以快速切換
-                // 但為了效果一致，我們還是呼叫 switchTab
                 switchTab(hash, false);
             } else {
-                // 預設載入 Home，並加上 visible 讓它顯示
                 const home = document.getElementById('home');
                 if(home) {
                     home.classList.add('active-page', 'visible');
@@ -936,7 +1103,7 @@
             }
         });
 
-        // 4. Back to Top Logic
+        // 7. Back to Top Logic
         const backToTopBtn = document.getElementById('back-to-top');
 
         window.addEventListener('scroll', () => {
