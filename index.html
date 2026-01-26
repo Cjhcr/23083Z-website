@@ -371,15 +371,28 @@
             border-radius: 50%;
             border: none;
             cursor: pointer;
-            display: none;
+            
+            /* 使用 opacity 來做漸顯效果 */
+            display: flex;
             justify-content: center;
             align-items: center;
             z-index: 1000;
             box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-            transition: opacity 0.3s, transform 0.3s;
+            
+            /* 預設隱藏狀態 */
+            opacity: 0; 
+            pointer-events: none; /* 隱藏時不能被點擊 */
+            transition: opacity 0.5s ease, transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        /* 當按鈕顯示時的狀態 */
+        #back-to-top.show {
+            opacity: 0.6; /* 平常是半透明 */
+            pointer-events: auto; /* 可以被點擊 */
         }
 
         #back-to-top:hover {
+            opacity: 1; /* 滑鼠移上去變清楚 */
             transform: translateY(-5px);
             box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
         }
@@ -390,13 +403,8 @@
             fill: black;
         }
 
-        /* --- EVENTS PAGE --- */
-        .timeline { max-width: 900px; margin: 40px auto; padding: 0 20px; position: relative; }
-        .timeline::before {
-            content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 2px;
-            background: var(--primary-color); transform: translateX(-50%); opacity: 0.3;
-        }
-        
+        /* --- EVENTS PAGE (Updated Styles) --- */
+        /* 修正處：加入了 .event-card 選擇器 */
         .event-card {
             width: 45%; 
             background: var(--card-bg); 
@@ -919,9 +927,9 @@
 
         window.addEventListener('scroll', () => {
             if (window.scrollY > 300) {
-                backToTopBtn.style.display = 'flex';
+                backToTopBtn.classList.add('show');
             } else {
-                backToTopBtn.style.display = 'none';
+                backToTopBtn.classList.remove('show');
             }
         });
 
