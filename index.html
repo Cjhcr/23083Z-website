@@ -827,6 +827,13 @@
             }
         });
 
+        // --- NEW: Add Escape Key Support ---
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape' && lightbox.classList.contains('active')) {
+                lightbox.classList.remove('active');
+            }
+        });
+
         // 6. AUTO LOAD IMAGES Logic
         function loadGallery(containerId, folderName, totalCount, filePrefix) {
             const container = document.getElementById(containerId);
