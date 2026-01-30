@@ -39,6 +39,13 @@
             line-height: 1.6;
             overflow-x: hidden;
             font-size: 19px;
+            
+            /* --- Tech Grid Background (保留) --- */
+            background-image: 
+                linear-gradient(rgba(255, 215, 0, 0.03) 1px, transparent 1px),
+                linear-gradient(90deg, rgba(255, 215, 0, 0.03) 1px, transparent 1px);
+            background-size: 50px 50px; 
+            background-attachment: fixed; 
         }
 
         /* 防止手機選單開啟時背景滑動 */
@@ -185,7 +192,7 @@
             line-height: 1; color: white; position: relative; display: inline-block;
         }
 
-        /* Glitch Effect (保留) */
+        /* Glitch Effect */
         .hero-content h1:hover { animation: glitch-skew 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite; color: var(--primary-color); }
         .hero-content h1:hover::before, .hero-content h1:hover::after { content: "REAPER"; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: transparent; }
         .hero-content h1:hover::before { left: 4px; text-shadow: 4px 0 #ff00c1; clip: rect(44px, 450px, 56px, 0); animation: glitch-anim 1.5s infinite linear alternate-reverse; }
@@ -209,7 +216,7 @@
         .btn:hover { background: var(--primary-color); color: black; box-shadow: 0 0 30px var(--primary-color); }
 
         /* --- ABOUT --- */
-        .about-container { max-width: 1200px; margin: 0 auto 80px; padding: 0 20px; display: flex; flex-direction: column; gap: 100px; }
+        .about-container { max-width: 1200px; margin: 0 auto 80px; padding: 0 20px; display: flex; flex-direction: column; gap: 80px; }
         .about-row { display: flex; align-items: center; gap: 60px; }
         .about-row:nth-child(even) { flex-direction: row-reverse; }
         .about-image-wrapper { flex: 1; min-width: 300px; }
@@ -330,8 +337,8 @@
             width: 100%;
         }
 
-        /* Adjust inputs in row */
-        #team-number { flex: 1; min-width: 150px; }
+        /* Adjust inputs in row - Giving more space to number */
+        #team-number { flex: 1.5; min-width: 150px; }
         #team-name { flex: 2; }
 
         .add-btn {
@@ -366,6 +373,14 @@
         }
 
         .team-tag span.num { color: var(--primary-color); font-weight: bold; }
+        
+        .delete-btn {
+            cursor: pointer;
+            margin-left: 5px;
+            color: #ff4444;
+            transition: 0.2s;
+        }
+        .delete-btn:hover { color: #ff0000; transform: scale(1.2); }
 
         /* Dashboard Panels */
         .tm-panel { background: #111; border: 1px solid #333; border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; position: relative; }
@@ -533,6 +548,9 @@
             <h2>About <span>Reaper</span></h2>
             <p>23083Z is a VEX robotics team striving for perfection. Black represents calm, Gold represents glory.</p>
         </div>
+        
+        <!-- [REMOVED] Stats Banner -->
+
         <div class="about-container">
             <div class="about-row scroll-hidden">
                 <div class="about-image-wrapper"><img src="about-1.jpg" alt="Team 23083Z Origin"></div>
@@ -612,10 +630,13 @@
             <h2>Our <span>Robot</span></h2>
             <p>Engineering perfection in detail.</p>
         </div>
+        
+        <!-- [REMOVED] Robot Specs Container -->
+
         <div id="robot-gallery" class="gallery-grid"></div>
     </div>
 
-    <!-- 6. HOST GAME (TOURNAMENT MANAGER) - [ADDED & REDESIGNED] -->
+    <!-- 6. HOST GAME (TOURNAMENT MANAGER) -->
     <div id="tournament" class="page-section">
         <!-- SETUP SCREEN -->
         <div id="tm-setup">
@@ -625,8 +646,8 @@
                 <input type="text" id="event-name" class="tm-input full-width" placeholder="Enter Event Name...">
                 
                 <div class="input-row">
-                    <input type="text" id="team-number" class="tm-input" placeholder="Team Number (e.g. 23083Z)">
-                    <input type="text" id="team-name" class="tm-input" placeholder="Team Name (Optional)">
+                    <input type="text" id="team-number" class="tm-input" placeholder="No. (e.g. 23083Z)">
+                    <input type="text" id="team-name" class="tm-input" placeholder="Name (e.g. Reaper)">
                     <button onclick="addTeam()" class="btn add-btn">+</button>
                 </div>
             </div>
@@ -963,14 +984,22 @@
             }
         }
 
+        // Render Team List with Delete Button
         function renderTeamList() {
             const container = document.getElementById('team-list-display');
             container.innerHTML = teamData.map(t => `
                 <div class="team-tag">
                     <span class="num">${t.number}</span>
                     ${t.name ? `<span style="color:#aaa; font-size:0.8em; border-left:1px solid #444; padding-left:5px;">${t.name}</span>` : ''}
+                    <i class="fa-solid fa-times delete-btn" onclick="removeTeam('${t.number}')"></i>
                 </div>
             `).join('');
+        }
+
+        // Remove Team Function
+        function removeTeam(number) {
+            teamData = teamData.filter(t => t.number !== number);
+            renderTeamList();
         }
 
         function startTournament() {
