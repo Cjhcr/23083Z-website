@@ -15,6 +15,9 @@
     <!-- 2. 引入 Nasalization (NASA Font) -->
     <link href="https://fonts.cdnfonts.com/css/nasalization-2" rel="stylesheet">
     
+    <!-- 3. Font Awesome (Host Game Icon 用) -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+
     <style>
         :root {
             --primary-color: #FFD700; /* Reaper Gold */
@@ -23,6 +26,9 @@
             --text-color: #ffffff;
             --text-muted: #cccccc;
             --border-color: #333;
+            /* Host Game Colors */
+            --vex-red: #E74C3C;
+            --vex-blue: #3498DB;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -36,133 +42,46 @@
             font-size: 19px;
         }
 
+        /* 防止手機選單開啟時背景滑動 */
+        body.no-scroll { overflow: hidden; }
+
         /* --- NEW: 自訂黑金捲軸 (更隱形版) --- */
-        ::-webkit-scrollbar {
-            width: 10px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #050505; 
-        }
-        ::-webkit-scrollbar-thumb {
-            background: rgba(255, 215, 0, 0.2); 
-            border-radius: 5px;
-            border: 2px solid #050505; 
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--primary-color); 
-        }
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: #050505; }
+        ::-webkit-scrollbar-thumb { background: rgba(255, 215, 0, 0.2); border-radius: 5px; border: 2px solid #050505; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary-color); }
 
         /* 使用 Nasalization 字體 */
-        h1, h2, h3, .nav-item, .btn, .stat-number, .event-date, .countdown-number {
+        h1, h2, h3, .nav-item, .btn, .stat-number, .event-date, .countdown-number, .tm-header, .timer-display {
             font-family: 'Nasalization', sans-serif; 
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
         /* --- Typewriter Cursor Animation --- */
-        .typewriter-cursor {
-            display: inline-block;
-            color: var(--primary-color);
-            margin-left: 2px;
-            animation: blink-cursor 0.8s step-end infinite;
-            font-weight: bold;
-        }
-
-        @keyframes blink-cursor {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
+        .typewriter-cursor { display: inline-block; color: var(--primary-color); margin-left: 2px; animation: blink-cursor 0.8s step-end infinite; font-weight: bold; }
+        @keyframes blink-cursor { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
 
         /* --- 2. Scroll Animation Class --- */
-        .scroll-hidden {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-        }
-
-        .scroll-visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
+        .scroll-hidden { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
+        .scroll-visible { opacity: 1; transform: translateY(0); }
 
         /* --- Navigation --- */
-        header {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: rgba(0, 0, 0, 0.95);
-            padding: 10px 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 1000;
-            border-bottom: 2px solid #222;
-        }
-
-        .nav-logo {
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            z-index: 1002;
-        }
-
-        .nav-logo img {
-            height: 55px;
-            width: auto;
-            transition: filter 0.3s;
-        }
-        
+        header { position: fixed; top: 0; width: 100%; background: rgba(0, 0, 0, 0.95); padding: 10px 5%; display: flex; justify-content: space-between; align-items: center; z-index: 1000; border-bottom: 2px solid #222; }
+        .nav-logo { text-decoration: none; display: flex; align-items: center; z-index: 1002; }
+        .nav-logo img { height: 55px; width: auto; transition: filter 0.3s; }
         .nav-logo:hover img { filter: drop-shadow(0 0 8px var(--primary-color)); }
-
-        .nav-menu {
-            display: flex;
-            align-items: center;
-        }
-
-        nav ul { display: flex; list-style: none; gap: 30px; }
         
-        .nav-item {
-            color: white;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 0.9rem;
-            cursor: pointer;
-            padding-bottom: 5px;
-            border-bottom: 2px solid transparent;
-            transition: all 0.3s;
-        }
-
-        .nav-item:hover, .nav-item.active {
-            color: var(--primary-color);
-            border-bottom: 2px solid var(--primary-color);
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-        }
-
-        .menu-toggle {
-            display: none;
-            cursor: pointer;
-            z-index: 1002;
-        }
-
-        .bar {
-            display: block;
-            width: 25px;
-            height: 3px;
-            margin: 5px auto;
-            transition: all 0.3s ease-in-out;
-            background-color: white;
-        }
+        .nav-menu { display: flex; align-items: center; }
+        nav ul { display: flex; list-style: none; gap: 30px; }
+        .nav-item { color: white; text-decoration: none; font-weight: 700; font-size: 0.9rem; cursor: pointer; padding-bottom: 5px; border-bottom: 2px solid transparent; transition: all 0.3s; }
+        .nav-item:hover, .nav-item.active { color: var(--primary-color); border-bottom: 2px solid var(--primary-color); text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
+        
+        .menu-toggle { display: none; cursor: pointer; z-index: 1002; }
+        .bar { display: block; width: 25px; height: 3px; margin: 5px auto; transition: all 0.3s ease-in-out; background-color: white; }
 
         /* --- Page Switching --- */
-        .page-section {
-            display: none; 
-            min-height: 100vh;
-            padding-top: 80px;
-            opacity: 0; 
-            transform: translateY(20px);
-            transition: opacity 0.4s ease-out, transform 0.4s ease-out;
-        }
-
+        .page-section { display: none; min-height: 100vh; padding-top: 80px; opacity: 0; transform: translateY(20px); transition: opacity 0.4s ease-out, transform 0.4s ease-out; }
         .page-section.active-page { display: block; }
         .page-section.visible { opacity: 1; transform: translateY(0); }
 
@@ -170,506 +89,183 @@
         .section-header h2 { font-size: 2.8rem; color: white; margin-bottom: 10px; line-height: 1.4; }
         .section-header span { color: var(--primary-color); }
         .section-header p { color: var(--text-muted); max-width: 800px; margin: 0 auto; font-size: 1.1rem; }
-
-        /* 新增：用於 Team Members 上方 Logo 的樣式 */
-        .section-logo {
-            width: 100px; 
-            height: auto;
-            margin: 0 auto 20px; 
-            display: block;
-            filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.3));
-        }
+        .section-logo { width: 100px; height: auto; margin: 0 auto 20px; display: block; filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.3)); }
 
         /* --- HOME PAGE & COUNTDOWN --- */
-        #home {
-            padding-top: 0;
-            flex-direction: column;
-            justify-content: center; 
-            align-items: center;
-            text-align: center;
-            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.6)), url('team.jpg');
-            background-size: cover;
-            background-position: center;
-            padding-bottom: 0;
-        }
+        #home { padding-top: 0; flex-direction: column; justify-content: center; align-items: center; text-align: center; background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.6)), url('team.jpg'); background-size: cover; background-position: center; padding-bottom: 0; }
         .home-active { display: flex !important; }
-
-        .hero-content {
-            margin-top: 300px; 
-            width: 100%;
-            padding: 0 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .hero-content h1 {
-            font-size: 5rem;
-            margin-bottom: 10px;
-            text-shadow: 
-                3px 3px 0px rgba(0, 0, 0, 0.8),
-                0 0 20px var(--primary-color),
-                0 0 40px var(--primary-color);
-            line-height: 1;
-            color: white;
-            position: relative; /* For Glitch Effect */
-            display: inline-block;
-        }
-
-        /* --- INTENSE Glitch Effect (更明顯的故障效果) --- */
-        .hero-content h1:hover {
-            animation: glitch-skew 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite;
-            color: var(--primary-color);
-        }
-
-        .hero-content h1:hover::before,
-        .hero-content h1:hover::after {
-            content: "REAPER";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: transparent;
-        }
-
-        .hero-content h1:hover::before {
-            left: 4px;
-            text-shadow: 4px 0 #ff00c1;
-            clip: rect(44px, 450px, 56px, 0);
-            animation: glitch-anim 1.5s infinite linear alternate-reverse;
-        }
-
-        .hero-content h1:hover::after {
-            left: -4px;
-            text-shadow: -4px 0 #00fff9;
-            clip: rect(44px, 450px, 56px, 0);
-            animation: glitch-anim2 1.5s infinite linear alternate-reverse;
-        }
-
-        @keyframes glitch-anim {
-            0% { clip: rect(30px, 9999px, 10px, 0); }
-            20% { clip: rect(80px, 9999px, 90px, 0); }
-            40% { clip: rect(10px, 9999px, 50px, 0); }
-            60% { clip: rect(60px, 9999px, 20px, 0); }
-            80% { clip: rect(40px, 9999px, 70px, 0); }
-            100% { clip: rect(90px, 9999px, 30px, 0); }
-        }
-
-        @keyframes glitch-anim2 {
-            0% { clip: rect(10px, 9999px, 80px, 0); }
-            20% { clip: rect(50px, 9999px, 20px, 0); }
-            40% { clip: rect(90px, 9999px, 60px, 0); }
-            60% { clip: rect(30px, 9999px, 40px, 0); }
-            80% { clip: rect(70px, 9999px, 10px, 0); }
-            100% { clip: rect(20px, 9999px, 90px, 0); }
-        }
-
-        @keyframes glitch-skew {
-            0% { transform: skew(0deg); }
-            20% { transform: skew(-10deg); }
-            40% { transform: skew(10deg); }
-            60% { transform: skew(-5deg); }
-            80% { transform: skew(5deg); }
-            100% { transform: skew(0deg); }
-        }
-
-        .hero-content h2 { 
-            font-size: 1.8rem; 
-            color: var(--primary-color); 
-            margin-bottom: 5px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-            /* 保持高度，避免打字時跳動 */
-            min-height: 1.8rem; 
-        }
-
-        /* Countdown Timer CSS */
-        .countdown-wrapper {
-            margin-top: 25px; 
-            animation: fadeIn 1s ease-out 0.5s backwards;
-        }
-
-        .countdown-container {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 10px;
-            flex-wrap: wrap;
-        }
-
-        .countdown-item {
-            background: rgba(0, 0, 0, 0.5);
-            padding: 8px 12px;
-            border: 1px solid var(--primary-color);
-            min-width: 70px;
-            backdrop-filter: blur(3px);
-            border-radius: 8px;
-        }
-
-        .countdown-number {
-            display: block;
-            font-size: 1.5rem;
-            color: var(--primary-color);
-            font-weight: bold;
-            line-height: 1;
-        }
-
-        .countdown-label {
-            font-size: 0.75rem;
-            color: #ccc;
-            text-transform: uppercase;
-        }
-
-        .countdown-title {
-            color: #eee;
-            font-size: 0.9rem; 
-            letter-spacing: 2px;
-            text-shadow: 1px 1px 3px black;
-            font-weight: bold;
-            text-transform: uppercase;
-            text-decoration: none;
-            display: inline-block;
-            margin-bottom: 10px;
-            transition: all 0.3s ease;
-            border-bottom: 1px solid transparent;
-        }
-
-        .countdown-title:hover {
-            color: var(--primary-color);
-            border-bottom: 1px solid var(--primary-color);
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-        }
+        .hero-content { margin-top: 300px; width: 100%; padding: 0 20px; display: flex; flex-direction: column; align-items: center; }
+        .hero-content h1 { font-size: 5rem; margin-bottom: 10px; text-shadow: 3px 3px 0px rgba(0, 0, 0, 0.8), 0 0 20px var(--primary-color), 0 0 40px var(--primary-color); line-height: 1; color: white; position: relative; display: inline-block; }
         
-        .btn {
-            display: inline-block;
-            padding: 15px 40px;
-            border: 2px solid var(--primary-color);
-            color: var(--primary-color);
-            text-decoration: none;
-            font-weight: 900;
-            margin-top: 10px;
-            transition: 0.3s;
-            background: rgba(0,0,0,0.6);
-            cursor: pointer;
-            border-radius: 6px; 
-        }
+        /* Glitch Effect */
+        .hero-content h1:hover { animation: glitch-skew 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite; color: var(--primary-color); }
+        .hero-content h1:hover::before, .hero-content h1:hover::after { content: "REAPER"; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: transparent; }
+        .hero-content h1:hover::before { left: 4px; text-shadow: 4px 0 #ff00c1; clip: rect(44px, 450px, 56px, 0); animation: glitch-anim 1.5s infinite linear alternate-reverse; }
+        .hero-content h1:hover::after { left: -4px; text-shadow: -4px 0 #00fff9; clip: rect(44px, 450px, 56px, 0); animation: glitch-anim2 1.5s infinite linear alternate-reverse; }
+        @keyframes glitch-anim { 0% { clip: rect(30px, 9999px, 10px, 0); } 20% { clip: rect(80px, 9999px, 90px, 0); } 40% { clip: rect(10px, 9999px, 50px, 0); } 60% { clip: rect(60px, 9999px, 20px, 0); } 80% { clip: rect(40px, 9999px, 70px, 0); } 100% { clip: rect(90px, 9999px, 30px, 0); } }
+        @keyframes glitch-anim2 { 0% { clip: rect(10px, 9999px, 80px, 0); } 20% { clip: rect(50px, 9999px, 20px, 0); } 40% { clip: rect(90px, 9999px, 60px, 0); } 60% { clip: rect(30px, 9999px, 40px, 0); } 80% { clip: rect(70px, 9999px, 10px, 0); } 100% { clip: rect(20px, 9999px, 90px, 0); } }
+        @keyframes glitch-skew { 0% { transform: skew(0deg); } 20% { transform: skew(-10deg); } 40% { transform: skew(10deg); } 60% { transform: skew(-5deg); } 80% { transform: skew(5deg); } 100% { transform: skew(0deg); } }
+
+        .hero-content h2 { font-size: 1.8rem; color: var(--primary-color); margin-bottom: 5px; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); min-height: 1.8rem; }
+        
+        .countdown-wrapper { margin-top: 25px; animation: fadeIn 1s ease-out 0.5s backwards; }
+        .countdown-container { display: flex; justify-content: center; gap: 15px; margin-top: 10px; flex-wrap: wrap; }
+        .countdown-item { background: rgba(0, 0, 0, 0.5); padding: 8px 12px; border: 1px solid var(--primary-color); min-width: 70px; backdrop-filter: blur(3px); border-radius: 8px; }
+        .countdown-number { display: block; font-size: 1.5rem; color: var(--primary-color); font-weight: bold; line-height: 1; }
+        .countdown-label { font-size: 0.75rem; color: #ccc; text-transform: uppercase; }
+        .countdown-title { color: #eee; font-size: 0.9rem; letter-spacing: 2px; text-shadow: 1px 1px 3px black; font-weight: bold; text-transform: uppercase; text-decoration: none; display: inline-block; margin-bottom: 10px; transition: all 0.3s ease; border-bottom: 1px solid transparent; }
+        .countdown-title:hover { color: var(--primary-color); border-bottom: 1px solid var(--primary-color); text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
+        .btn { display: inline-block; padding: 15px 40px; border: 2px solid var(--primary-color); color: var(--primary-color); text-decoration: none; font-weight: 900; margin-top: 10px; transition: 0.3s; background: rgba(0,0,0,0.6); cursor: pointer; border-radius: 6px; }
         .btn:hover { background: var(--primary-color); color: black; box-shadow: 0 0 30px var(--primary-color); }
 
         /* --- ABOUT --- */
-        .about-container {
-            max-width: 1200px;
-            margin: 0 auto 80px;
-            padding: 0 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 100px;
-        }
-
-        .about-row {
-            display: flex;
-            align-items: center;
-            gap: 60px;
-        }
-
-        .about-row:nth-child(even) {
-            flex-direction: row-reverse;
-        }
-
-        .about-image-wrapper {
-            flex: 1;
-            min-width: 300px;
-        }
-
-        .about-image-wrapper img {
-            width: 100%;
-            height: auto;
-            border-radius: 4px;
-            border: 2px solid var(--primary-color);
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.15);
-            display: block;
-        }
-
-        .about-text-content {
-            flex: 1;
-            min-width: 300px;
-            font-size: 1.15rem;
-            color: #ddd;
-        }
-
-        .about-text-content h3 {
-            color: white;
-            font-size: 2rem;
-            margin-bottom: 1.5rem;
-            border-left: 4px solid var(--primary-color);
-            padding-left: 15px;
-            line-height: 1.2;
-        }
-
+        .about-container { max-width: 1200px; margin: 0 auto 80px; padding: 0 20px; display: flex; flex-direction: column; gap: 100px; }
+        .about-row { display: flex; align-items: center; gap: 60px; }
+        .about-row:nth-child(even) { flex-direction: row-reverse; }
+        .about-image-wrapper { flex: 1; min-width: 300px; }
+        .about-image-wrapper img { width: 100%; height: auto; border-radius: 4px; border: 2px solid var(--primary-color); box-shadow: 0 0 20px rgba(255, 215, 0, 0.15); display: block; }
+        .about-text-content { flex: 1; min-width: 300px; font-size: 1.15rem; color: #ddd; }
+        .about-text-content h3 { color: white; font-size: 2rem; margin-bottom: 1.5rem; border-left: 4px solid var(--primary-color); padding-left: 15px; line-height: 1.2; }
         .about-text-content p { margin-bottom: 1.5rem; }
 
-        /* --- TEAM Grid --- */
-        .team-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
-            max-width: 1200px;
-            margin: 0 auto 80px;
-            padding: 0 20px;
-        }
-
-        .mentor-wrapper {
-            display: flex;
-            justify-content: center;
-            padding: 0 20px;
-            margin-bottom: 80px;
-            gap: 30px;
-            flex-wrap: wrap;
-        }
-
-        .mentor-wrapper .member-card {
-            width: 100%;
-            max-width: 380px;
-        }
-
-        .member-card {
-            background: var(--card-bg);
-            border: 1px solid #222;
-            overflow: hidden;
-            transition: 0.3s;
-            position: relative;
-        }
+        .team-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; max-width: 1200px; margin: 0 auto 80px; padding: 0 20px; }
+        .mentor-wrapper { display: flex; justify-content: center; padding: 0 20px; margin-bottom: 80px; gap: 30px; flex-wrap: wrap; }
+        .mentor-wrapper .member-card { width: 100%; max-width: 380px; }
+        .member-card { background: var(--card-bg); border: 1px solid #222; overflow: hidden; transition: 0.3s; position: relative; }
         .member-card:hover { transform: translateY(-10px); border-color: var(--primary-color); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-
-        .member-photo {
-            width: 100%;
-            height: 350px;
-            background-color: #222;
-            background-size: cover;
-            background-position: center;
-            transition: 0.5s;
-        }
-        
+        .member-photo { width: 100%; height: 350px; background-color: #222; background-size: cover; background-position: center; transition: 0.5s; }
         .member-info { padding: 20px; text-align: left; border-top: 1px solid #222; }
         .member-name { font-size: 1.3rem; color: white; margin-bottom: 5px; font-weight: 700; font-family: 'Nasalization', sans-serif; }
         .member-role { color: var(--primary-color); font-size: 0.9rem; text-transform: uppercase; font-weight: 500; font-family: 'Rajdhani', sans-serif; letter-spacing: 2px;}
 
         /* --- GALLERY --- */
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 20px;
-            padding: 20px 5%;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
-
-        .gallery-item {
-            height: 250px;
-            background: #222;
-            overflow: hidden;
-            position: relative;
-            border: 1px solid #333;
-            cursor: zoom-in;
-            transition: transform 0.3s ease;
-        }
-
-        .gallery-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: 0.5s;
-        }
-
-        .gallery-item:hover {
-            transform: scale(1.02);
-            border-color: var(--primary-color);
-            z-index: 10;
-        }
-
-        .gallery-item:hover img {
-            opacity: 1;
-        }
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 20px; padding: 20px 5%; max-width: 1400px; margin: 0 auto; }
+        .gallery-item { height: 250px; background: #222; overflow: hidden; position: relative; border: 1px solid #333; cursor: zoom-in; transition: transform 0.3s ease; }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+        .gallery-item:hover { transform: scale(1.02); border-color: var(--primary-color); z-index: 10; }
+        .gallery-item:hover img { opacity: 1; }
 
         /* Lightbox */
-        #lightbox {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.95);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
+        #lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.95); display: none; justify-content: center; align-items: center; z-index: 2000; opacity: 0; transition: opacity 0.3s ease; }
+        #lightbox.active { display: flex; opacity: 1; }
+        #lightbox img { max-width: 90%; max-height: 90%; border: 2px solid var(--primary-color); box-shadow: 0 0 30px rgba(255, 215, 0, 0.3); object-fit: contain; }
+        #lightbox-close { position: absolute; top: 20px; right: 40px; color: white; font-size: 3rem; cursor: pointer; font-family: sans-serif; transition: color 0.3s; }
+        #lightbox-close:hover { color: var(--primary-color); }
 
-        #lightbox.active {
-            display: flex;
-            opacity: 1;
-        }
-
-        #lightbox img {
-            max-width: 90%;
-            max-height: 90%;
-            border: 2px solid var(--primary-color);
-            box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
-            object-fit: contain;
-        }
-
-        #lightbox-close {
-            position: absolute;
-            top: 20px;
-            right: 40px;
-            color: white;
-            font-size: 3rem;
-            cursor: pointer;
-            font-family: sans-serif;
-            transition: color 0.3s;
-        }
-
-        #lightbox-close:hover {
-            color: var(--primary-color);
-        }
-
-        /* Back to Top Button */
-        #back-to-top {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background-color: var(--primary-color);
-            color: black;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            border: none;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-            opacity: 0; 
-            pointer-events: none;
-            transition: opacity 0.5s ease, transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        #back-to-top.show {
-            opacity: 0.6;
-            pointer-events: auto;
-        }
-
-        #back-to-top.hover {
-            opacity: 1;
-            transform: translateY(-5px);
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
-        }
-
-        #back-to-top svg {
-            width: 24px;
-            height: 24px;
-            fill: black;
-        }
+        /* Back to Top */
+        #back-to-top { position: fixed; bottom: 30px; right: 30px; background-color: var(--primary-color); color: black; width: 50px; height: 50px; border-radius: 50%; border: none; cursor: pointer; display: flex; justify-content: center; align-items: center; z-index: 1000; box-shadow: 0 0 10px rgba(255, 215, 0, 0.5); opacity: 0; pointer-events: none; transition: opacity 0.5s ease, transform 0.3s ease, box-shadow 0.3s ease; }
+        #back-to-top.show { opacity: 0.6; pointer-events: auto; }
+        #back-to-top:hover { opacity: 1; transform: translateY(-5px); box-shadow: 0 0 20px rgba(255, 215, 0, 0.8); }
+        #back-to-top svg { width: 24px; height: 24px; fill: black; }
 
         /* --- EVENTS --- */
         .timeline { max-width: 900px; margin: 40px auto; padding: 0 20px; position: relative; }
-        .timeline::before {
-            content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 2px;
-            background: var(--primary-color); transform: translateX(-50%); opacity: 0.3;
-        }
-        
-        .event-card {
-            width: 45%; 
-            background: var(--card-bg); 
-            margin-bottom: 50px;
-            border: 1px solid #333; 
-            position: relative; 
-            transition: 0.3s;
-            display: block; 
-            text-decoration: none; 
-            color: inherit; 
-            padding: 0; 
-            overflow: hidden;
-            border-radius: 8px;
-        }
-        
-        .event-card:hover { 
-            border-color: var(--primary-color); 
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.1); 
-            transform: translateY(-5px);
-        }
-
-        .event-image {
-            width: 100%;
-            height: 200px;
-            overflow: hidden;
-            border-bottom: 1px solid #222;
-            background: #000;
-        }
-
-        .event-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-
-        .event-image img.square-img {
-            object-fit: contain;
-        }
-
-        .event-card:hover .event-image img {
-            transform: scale(1.1); 
-        }
-
+        .timeline::before { content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: var(--primary-color); transform: translateX(-50%); opacity: 0.3; }
+        .event-card { width: 45%; background: var(--card-bg); margin-bottom: 50px; border: 1px solid #333; position: relative; transition: 0.3s; display: block; text-decoration: none; color: inherit; padding: 0; overflow: hidden; border-radius: 8px; }
+        .event-card:hover { border-color: var(--primary-color); box-shadow: 0 0 20px rgba(255, 215, 0, 0.1); transform: translateY(-5px); }
+        .event-image { width: 100%; height: 200px; overflow: hidden; border-bottom: 1px solid #222; background: #000; }
+        .event-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+        .event-image img.square-img { object-fit: contain; }
+        .event-card:hover .event-image img { transform: scale(1.1); }
         .event-content { padding: 25px; text-align: inherit; }
-
         .event-card:nth-child(odd) { margin-left: auto; text-align: left; border-left: 3px solid var(--primary-color); }
         .event-card:nth-child(even) { margin-right: auto; text-align: right; border-left: none; border-right: 3px solid var(--primary-color); }
-        
-        .event-card::after {
-            content: ''; position: absolute; top: 20px; width: 15px; height: 15px;
-            background: var(--primary-color); border-radius: 50%; box-shadow: 0 0 10px var(--primary-color);
-        }
+        .event-card::after { content: ''; position: absolute; top: 20px; width: 15px; height: 15px; background: var(--primary-color); border-radius: 50%; box-shadow: 0 0 10px var(--primary-color); }
         .event-card:nth-child(odd)::after { left: -59px; }
         .event-card:nth-child(even)::after { right: -59px; }
-        
         .event-date { color: var(--primary-color); font-weight: 900; font-size: 1.2rem; margin-bottom: 10px; display: block; }
         .event-card h3 { font-size: 1.3rem; margin-bottom: 10px; line-height: 1.4; color: white;}
         .event-card p { font-size: 1rem; color: #aaa; }
 
         footer { background: #050505; padding: 40px; text-align: center; border-top: 1px solid #222; margin-top: 50px; }
         footer p { color: #666; margin-bottom: 5px; }
+        .contact-link { display: flex; align-items: center; justify-content: center; gap: 10px; color: #ccc; text-decoration: none; margin-bottom: 12px; transition: color 0.3s, transform 0.2s; font-size: 1.1rem; }
+        .contact-link:hover { color: var(--primary-color); transform: translateX(5px); }
+        .contact-icon { width: 24px; height: 24px; fill: currentColor; }
+        .footer-logo { max-width: 250px; height: auto; margin-bottom: 30px; display: inline-block; }
 
-        .contact-link {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            color: #ccc;
-            text-decoration: none;
-            margin-bottom: 12px;
-            transition: color 0.3s, transform 0.2s;
-            font-size: 1.1rem;
+        /* =========================================
+           [ADDED] HOST GAME (TOURNAMENT MANAGER) STYLES
+           ========================================= */
+        .tm-container {
+            max-width: 1800px; margin: 0 auto; padding: 10px; height: calc(100vh - 120px);
+            display: grid; 
+            /* 左邊(Ranking) 35%, 中間(Schedule) 35%, 右邊(Tools) 30% */
+            grid-template-columns: 35fr 35fr 30fr; 
+            grid-template-rows: 1fr; 
+            gap: 15px;
         }
-        .contact-link:hover {
-            color: var(--primary-color);
-            transform: translateX(5px); 
-        }
-        .contact-icon {
-            width: 24px;
-            height: 24px;
-            fill: currentColor;
-        }
+        
+        /* Setup Screen */
+        #tm-setup { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; text-align: center; }
+        .tm-input { background: #111; border: 1px solid #444; color: white; padding: 15px; width: 300px; margin-bottom: 15px; border-radius: 5px; font-size: 1.1rem; font-family: 'Rajdhani', sans-serif; }
+        .tm-input:focus { border-color: var(--primary-color); outline: none; }
+        .team-list-preview { display: flex; flex-wrap: wrap; gap: 10px; max-width: 600px; margin: 20px 0; justify-content: center; }
+        .team-tag { background: #222; border: 1px solid var(--primary-color); padding: 5px 10px; border-radius: 4px; font-size: 0.9rem; }
 
-        .footer-logo {
-            max-width: 250px; 
-            height: auto;
-            margin-bottom: 30px;
-            display: inline-block;
-        }
+        /* Dashboard Panels */
+        .tm-panel { background: #111; border: 1px solid #333; border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; position: relative; }
+        .tm-header { background: #222; padding: 10px 15px; border-bottom: 1px solid #333; display: flex; justify-content: space-between; align-items: center; color: var(--primary-color); }
+        .tm-content { padding: 10px; overflow-y: auto; flex: 1; }
+        
+        /* Rankings */
+        #tm-rankings { grid-column: 1 / 2; }
+        .ranking-table { width: 100%; border-collapse: collapse; font-size: 0.95rem; }
+        .ranking-table th { text-align: left; padding: 8px; color: #888; border-bottom: 1px solid #444; position: sticky; top: 0; background: #111; z-index: 10; }
+        .ranking-table td { padding: 8px; border-bottom: 1px solid #222; }
+        .rank-num { font-weight: bold; color: var(--primary-color); }
+
+        /* Schedule */
+        #tm-schedule { grid-column: 2 / 3; }
+        .match-row { display: flex; align-items: center; padding: 10px; border-bottom: 1px solid #222; background: #161616; margin-bottom: 5px; border-radius: 4px; font-size: 1rem; }
+        .match-row.active { border: 1px solid var(--primary-color); background: #1a1a1a; box-shadow: 0 0 15px rgba(255,215,0,0.1); }
+        .match-name { width: 80px; font-weight: bold; color: #888; }
+        .alliance { flex: 1; display: flex; justify-content: center; gap: 10px; font-weight: bold; }
+        .red-alliance { color: var(--vex-red); }
+        .blue-alliance { color: var(--vex-blue); }
+        .match-score { width: 100px; text-align: center; color: white; background: #000; padding: 2px 5px; border-radius: 4px; font-family: monospace; }
+        .match-type-label { font-size: 0.7rem; background: #333; padding: 2px 4px; border-radius: 3px; margin-right: 5px; color: #aaa; }
+
+        /* Tools (Vertical Split) */
+        #tm-tools { grid-column: 3 / 4; display: grid; grid-template-rows: 1fr 2fr; gap: 15px; border: none; background: transparent; }
+        .tool-box { background: #111; border: 1px solid #333; border-radius: 8px; display: flex; flex-direction: column; position: relative; transition: all 0.3s; }
+        
+        /* Fullscreen Mode */
+        .tool-box.fullscreen { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 9999; background: #000; border: none; border-radius: 0; padding: 20px; }
+        .fs-btn { cursor: pointer; color: #666; transition: 0.3s; }
+        .fs-btn:hover { color: white; }
+
+        /* Timer */
+        .timer-display { font-size: 5rem; font-family: monospace; text-align: center; margin: 10px 0; font-weight: bold; color: white; text-shadow: 0 0 20px rgba(255,255,255,0.1); }
+        .tool-box.fullscreen .timer-display { font-size: 15rem; margin-top: 10vh; }
+        .timer-controls { display: flex; justify-content: center; gap: 10px; margin-bottom: 10px; }
+        .timer-btn { padding: 8px 15px; border: none; border-radius: 5px; font-weight: bold; cursor: pointer; text-transform: uppercase; font-family: 'Rajdhani'; font-size: 1rem; }
+        .btn-start { background: #2ecc71; color: black; }
+        .btn-stop { background: #e74c3c; color: white; }
+        .btn-reset { background: #f39c12; color: black; }
+        .btn-phase { background: #3498db; color: white; } 
+        .timer-phase-indicator { text-align: center; color: var(--primary-color); font-weight: bold; margin-bottom: 5px; font-size: 1.2rem; }
+        .mode-btn { background: #333; color: #888; border: none; padding: 5px 10px; border-radius: 15px; cursor: pointer; margin: 0 5px; }
+        .mode-btn.active { background: var(--primary-color); color: black; }
+
+        /* Calculator (Simplified for Push Back) */
+        .calc-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; background: #000; padding: 10px; border-radius: 5px; border: 1px solid #333; }
+        .calc-score { font-size: 2rem; font-weight: bold; font-family: monospace; }
+        .score-red { color: var(--vex-red); }
+        .score-blue { color: var(--vex-blue); }
+        .calc-body { display: grid; grid-template-columns: 1fr 1fr; gap: 10px; overflow-y: auto; }
+        .calc-col { padding: 5px; border-radius: 8px; }
+        .col-red { background: rgba(231, 76, 60, 0.05); border: 1px solid rgba(231, 76, 60, 0.2); }
+        .col-blue { background: rgba(52, 152, 219, 0.05); border: 1px solid rgba(52, 152, 219, 0.2); }
+        
+        .calc-input-group { margin-bottom: 15px; }
+        .calc-input-group label { display: block; font-size: 0.9rem; margin-bottom: 5px; color: #ccc; }
+        .score-input { width: 100%; padding: 10px; background: #222; border: 1px solid #444; color: white; font-size: 1.5rem; text-align: center; border-radius: 5px; font-weight: bold; }
+        .score-input:focus { outline: none; border-color: var(--primary-color); }
+        .calc-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 8px; border-bottom: 1px solid rgba(255,255,255,0.05); padding-bottom: 5px; }
+        .submit-score-btn { width: 100%; padding: 15px; margin-top: 15px; background: linear-gradient(45deg, var(--primary-color), #d4b000); border: none; color: black; font-weight: 900; font-size: 1.2rem; cursor: pointer; border-radius: 5px; font-family: 'Nasalization'; text-transform: uppercase; }
+        .submit-score-btn:hover { filter: brightness(1.1); box-shadow: 0 0 15px var(--primary-color); }
+        .match-selector { width: 100%; padding: 8px; background: #222; color: white; border: 1px solid #444; margin-bottom: 10px; border-radius: 4px; }
 
         /* --- MOBILE RESPONSIVE --- */
         @media (max-width: 768px) {
@@ -687,6 +283,7 @@
             .event-card::after { left: -38px !important; right: auto !important; }
             .nav-logo img { height: 40px; }
 
+            /* Mobile Navigation (Hamburger) */
             .menu-toggle { display: block; }
             .menu-toggle.active .bar:nth-child(2) { opacity: 0; }
             .menu-toggle.active .bar:nth-child(1) { transform: translateY(8px) rotate(45deg); }
@@ -694,9 +291,10 @@
 
             .nav-menu {
                 position: fixed; left: -100%; top: 60px; gap: 0; flex-direction: column;
-                background-color: rgba(0,0,0,0.98); width: 100%; text-align: center;
-                transition: 0.3s; border-bottom: 2px solid var(--primary-color); z-index: 1001;
-                padding-bottom: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+                background-color: rgba(0,0,0,0.98); width: 100%; height: 100vh; text-align: center;
+                transition: 0.3s; border-bottom: none; z-index: 1001;
+                padding-bottom: 100px; box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+                overflow-y: auto;
             }
             .nav-menu.active { left: 0; }
             nav ul { flex-direction: column; padding: 20px 0; width: 100%; gap: 0; }
@@ -705,6 +303,11 @@
             
             .countdown-number { font-size: 1.5rem; }
             .countdown-item { padding: 8px 10px; min-width: 60px; }
+
+            /* Host Game Mobile Fix */
+            .tm-container { grid-template-columns: 1fr; grid-template-rows: auto; height: auto; display: flex; flex-direction: column; }
+            #tm-rankings, #tm-schedule, #tm-tools { grid-column: 1 / -1; height: auto; min-height: 400px; }
+            #tm-tools { grid-template-columns: 1fr; grid-template-rows: auto; }
         }
     </style>
 </head>
@@ -728,6 +331,8 @@
                 <li><a class="nav-item" onclick="switchTab('media')">MEDIA</a></li>
                 <li><a class="nav-item" onclick="switchTab('events')">EVENTS</a></li>
                 <li><a class="nav-item" onclick="switchTab('specs')">ROBOT</a></li>
+                <!-- NEW HOST GAME TAB -->
+                <li><a class="nav-item" onclick="switchTab('tournament')">HOST GAME</a></li>
             </ul>
         </nav>
     </header>
@@ -735,154 +340,63 @@
     <!-- 1. HOME PAGE -->
     <div id="home" class="page-section active-page home-active visible">
         <div class="hero-content">
-            <!-- Typewriter Effect Section (取代了原本的靜態 H2) -->
             <h2>
                 <span id="typewriter-text"></span><span class="typewriter-cursor">_</span>
             </h2>
-
             <h1>REAPER</h1>
-            
-            <!-- 先顯示按鈕 -->
             <a onclick="switchTab('about')" class="btn">MEET THE TEAM</a>
-
-            <!-- 再顯示倒數計時器 (放在最下方) -->
             <div class="countdown-wrapper">
-                <!-- 修改：將標題改成超連結 -->
                 <a href="https://www.robotevents.com/zh-TW/robot-competitions/vex-robotics-competition/RE-V5RC-25-0059.html#%E5%9F%BA%E6%9C%AC%E8%A8%8A%E6%81%AF" target="_blank" class="countdown-title">
                     2025-2026 VEX TAIWAN OPEN V5RC HS
                 </a>
                 <div class="countdown-container" id="countdown">
-                    <div class="countdown-item">
-                        <span class="countdown-number" id="days">00</span>
-                        <span class="countdown-label">Days</span>
-                    </div>
-                    <div class="countdown-item">
-                        <span class="countdown-number" id="hours">00</span>
-                        <span class="countdown-label">Hrs</span>
-                    </div>
-                    <div class="countdown-item">
-                        <span class="countdown-number" id="minutes">00</span>
-                        <span class="countdown-label">Mins</span>
-                    </div>
-                    <div class="countdown-item">
-                        <span class="countdown-number" id="seconds">00</span>
-                        <span class="countdown-label">Secs</span>
-                    </div>
+                    <div class="countdown-item"><span class="countdown-number" id="days">00</span><span class="countdown-label">Days</span></div>
+                    <div class="countdown-item"><span class="countdown-number" id="hours">00</span><span class="countdown-label">Hrs</span></div>
+                    <div class="countdown-item"><span class="countdown-number" id="minutes">00</span><span class="countdown-label">Mins</span></div>
+                    <div class="countdown-item"><span class="countdown-number" id="seconds">00</span><span class="countdown-label">Secs</span></div>
                 </div>
             </div>
-
         </div>
     </div>
 
     <!-- 2. ABOUT & TEAM PAGE -->
     <div id="about" class="page-section">
         <div class="section-header scroll-hidden">
+            <img src="reaper.svg" alt="Reaper Logo" class="section-logo">
             <h2>About <span>Reaper</span></h2>
             <p>23083Z is a VEX robotics team striving for perfection. Black represents calm, Gold represents glory.</p>
         </div>
-
         <div class="about-container">
             <div class="about-row scroll-hidden">
-                <div class="about-image-wrapper">
-                    <img src="about-1.jpg" alt="Team 23083Z Origin">
-                </div>
+                <div class="about-image-wrapper"><img src="about-1.jpg" alt="Team 23083Z Origin"></div>
                 <div class="about-text-content">
                     <h3>Our Origin</h3>
-                    <p>
-                        Welcome to the official website of <strong>Team Reaper (23083Z)</strong>, a competitive VEX Robotics team representing <strong>Wego High School</strong> in Taipei, Taiwan. Founded in 2023, our team consists of six passionate students dedicated to pushing the boundaries of engineering, design, and programming.
-                    </p>
-                    <p>
-                        Inspired by the precision of a "Reaper," we approach every challenge with strategic focus and unwavering determination. Following the VRC Spin Up and Over Under seasons, we have honed our skills and built a strong foundation in the VEX V5 system. Our goal is not just to build efficient robots, but to represent Taiwan on the global stage at the VEX Robotics World Championship.
-                    </p>
+                    <p>Welcome to the official website of <strong>Team Reaper (23083Z)</strong>, a competitive VEX Robotics team representing <strong>Wego High School</strong> in Taipei, Taiwan. Founded in 2023, our team consists of six passionate students dedicated to pushing the boundaries of engineering, design, and programming.</p>
+                    <p>Inspired by the precision of a "Reaper," we approach every challenge with strategic focus and unwavering determination. Following the VRC Spin Up and Over Under seasons, we have honed our skills and built a strong foundation in the VEX V5 system. Our goal is not just to build efficient robots, but to represent Taiwan on the global stage at the VEX Robotics World Championship.</p>
                 </div>
             </div>
-
             <div class="about-row scroll-hidden">
-                <div class="about-image-wrapper">
-                    <img src="about-2.jpg" alt="Team 23083Z Mission">
-                </div>
+                <div class="about-image-wrapper"><img src="about-2.jpg" alt="Team 23083Z Mission"></div>
                 <div class="about-text-content">
                     <h3>COLLABORATIVE ATMOSPHERE</h3>
-                    <p>
-                        Our team members are all from the same class, but the club, with three VEX teams this year are composed of different classes and across different grades. Some have participated in previous VEX seasons and some have not. Because our school emphasizes academic performances and have strict rules of when we can practice robotics and have club time, like previous years, we would often only have 2 or 3 people at the room practicing because everyone’s schedule is different. We set rules so that everyone would follow and prevent mistakes and conflicts that have happened in previous seasons. 
-                    </p>
-                    <p>
-                        We believe that robotics is more than just building machines; it is about building character, resilience, and a future where technology serves humanity. Every gear we place and every line of code we write brings us one step closer to that future.
-                    </p>
+                    <p>Our team members are all from the same class, but the club, with three VEX teams this year are composed of different classes and across different grades. Some have participated in previous VEX seasons and some have not. Because our school emphasizes academic performances and have strict rules of when we can practice robotics and have club time, like previous years, we would often only have 2 or 3 people at the room practicing because everyone’s schedule is different. We set rules so that everyone would follow and prevent mistakes and conflicts that have happened in previous seasons.</p>
+                    <p>We believe that robotics is more than just building machines; it is about building character, resilience, and a future where technology serves humanity. Every gear we place and every line of code we write brings us one step closer to that future.</p>
                 </div>
             </div>
         </div>
-
-        <div class="section-header scroll-hidden">
-            <!-- 新增: Reaper Logo 放在 The Team Members 上方 -->
-            <img src="reaper.svg" alt="Reaper Logo" class="section-logo">
-            <h2>The <span>Team Members</span></h2>
-        </div>
-
+        <div class="section-header scroll-hidden"><h2>The <span>Team Members</span></h2></div>
         <div class="team-grid">
-            <div class="member-card scroll-hidden">
-                <div class="member-photo" style="background-image: url('members/pennlaine.jpg');"></div>
-                <div class="member-info">
-                    <div class="member-name">Pennlaine</div>
-                    <div class="member-role">Club President & Team Leader</div>
-                </div>
-            </div>
-            <div class="member-card scroll-hidden">
-                <div class="member-photo" style="background-image: url('members/adam.jpg');"></div>
-                <div class="member-info">
-                    <div class="member-name">Adam</div>
-                    <div class="member-role">Programmer/main driver</div>
-                </div>
-            </div>
-            <div class="member-card scroll-hidden">
-                <div class="member-photo" style="background-image: url('members/anthony.jpg');"></div>
-                <div class="member-info">
-                    <div class="member-name">Anthony</div>
-                    <div class="member-role">Builder/CAD/Art Lead</div>
-                </div>
-            </div>
-            <div class="member-card scroll-hidden">
-                <div class="member-photo" style="background-image: url('members/benjamin.jpg');"></div>
-                <div class="member-info">
-                    <div class="member-name">Benjamin</div>
-                    <div class="member-role"> Builder/Planning/Programming  </div>
-                </div>
-            </div>
-            <div class="member-card scroll-hidden">
-                <div class="member-photo" style="background-image: url('members/jefferson.jpg');"></div>
-                <div class="member-info">
-                    <div class="member-name">Jefferson</div>
-                    <div class="member-role">Builder</div>
-                </div>
-            </div>
-            <div class="member-card scroll-hidden">
-                <div class="member-photo" style="background-image: url('members/cecilia.jpg');"></div>
-                <div class="member-info">
-                    <div class="member-name">Cecilia</div>
-                    <div class="member-role">Scout/PR/Notebook taker</div>
-                </div>
-            </div>
+            <div class="member-card scroll-hidden"><div class="member-photo" style="background-image: url('members/pennlaine.jpg');"></div><div class="member-info"><div class="member-name">Pennlaine</div><div class="member-role">Club President & Team Leader</div></div></div>
+            <div class="member-card scroll-hidden"><div class="member-photo" style="background-image: url('members/adam.jpg');"></div><div class="member-info"><div class="member-name">Adam</div><div class="member-role">Programmer/main driver</div></div></div>
+            <div class="member-card scroll-hidden"><div class="member-photo" style="background-image: url('members/anthony.jpg');"></div><div class="member-info"><div class="member-name">Anthony</div><div class="member-role">Builder/CAD/Art Lead</div></div></div>
+            <div class="member-card scroll-hidden"><div class="member-photo" style="background-image: url('members/benjamin.jpg');"></div><div class="member-info"><div class="member-name">Benjamin</div><div class="member-role"> Builder/Planning/Programming  </div></div></div>
+            <div class="member-card scroll-hidden"><div class="member-photo" style="background-image: url('members/jefferson.jpg');"></div><div class="member-info"><div class="member-name">Jefferson</div><div class="member-role">Builder</div></div></div>
+            <div class="member-card scroll-hidden"><div class="member-photo" style="background-image: url('members/cecilia.jpg');"></div><div class="member-info"><div class="member-name">Cecilia</div><div class="member-role">Scout/PR/Notebook taker</div></div></div>
         </div>
-
-        <div class="section-header scroll-hidden">
-            <h2>The <span>Mentors</span></h2>
-        </div>
-
+        <div class="section-header scroll-hidden"><h2>The <span>Mentors</span></h2></div>
         <div class="mentor-wrapper">
-            <div class="member-card scroll-hidden">
-                <div class="member-photo" style="background-image: url('members/justin.jpg');"></div>
-                <div class="member-info">
-                    <div class="member-name">Justin</div>
-                    <div class="member-role">Coach, Mentor</div>
-                </div>
-            </div>
-            <div class="member-card scroll-hidden">
-                <div class="member-photo" style="background-image: url('members/mentor-2.jpg');"></div>
-                <div class="member-info">
-                    <div class="member-name">肉包</div>
-                    <div class="member-role">Coach, Mentor</div>
-                </div>
-            </div>
+            <div class="member-card scroll-hidden"><div class="member-photo" style="background-image: url('members/justin.jpg');"></div><div class="member-info"><div class="member-name">Justin</div><div class="member-role">Coach, Mentor</div></div></div>
+            <div class="member-card scroll-hidden"><div class="member-photo" style="background-image: url('members/mentor-2.jpg');"></div><div class="member-info"><div class="member-name">肉包</div><div class="member-role">Coach, Mentor</div></div></div>
         </div>
     </div>
 
@@ -901,54 +415,22 @@
             <h2>Season <span>Timeline</span></h2>
             <p>Push Back 2025-2026 Season Plan</p>
         </div>
-
         <div class="timeline">
-            <!-- Event 1 -->
             <a href="https://www.robotevents.com/zh-TW/robot-competitions/vex-robotics-competition/RE-V5RC-25-0319.html#%E5%9F%BA%E6%9C%AC%E8%A8%8A%E6%81%AF" target="_blank" class="event-card scroll-hidden">
-                <div class="event-image">
-                    <img src="event/tai.jpg" alt="TAI-VEX Scrimmage" class="square-img">
-                </div>
-                <div class="event-content">
-                    <span class="event-date">SEP 2025</span>
-                    <h3>TAI-VEX 25-26 Push Back Scrimmage</h3>
-                    <p>The first scrimmage of the new season! A great opportunity to test our initial robot design and strategy against other local teams in a friendly environment.</p>
-                </div>
+                <div class="event-image"><img src="event/tai.jpg" alt="TAI-VEX Scrimmage" class="square-img"></div>
+                <div class="event-content"><span class="event-date">SEP 2025</span><h3>TAI-VEX 25-26 Push Back Scrimmage</h3><p>The first scrimmage of the new season! A great opportunity to test our initial robot design and strategy against other local teams in a friendly environment.</p></div>
             </a>
-
-            <!-- Event 2 -->
             <a href="https://www.robotevents.com/zh-TW/robot-competitions/vex-robotics-competition/RE-V5RC-25-0320.html#%E5%9F%BA%E6%9C%AC%E8%A8%8A%E6%81%AF" target="_blank" class="event-card scroll-hidden">
-                <div class="event-image">
-                    <img src="event/tai.jpg" alt="TAI-VEX Tournament" class="square-img">
-                </div>
-                <div class="event-content">
-                    <span class="event-date">OCT 2025</span>
-                    <h3>TAI-VEX Tournament MS 25-26 Push Back</h3>
-                    <p>Participating in the TAI-VEX Tournament. Our goal is to refine our autonomous routines and driver skills, aiming for excellence in the qualification matches.</p>
-                </div>
+                <div class="event-image"><img src="event/tai.jpg" alt="TAI-VEX Tournament" class="square-img"></div>
+                <div class="event-content"><span class="event-date">OCT 2025</span><h3>TAI-VEX Tournament MS 25-26 Push Back</h3><p>Participating in the TAI-VEX Tournament. Our goal is to refine our autonomous routines and driver skills, aiming for excellence in the qualification matches.</p></div>
             </a>
-
-            <!-- Event 3 -->
             <a href="https://www.robotevents.com/zh-TW/robot-competitions/vex-robotics-competition/RE-V5RC-25-0121.html#%E5%9F%BA%E6%9C%AC%E8%A8%8A%E6%81%AF" target="_blank" class="event-card scroll-hidden">
-                <div class="event-image">
-                    <img src="event/pas.jpg" alt="PAS-VEX Signature">
-                </div>
-                <div class="event-content">
-                    <span class="event-date">DEC 2025</span>
-                    <h3>2025-2026 PAS-VEX V5RC Signature Event</h3>
-                    <p>Competing in the prestigious PAS-VEX Signature Event. We will face top-tier teams from around the region, striving to secure an early qualification for Worlds.</p>
-                </div>
+                <div class="event-image"><img src="event/pas.jpg" alt="PAS-VEX Signature"></div>
+                <div class="event-content"><span class="event-date">DEC 2025</span><h3>2025-2026 PAS-VEX V5RC Signature Event</h3><p>Competing in the prestigious PAS-VEX Signature Event. We will face top-tier teams from around the region, striving to secure an early qualification for Worlds.</p></div>
             </a>
-
-            <!-- Event 4 -->
             <a href="https://www.robotevents.com/zh-TW/robot-competitions/vex-robotics-competition/RE-V5RC-25-0059.html#%E5%9F%BA%E6%9C%AC%E8%A8%8A%E6%81%AF" target="_blank" class="event-card scroll-hidden">
-                <div class="event-image">
-                    <img src="event/vto.jpg" alt="VEX Taiwan Open" class="square-img">
-                </div>
-                <div class="event-content">
-                    <span class="event-date">FEB 2026</span>
-                    <h3>2025-2026 VEX TAIWAN OPEN V5RC HS</h3>
-                    <p>The VEX Taiwan Open Championship. This is the final regional showdown to secure our spot at the World Championship. All systems go!</p>
-                </div>
+                <div class="event-image"><img src="event/vto.jpg" alt="VEX Taiwan Open" class="square-img"></div>
+                <div class="event-content"><span class="event-date">FEB 2026</span><h3>2025-2026 VEX TAIWAN OPEN V5RC HS</h3><p>The VEX Taiwan Open Championship. This is the final regional showdown to secure our spot at the World Championship. All systems go!</p></div>
             </a>
         </div>
     </div>
@@ -960,6 +442,118 @@
             <p>Engineering perfection in detail.</p>
         </div>
         <div id="robot-gallery" class="gallery-grid"></div>
+    </div>
+
+    <!-- 6. HOST GAME (TOURNAMENT MANAGER) - [ADDED] -->
+    <div id="tournament" class="page-section">
+        <!-- SETUP SCREEN -->
+        <div id="tm-setup">
+            <h2 style="font-size: 3rem; margin-bottom: 30px; color: var(--primary-color);">HOST A GAME</h2>
+            <input type="text" id="event-name" class="tm-input" placeholder="Enter Event Name...">
+            <div style="display: flex; gap: 10px;">
+                <input type="text" id="team-input" class="tm-input" placeholder="Add Team No. (e.g. 23083Z)">
+                <button onclick="addTeam()" class="btn" style="margin-top:0; padding: 10px 20px;">+</button>
+            </div>
+            <div class="team-list-preview" id="team-list-display"></div>
+            <button onclick="startTournament()" class="btn" style="font-size: 1.5rem;">START EVENT</button>
+            <p id="setup-error" style="color: #e74c3c; margin-top: 10px; display: none;">Need at least 4 teams!</p>
+        </div>
+
+        <!-- DASHBOARD -->
+        <div id="tm-dashboard" class="tm-container" style="display: none;">
+            
+            <!-- 1. RANKINGS (Big Left) -->
+            <div id="tm-rankings" class="tm-panel">
+                <div class="tm-header">
+                    <span>Rankings</span>
+                    <i class="fa-solid fa-trophy"></i>
+                </div>
+                <div class="tm-content">
+                    <table class="ranking-table">
+                        <thead>
+                            <tr><th>Rank</th><th>Team</th><th>W-L-T</th><th>WP</th><th>AP</th><th>SP</th></tr>
+                        </thead>
+                        <tbody id="ranking-body"></tbody>
+                    </table>
+                </div>
+            </div>
+
+            <!-- 2. SCHEDULE (Big Center) -->
+            <div id="tm-schedule" class="tm-panel">
+                <div class="tm-header">
+                    <span>Match Schedule</span>
+                    <span id="event-title-display">Event Name</span>
+                </div>
+                <div class="tm-content" id="match-list"></div>
+            </div>
+
+            <!-- 3. TOOLS (Right - Split Top/Bottom) -->
+            <div id="tm-tools">
+                
+                <!-- MATCH TIMER (New Logic) -->
+                <div class="tool-box" id="timer-box">
+                    <div class="tm-header">
+                        <span>Timer</span>
+                        <i class="fa-solid fa-expand fs-btn" onclick="toggleFullScreen('timer-box')"></i>
+                    </div>
+                    <div class="tm-content" style="display: flex; flex-direction: column; justify-content: center;">
+                        <div style="text-align: center; margin-bottom: 10px;">
+                            <button class="mode-btn active" onclick="setTimerMode('match')">Match</button>
+                            <button class="mode-btn" onclick="setTimerMode('skills')">Skills</button>
+                        </div>
+                        <div class="timer-phase-indicator" id="timer-phase">READY</div>
+                        <div class="timer-display" id="timer-val">0:15</div>
+                        <div class="timer-controls">
+                            <button class="timer-btn btn-start" onclick="startTimer()">Start</button>
+                            <button class="timer-btn btn-stop" onclick="stopTimer()">Stop</button>
+                            <button class="timer-btn btn-reset" onclick="resetTimer()">Reset</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- CALCULATOR (Push Back Redesigned) -->
+                <div class="tool-box" id="calc-box">
+                    <div class="tm-header">
+                        <span>Score Calculator</span>
+                        <i class="fa-solid fa-expand fs-btn" onclick="toggleFullScreen('calc-box')"></i>
+                    </div>
+                    <div class="tm-content">
+                        <select id="calc-match-select" class="match-selector" onchange="loadMatchForScoring()"></select>
+
+                        <div class="calc-header">
+                            <div class="calc-score score-red" id="score-red-display">0</div>
+                            <span style="color:#666">VS</span>
+                            <div class="calc-score score-blue" id="score-blue-display">0</div>
+                        </div>
+
+                        <div class="calc-body">
+                            <!-- RED -->
+                            <div class="calc-col col-red">
+                                <h4 style="color:var(--vex-red); margin-bottom:5px;">RED ALLIANCE</h4>
+                                <div class="calc-input-group">
+                                    <label>Total Score</label>
+                                    <input type="number" id="red-score-input" class="score-input" value="0" oninput="calculateTotal()">
+                                </div>
+                                <div class="calc-item"><label>Auto Win (+6)</label><input type="checkbox" id="red-auto" onchange="calculateTotal()"></div>
+                                <div class="calc-item"><label>Auto WP (+1)</label><input type="checkbox" id="red-wp" onchange="calculateTotal()"></div>
+                            </div>
+
+                            <!-- BLUE -->
+                            <div class="calc-col col-blue">
+                                <h4 style="color:var(--vex-blue); margin-bottom:5px;">BLUE ALLIANCE</h4>
+                                <div class="calc-input-group">
+                                    <label>Total Score</label>
+                                    <input type="number" id="blue-score-input" class="score-input" value="0" oninput="calculateTotal()">
+                                </div>
+                                <div class="calc-item"><label>Auto Win (+6)</label><input type="checkbox" id="blue-auto" onchange="calculateTotal()"></div>
+                                <div class="calc-item"><label>Auto WP (+1)</label><input type="checkbox" id="blue-wp" onchange="calculateTotal()"></div>
+                            </div>
+                        </div>
+                        <button class="submit-score-btn" onclick="submitMatchScore()">SUBMIT MATCH SCORE</button>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 
     <footer id="contact">
@@ -1072,11 +666,13 @@
                 const clickedLink = document.querySelector(`a[onclick="switchTab('${tabId}')"]`);
                 if(clickedLink) clickedLink.classList.add('active');
 
+                // Mobile Menu Logic Fix
                 const menuToggle = document.getElementById('mobile-menu-btn');
                 const navMenu = document.getElementById('nav-menu');
                 if(menuToggle && navMenu) {
                     menuToggle.classList.remove('active');
                     navMenu.classList.remove('active');
+                    document.body.classList.remove('no-scroll');
                 }
 
                 if(tabId === 'home') {
@@ -1156,23 +752,297 @@
             });
         }
 
+        // --- 7. TOURNAMENT MANAGER LOGIC (ADDED) ---
+        let teamData = []; 
+        let matches = []; 
+        let currentEventName = "";
+
+        // Enter key support
+        document.getElementById('team-input').addEventListener('keypress', function (e) {
+            if (e.key === 'Enter') addTeam();
+        });
+
+        function addTeam() {
+            const input = document.getElementById('team-input');
+            const teamNum = input.value.trim().toUpperCase();
+            if (teamNum && !teamData.find(t => t.number === teamNum)) {
+                teamData.push({ number: teamNum, wp: 0, ap: 0, sp: 0, wins: 0, losses: 0, ties: 0 });
+                renderTeamList();
+                input.value = '';
+            }
+        }
+
+        function renderTeamList() {
+            const container = document.getElementById('team-list-display');
+            container.innerHTML = teamData.map(t => `<span class="team-tag">${t.number}</span>`).join('');
+        }
+
+        function startTournament() {
+            if (teamData.length < 4) {
+                document.getElementById('setup-error').style.display = 'block';
+                return;
+            }
+            currentEventName = document.getElementById('event-name').value || "VEX Tournament";
+            document.getElementById('event-title-display').innerText = currentEventName;
+            generateSchedule();
+            updateRankings();
+            renderMatches();
+            document.getElementById('tm-setup').style.display = 'none';
+            document.getElementById('tm-dashboard').style.display = 'grid';
+        }
+
+        // Logic: Generate 2 Practice + 8 Quals per team (Simplified for demo)
+        function generateSchedule() {
+            matches = [];
+            let matchId = 1;
+            
+            // Practice Matches (2 per team)
+            const totalPractice = Math.ceil(teamData.length * 2 / 4);
+            for(let i=0; i<totalPractice; i++) {
+                let shuffled = [...teamData].sort(() => 0.5 - Math.random());
+                matches.push(createMatch(matchId++, 'Prac', shuffled[0], shuffled[1], shuffled[2], shuffled[3]));
+            }
+
+            // Qual Matches (8 per team)
+            const totalQuals = Math.ceil(teamData.length * 8 / 4);
+            for(let i=0; i<totalQuals; i++) {
+                let shuffled = [...teamData].sort(() => 0.5 - Math.random());
+                matches.push(createMatch(matchId++, 'Qual', shuffled[0], shuffled[1], shuffled[2], shuffled[3]));
+            }
+            
+            populateMatchSelector();
+        }
+
+        function createMatch(id, type, r1, r2, b1, b2) {
+            // Fallback for odd numbers
+            if(!r1) r1 = teamData[0]; if(!r2) r2 = teamData[1]; if(!b1) b1 = teamData[2]; if(!b2) b2 = teamData[3];
+            return {
+                id: id, type: type,
+                red1: r1.number, red2: r2.number, blue1: b1.number, blue2: b2.number,
+                redScore: 0, blueScore: 0, status: "scheduled"
+            };
+        }
+
+        function renderMatches() {
+            const container = document.getElementById('match-list');
+            container.innerHTML = matches.map(m => `
+                <div class="match-row ${m.status === 'completed' ? '' : 'active'}" id="match-row-${m.id}">
+                    <div class="match-type-label">${m.type}</div>
+                    <div class="match-name">Q${m.id}</div>
+                    <div class="alliance">
+                        <span class="red-alliance">${m.red1} / ${m.red2}</span>
+                        <span style="color:#444">vs</span>
+                        <span class="blue-alliance">${m.blue1} / ${m.blue2}</span>
+                    </div>
+                    <div class="match-score">${m.status === 'completed' ? m.redScore + '-' + m.blueScore : '-'}</div>
+                </div>
+            `).join('');
+        }
+
+        function updateRankings() {
+            // Sort by WP, then AP, then SP
+            teamData.sort((a, b) => b.wp - a.wp || b.ap - a.ap || b.sp - a.sp);
+            const tbody = document.getElementById('ranking-body');
+            tbody.innerHTML = teamData.map((t, index) => `
+                <tr><td class="rank-num">${index + 1}</td><td>${t.number}</td><td>${t.wins}-${t.losses}-${t.ties}</td><td>${t.wp}</td><td>${t.ap}</td><td>${t.sp}</td></tr>
+            `).join('');
+        }
+
+        // --- 8. CALCULATOR LOGIC (Generic Input) ---
+        let calcScores = { red: { total: 0, auto: false, wp: false }, blue: { total: 0, auto: false, wp: false } };
+
+        function calculateTotal() {
+            calcScores.red.total = parseInt(document.getElementById('red-score-input').value) || 0;
+            calcScores.red.auto = document.getElementById('red-auto').checked;
+            calcScores.red.wp = document.getElementById('red-wp').checked;
+            
+            calcScores.blue.total = parseInt(document.getElementById('blue-score-input').value) || 0;
+            calcScores.blue.auto = document.getElementById('blue-auto').checked;
+            calcScores.blue.wp = document.getElementById('blue-wp').checked;
+
+            // Update display only (input handles itself)
+            document.getElementById('score-red-display').innerText = calcScores.red.total + (calcScores.red.auto ? 6 : 0);
+            document.getElementById('score-blue-display').innerText = calcScores.blue.total + (calcScores.blue.auto ? 6 : 0);
+        }
+
+        function populateMatchSelector() {
+            const sel = document.getElementById('calc-match-select');
+            sel.innerHTML = matches.map(m => `<option value="${m.id}">Q${m.id} (${m.type}): ${m.red1}/${m.red2} vs ${m.blue1}/${m.blue2}</option>`).join('');
+        }
+
+        function loadMatchForScoring() {
+            // Future feature: load existing scores
+        }
+
+        function submitMatchScore() {
+            const matchId = parseInt(document.getElementById('calc-match-select').value);
+            calculateTotal(); // Refresh values
+            const match = matches.find(m => m.id === matchId);
+            if (!match) return;
+            
+            // Final Score = Input + Auto Bonus(6)
+            match.redScore = calcScores.red.total + (calcScores.red.auto ? 6 : 0);
+            match.blueScore = calcScores.blue.total + (calcScores.blue.auto ? 6 : 0);
+            match.status = 'completed';
+            
+            recalculateAllRankings();
+            renderMatches();
+            updateRankings();
+            alert(`Match Q${matchId} Scores Submitted!`);
+        }
+
+        function recalculateAllRankings() {
+            // Reset Stats
+            teamData.forEach(t => { t.wp=0; t.ap=0; t.sp=0; t.wins=0; t.losses=0; t.ties=0; });
+            matches.forEach(m => {
+                if (m.status === 'completed' && m.type === 'Qual') { // Only count Quals for Ranking
+                    const redTeams = [teamData.find(t=>t.number===m.red1), teamData.find(t=>t.number===m.red2)];
+                    const blueTeams = [teamData.find(t=>t.number===m.blue1), teamData.find(t=>t.number===m.blue2)];
+                    let redWP = 0; let blueWP = 0;
+                    
+                    // Win/Loss/Tie WP
+                    if (m.redScore > m.blueScore) {
+                        redWP += 2; redTeams.forEach(t => t.wins++); blueTeams.forEach(t => t.losses++);
+                    } else if (m.blueScore > m.redScore) {
+                        blueWP += 2; blueTeams.forEach(t => t.wins++); redTeams.forEach(t => t.losses++);
+                    } else {
+                        redWP += 1; blueWP += 1; redTeams.forEach(t => t.ties++); blueTeams.forEach(t => t.ties++);
+                    }
+                    
+                    // Auto WP
+                    if (calcScores.red.wp) redWP += 1;
+                    if (calcScores.blue.wp) blueWP += 1;
+                    
+                    // Auto Points (AP) - Simple logic: if auto win checked, add 6 to AP
+                    // Note: Usually AP is 6 per match win, but here we simplify for ranking display
+                    if (calcScores.red.auto) redTeams.forEach(t => t.ap += 6);
+                    if (calcScores.blue.auto) blueTeams.forEach(t => t.ap += 6);
+
+                    // SP: Points of the losing alliance
+                    let loserScore = Math.min(m.redScore, m.blueScore);
+                    
+                    redTeams.forEach(t => { if(t) { t.wp += redWP; t.sp += loserScore; } });
+                    blueTeams.forEach(t => { if(t) { t.wp += blueWP; t.sp += loserScore; } });
+                }
+            });
+        }
+
+        // --- 9. TIMER LOGIC (Match: Auto 15s -> Driver 1:30) ---
+        let timerInterval;
+        let timeLeft = 15; 
+        let currentMode = 'match'; 
+        let currentPhase = 'auto'; // auto, waiting, driver, ended
+        let isRunning = false;
+
+        function updateTimerDisplay() {
+            const m = Math.floor(timeLeft / 60); const s = timeLeft % 60;
+            document.getElementById('timer-val').innerText = `${m}:${s < 10 ? '0' : ''}${s}`;
+        }
+
+        function setTimerMode(mode) {
+            currentMode = mode;
+            isRunning = false;
+            clearInterval(timerInterval);
+            
+            document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
+            event.target.classList.add('active');
+            
+            if (mode === 'skills') {
+                timeLeft = 60;
+                currentPhase = 'skills';
+                document.getElementById('timer-phase').innerText = "SKILLS (1:00)";
+            } else {
+                timeLeft = 15;
+                currentPhase = 'auto';
+                document.getElementById('timer-phase').innerText = "AUTO (0:15)";
+            }
+            updateTimerDisplay();
+        }
+
+        function startTimer() {
+            if (isRunning) return;
+            // Prevent starting if match ended
+            if (currentMode === 'match' && currentPhase === 'ended') return;
+
+            isRunning = true;
+            timerInterval = setInterval(() => {
+                if (timeLeft > 0) { 
+                    timeLeft--; 
+                    updateTimerDisplay(); 
+                } else { 
+                    stopTimer(); 
+                    // Phase transition
+                    if (currentMode === 'match') {
+                        if (currentPhase === 'auto') {
+                            currentPhase = 'waiting';
+                            timeLeft = 90; // 1:30
+                            document.getElementById('timer-phase').innerText = "DRIVER READY? (1:30)";
+                            updateTimerDisplay();
+                        } else if (currentPhase === 'waiting') {
+                            currentPhase = 'driver';
+                            document.getElementById('timer-phase').innerText = "DRIVER CONTROL";
+                            startTimer(); // Auto start driver? No, user requested manual.
+                            // Actually user said "Separately start", so we stop here.
+                        } else if (currentPhase === 'driver') {
+                            currentPhase = 'ended';
+                            document.getElementById('timer-phase').innerText = "MATCH ENDED";
+                        }
+                    }
+                }
+            }, 1000);
+        }
+
+        function stopTimer() { clearInterval(timerInterval); isRunning = false; }
+        
+        function resetTimer() { 
+            stopTimer();
+            // Reset to current mode start
+            if (currentMode === 'skills') {
+                timeLeft = 60;
+                currentPhase = 'skills';
+                document.getElementById('timer-phase').innerText = "SKILLS (1:00)";
+            } else {
+                timeLeft = 15;
+                currentPhase = 'auto';
+                document.getElementById('timer-phase').innerText = "AUTO (0:15)";
+            }
+            updateTimerDisplay();
+        }
+
+        function toggleFullScreen(elementId) {
+            const el = document.getElementById(elementId);
+            el.classList.toggle('fullscreen');
+        }
+
+        // --- Init ---
         const mediaCount = 12; 
         const robotCount = 22; 
 
         document.addEventListener('DOMContentLoaded', () => {
             // Start Typewriter
             setTimeout(typeWriter, 500); 
+            
+            // Start Countdown
+            startCountdown();
 
             loadGallery('media-gallery', 'media', mediaCount, 'media');
             loadGallery('robot-gallery', 'robot', robotCount, 'robot');
             bindLightboxEvents();
 
+            // Mobile Menu Toggle & Scroll Lock
             const menuToggle = document.getElementById('mobile-menu-btn');
             const navMenu = document.getElementById('nav-menu');
 
             menuToggle.addEventListener('click', () => {
                 menuToggle.classList.toggle('active');
                 navMenu.classList.toggle('active');
+                
+                // NEW: Lock scroll when menu is open
+                if (navMenu.classList.contains('active')) {
+                    document.body.classList.add('no-scroll');
+                } else {
+                    document.body.classList.remove('no-scroll');
+                }
             });
 
             const hash = window.location.hash.substring(1); 
