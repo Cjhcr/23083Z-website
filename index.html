@@ -5,8 +5,7 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Team 23083Z | REAPER</title>
     
-    <!-- --- NEW: 設定網站圖示 (Favicon) --- -->
-    <!-- 這行讓瀏覽器標籤頁顯示你的 Reaper Logo -->
+    <!-- 設定網站圖示 (Favicon) -->
     <link rel="icon" type="image/svg+xml" href="reaper.svg">
 
     <!-- 1. 引入 Rajdhani (內文) -->
@@ -15,7 +14,7 @@
     <!-- 2. 引入 Nasalization (NASA Font) -->
     <link href="https://fonts.cdnfonts.com/css/nasalization-2" rel="stylesheet">
     
-    <!-- 3. Font Awesome (Host Game Icon 用) -->
+    <!-- 3. Font Awesome (工具圖標) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
 
     <style>
@@ -26,7 +25,7 @@
             --text-color: #ffffff;
             --text-muted: #cccccc;
             --border-color: #333;
-            /* Host Game Colors */
+            /* 比賽專用色 */
             --vex-red: #E74C3C;
             --vex-blue: #3498DB;
         }
@@ -43,61 +42,150 @@
         }
 
         /* 防止手機選單開啟時背景滑動 */
-        body.no-scroll { overflow: hidden; }
+        body.no-scroll {
+            overflow: hidden;
+        }
 
-        /* --- NEW: 自訂黑金捲軸 (更隱形版) --- */
+        /* --- 自訂黑金捲軸 --- */
         ::-webkit-scrollbar { width: 10px; }
         ::-webkit-scrollbar-track { background: #050505; }
         ::-webkit-scrollbar-thumb { background: rgba(255, 215, 0, 0.2); border-radius: 5px; border: 2px solid #050505; }
         ::-webkit-scrollbar-thumb:hover { background: var(--primary-color); }
 
         /* 使用 Nasalization 字體 */
-        h1, h2, h3, .nav-item, .btn, .stat-number, .event-date, .countdown-number, .tm-header, .timer-display {
+        h1, h2, h3, .nav-item, .btn, .stat-number, .event-date, .countdown-number, .tm-header, .timer-display, .timer-phase-indicator {
             font-family: 'Nasalization', sans-serif; 
             text-transform: uppercase;
             letter-spacing: 1px;
         }
 
         /* --- Typewriter Cursor Animation --- */
-        .typewriter-cursor { display: inline-block; color: var(--primary-color); margin-left: 2px; animation: blink-cursor 0.8s step-end infinite; font-weight: bold; }
-        @keyframes blink-cursor { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+        .typewriter-cursor {
+            display: inline-block;
+            color: var(--primary-color);
+            margin-left: 2px;
+            animation: blink-cursor 0.8s step-end infinite;
+            font-weight: bold;
+        }
 
-        /* --- 2. Scroll Animation Class --- */
+        @keyframes blink-cursor {
+            0%, 100% { opacity: 1; }
+            50% { opacity: 0; }
+        }
+
+        /* --- Scroll Animation Class --- */
         .scroll-hidden { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
         .scroll-visible { opacity: 1; transform: translateY(0); }
 
         /* --- Navigation --- */
-        header { position: fixed; top: 0; width: 100%; background: rgba(0, 0, 0, 0.95); padding: 10px 5%; display: flex; justify-content: space-between; align-items: center; z-index: 1000; border-bottom: 2px solid #222; }
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            padding: 10px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            border-bottom: 2px solid #222;
+        }
+
         .nav-logo { text-decoration: none; display: flex; align-items: center; z-index: 1002; }
         .nav-logo img { height: 55px; width: auto; transition: filter 0.3s; }
         .nav-logo:hover img { filter: drop-shadow(0 0 8px var(--primary-color)); }
+
+        /* 電腦版選單樣式 (強制水平) */
+        .nav-menu {
+            display: flex;
+            align-items: center;
+            position: static;
+            background: transparent;
+            width: auto;
+            height: auto;
+            padding: 0;
+            box-shadow: none;
+        }
+
+        nav ul { display: flex; list-style: none; gap: 30px; flex-direction: row; }
         
-        .nav-menu { display: flex; align-items: center; }
-        nav ul { display: flex; list-style: none; gap: 30px; }
-        .nav-item { color: white; text-decoration: none; font-weight: 700; font-size: 0.9rem; cursor: pointer; padding-bottom: 5px; border-bottom: 2px solid transparent; transition: all 0.3s; }
-        .nav-item:hover, .nav-item.active { color: var(--primary-color); border-bottom: 2px solid var(--primary-color); text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
-        
-        .menu-toggle { display: none; cursor: pointer; z-index: 1002; }
-        .bar { display: block; width: 25px; height: 3px; margin: 5px auto; transition: all 0.3s ease-in-out; background-color: white; }
+        .nav-item {
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            padding-bottom: 5px;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .nav-item:hover, .nav-item.active {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        .menu-toggle {
+            display: none; /* 電腦版隱藏漢堡 */
+            cursor: pointer;
+            z-index: 1002;
+        }
+
+        .bar {
+            display: block; width: 25px; height: 3px; margin: 5px auto;
+            transition: all 0.3s ease-in-out; background-color: white;
+        }
 
         /* --- Page Switching --- */
-        .page-section { display: none; min-height: 100vh; padding-top: 80px; opacity: 0; transform: translateY(20px); transition: opacity 0.4s ease-out, transform 0.4s ease-out; }
+        .page-section {
+            display: none; 
+            min-height: 100vh;
+            padding-top: 100px;
+            opacity: 0; 
+            transform: translateY(20px);
+            transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+        }
+
         .page-section.active-page { display: block; }
         .page-section.visible { opacity: 1; transform: translateY(0); }
 
-        .section-header { text-align: center; padding: 60px 20px 40px; }
+        .section-header { text-align: center; padding: 20px 20px 40px; }
         .section-header h2 { font-size: 2.8rem; color: white; margin-bottom: 10px; line-height: 1.4; }
         .section-header span { color: var(--primary-color); }
         .section-header p { color: var(--text-muted); max-width: 800px; margin: 0 auto; font-size: 1.1rem; }
-        .section-logo { width: 100px; height: auto; margin: 0 auto 20px; display: block; filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.3)); }
 
-        /* --- HOME PAGE & COUNTDOWN --- */
-        #home { padding-top: 0; flex-direction: column; justify-content: center; align-items: center; text-align: center; background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.6)), url('team.jpg'); background-size: cover; background-position: center; padding-bottom: 0; }
+        .section-logo {
+            width: 100px; height: auto; margin: 0 auto 20px; 
+            display: block; filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.3));
+        }
+
+        /* --- HOME PAGE --- */
+        #home {
+            padding-top: 0;
+            flex-direction: column;
+            justify-content: center; 
+            align-items: center;
+            text-align: center;
+            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.6)), url('team.jpg');
+            background-size: cover;
+            background-position: center;
+            padding-bottom: 0;
+        }
         .home-active { display: flex !important; }
-        .hero-content { margin-top: 300px; width: 100%; padding: 0 20px; display: flex; flex-direction: column; align-items: center; }
-        .hero-content h1 { font-size: 5rem; margin-bottom: 10px; text-shadow: 3px 3px 0px rgba(0, 0, 0, 0.8), 0 0 20px var(--primary-color), 0 0 40px var(--primary-color); line-height: 1; color: white; position: relative; display: inline-block; }
-        
-        /* Glitch Effect */
+
+        .hero-content {
+            margin-top: 300px; width: 100%; padding: 0 20px;
+            display: flex; flex-direction: column; align-items: center;
+        }
+
+        .hero-content h1 {
+            font-size: 5rem; margin-bottom: 10px;
+            text-shadow: 3px 3px 0px rgba(0, 0, 0, 0.8), 0 0 20px var(--primary-color), 0 0 40px var(--primary-color);
+            line-height: 1; color: white; position: relative; display: inline-block;
+        }
+
+        /* Glitch Effect (保留) */
         .hero-content h1:hover { animation: glitch-skew 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite; color: var(--primary-color); }
         .hero-content h1:hover::before, .hero-content h1:hover::after { content: "REAPER"; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: transparent; }
         .hero-content h1:hover::before { left: 4px; text-shadow: 4px 0 #ff00c1; clip: rect(44px, 450px, 56px, 0); animation: glitch-anim 1.5s infinite linear alternate-reverse; }
@@ -107,7 +195,8 @@
         @keyframes glitch-skew { 0% { transform: skew(0deg); } 20% { transform: skew(-10deg); } 40% { transform: skew(10deg); } 60% { transform: skew(-5deg); } 80% { transform: skew(5deg); } 100% { transform: skew(0deg); } }
 
         .hero-content h2 { font-size: 1.8rem; color: var(--primary-color); margin-bottom: 5px; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); min-height: 1.8rem; }
-        
+
+        /* Countdown */
         .countdown-wrapper { margin-top: 25px; animation: fadeIn 1s ease-out 0.5s backwards; }
         .countdown-container { display: flex; justify-content: center; gap: 15px; margin-top: 10px; flex-wrap: wrap; }
         .countdown-item { background: rgba(0, 0, 0, 0.5); padding: 8px 12px; border: 1px solid var(--primary-color); min-width: 70px; backdrop-filter: blur(3px); border-radius: 8px; }
@@ -115,6 +204,7 @@
         .countdown-label { font-size: 0.75rem; color: #ccc; text-transform: uppercase; }
         .countdown-title { color: #eee; font-size: 0.9rem; letter-spacing: 2px; text-shadow: 1px 1px 3px black; font-weight: bold; text-transform: uppercase; text-decoration: none; display: inline-block; margin-bottom: 10px; transition: all 0.3s ease; border-bottom: 1px solid transparent; }
         .countdown-title:hover { color: var(--primary-color); border-bottom: 1px solid var(--primary-color); text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
+        
         .btn { display: inline-block; padding: 15px 40px; border: 2px solid var(--primary-color); color: var(--primary-color); text-decoration: none; font-weight: 900; margin-top: 10px; transition: 0.3s; background: rgba(0,0,0,0.6); cursor: pointer; border-radius: 6px; }
         .btn:hover { background: var(--primary-color); color: black; box-shadow: 0 0 30px var(--primary-color); }
 
@@ -362,6 +452,7 @@
     <!-- 2. ABOUT & TEAM PAGE -->
     <div id="about" class="page-section">
         <div class="section-header scroll-hidden">
+            <!-- 修正 Logo 位置：在 The Team Members 上方 -->
             <img src="reaper.svg" alt="Reaper Logo" class="section-logo">
             <h2>About <span>Reaper</span></h2>
             <p>23083Z is a VEX robotics team striving for perfection. Black represents calm, Gold represents glory.</p>
@@ -384,7 +475,11 @@
                 </div>
             </div>
         </div>
-        <div class="section-header scroll-hidden"><h2>The <span>Team Members</span></h2></div>
+        <div class="section-header scroll-hidden">
+            <!-- 再次確認 Logo 在這裡 -->
+            <img src="reaper.svg" alt="Reaper Logo" class="section-logo">
+            <h2>The <span>Team Members</span></h2>
+        </div>
         <div class="team-grid">
             <div class="member-card scroll-hidden"><div class="member-photo" style="background-image: url('members/pennlaine.jpg');"></div><div class="member-info"><div class="member-name">Pennlaine</div><div class="member-role">Club President & Team Leader</div></div></div>
             <div class="member-card scroll-hidden"><div class="member-photo" style="background-image: url('members/adam.jpg');"></div><div class="member-info"><div class="member-name">Adam</div><div class="member-role">Programmer/main driver</div></div></div>
