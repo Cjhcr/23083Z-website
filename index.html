@@ -286,12 +286,86 @@
             gap: 15px;
         }
         
-        /* Setup Screen */
-        #tm-setup { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 100%; text-align: center; }
-        .tm-input { background: #111; border: 1px solid #444; color: white; padding: 15px; width: 300px; margin-bottom: 15px; border-radius: 5px; font-size: 1.1rem; font-family: 'Rajdhani', sans-serif; }
-        .tm-input:focus { border-color: var(--primary-color); outline: none; }
-        .team-list-preview { display: flex; flex-wrap: wrap; gap: 10px; max-width: 600px; margin: 20px 0; justify-content: center; }
-        .team-tag { background: #222; border: 1px solid var(--primary-color); padding: 5px 10px; border-radius: 4px; font-size: 0.9rem; }
+        /* Setup Screen Refined */
+        #tm-setup {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 100%;
+            text-align: center;
+            width: 100%;
+        }
+
+        .setup-form-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+            max-width: 600px;
+        }
+
+        .tm-input {
+            background: #111;
+            border: 1px solid #444;
+            color: white;
+            padding: 15px;
+            border-radius: 5px;
+            font-size: 1.1rem;
+            font-family: 'Rajdhani', sans-serif;
+            transition: border-color 0.3s;
+        }
+
+        .tm-input:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+        }
+
+        .full-width { width: 100%; }
+
+        .input-row {
+            display: flex;
+            gap: 10px;
+            width: 100%;
+        }
+
+        /* Adjust inputs in row */
+        #team-number { flex: 1; min-width: 150px; }
+        #team-name { flex: 2; }
+
+        .add-btn {
+            margin-top: 0 !important; 
+            padding: 0 25px !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+        }
+
+        .team-list-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+            max-width: 800px;
+            margin: 30px 0;
+            justify-content: center;
+        }
+
+        .team-tag {
+            background: #222;
+            border: 1px solid #444;
+            color: #ddd;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 1rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .team-tag span.num { color: var(--primary-color); font-weight: bold; }
 
         /* Dashboard Panels */
         .tm-panel { background: #111; border: 1px solid #333; border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; position: relative; }
@@ -398,6 +472,9 @@
             .tm-container { grid-template-columns: 1fr; grid-template-rows: auto; height: auto; display: flex; flex-direction: column; }
             #tm-rankings, #tm-schedule, #tm-tools { grid-column: 1 / -1; height: auto; min-height: 400px; }
             #tm-tools { grid-template-columns: 1fr; grid-template-rows: auto; }
+            
+            .input-row { flex-direction: column; }
+            .add-btn { width: 100%; padding: 15px !important; }
         }
     </style>
 </head>
@@ -452,8 +529,7 @@
     <!-- 2. ABOUT & TEAM PAGE -->
     <div id="about" class="page-section">
         <div class="section-header scroll-hidden">
-            <!-- 修正 Logo 位置：在 The Team Members 上方 -->
-            <img src="reaper.svg" alt="Reaper Logo" class="section-logo">
+            <!-- 已刪除 About 上方的 reaper.svg -->
             <h2>About <span>Reaper</span></h2>
             <p>23083Z is a VEX robotics team striving for perfection. Black represents calm, Gold represents glory.</p>
         </div>
@@ -476,7 +552,7 @@
             </div>
         </div>
         <div class="section-header scroll-hidden">
-            <!-- 再次確認 Logo 在這裡 -->
+            <!-- 保留 Team Members 上方的 Logo -->
             <img src="reaper.svg" alt="Reaper Logo" class="section-logo">
             <h2>The <span>Team Members</span></h2>
         </div>
@@ -539,17 +615,24 @@
         <div id="robot-gallery" class="gallery-grid"></div>
     </div>
 
-    <!-- 6. HOST GAME (TOURNAMENT MANAGER) - [ADDED] -->
+    <!-- 6. HOST GAME (TOURNAMENT MANAGER) - [ADDED & REDESIGNED] -->
     <div id="tournament" class="page-section">
         <!-- SETUP SCREEN -->
         <div id="tm-setup">
             <h2 style="font-size: 3rem; margin-bottom: 30px; color: var(--primary-color);">HOST A GAME</h2>
-            <input type="text" id="event-name" class="tm-input" placeholder="Enter Event Name...">
-            <div style="display: flex; gap: 10px;">
-                <input type="text" id="team-input" class="tm-input" placeholder="Add Team No. (e.g. 23083Z)">
-                <button onclick="addTeam()" class="btn" style="margin-top:0; padding: 10px 20px;">+</button>
+            
+            <div class="setup-form-container">
+                <input type="text" id="event-name" class="tm-input full-width" placeholder="Enter Event Name...">
+                
+                <div class="input-row">
+                    <input type="text" id="team-number" class="tm-input" placeholder="Team Number (e.g. 23083Z)">
+                    <input type="text" id="team-name" class="tm-input" placeholder="Team Name (Optional)">
+                    <button onclick="addTeam()" class="btn add-btn">+</button>
+                </div>
             </div>
+
             <div class="team-list-preview" id="team-list-display"></div>
+            
             <button onclick="startTournament()" class="btn" style="font-size: 1.5rem;">START EVENT</button>
             <p id="setup-error" style="color: #e74c3c; margin-top: 10px; display: none;">Need at least 4 teams!</p>
         </div>
@@ -854,29 +937,40 @@
             });
         }
 
-        // --- 7. TOURNAMENT MANAGER LOGIC (ADDED) ---
+        // --- 7. TOURNAMENT MANAGER LOGIC (UPDATED UI) ---
         let teamData = []; 
         let matches = []; 
         let currentEventName = "";
 
-        // Enter key support
-        document.getElementById('team-input').addEventListener('keypress', function (e) {
-            if (e.key === 'Enter') addTeam();
-        });
-
+        // Add Team Function (New Logic)
         function addTeam() {
-            const input = document.getElementById('team-input');
-            const teamNum = input.value.trim().toUpperCase();
+            const numInput = document.getElementById('team-number');
+            const nameInput = document.getElementById('team-name');
+            const teamNum = numInput.value.trim().toUpperCase();
+            const teamName = nameInput.value.trim();
+
             if (teamNum && !teamData.find(t => t.number === teamNum)) {
-                teamData.push({ number: teamNum, wp: 0, ap: 0, sp: 0, wins: 0, losses: 0, ties: 0 });
+                teamData.push({ 
+                    number: teamNum, 
+                    name: teamName, 
+                    wp: 0, ap: 0, sp: 0, 
+                    wins: 0, losses: 0, ties: 0 
+                });
                 renderTeamList();
-                input.value = '';
+                numInput.value = '';
+                nameInput.value = '';
+                numInput.focus();
             }
         }
 
         function renderTeamList() {
             const container = document.getElementById('team-list-display');
-            container.innerHTML = teamData.map(t => `<span class="team-tag">${t.number}</span>`).join('');
+            container.innerHTML = teamData.map(t => `
+                <div class="team-tag">
+                    <span class="num">${t.number}</span>
+                    ${t.name ? `<span style="color:#aaa; font-size:0.8em; border-left:1px solid #444; padding-left:5px;">${t.name}</span>` : ''}
+                </div>
+            `).join('');
         }
 
         function startTournament() {
