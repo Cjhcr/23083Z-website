@@ -40,15 +40,13 @@
             overflow-x: hidden;
             font-size: 19px;
             
-            /* --- Tech Grid Background (保留) --- */
-            background-image: 
-                linear-gradient(rgba(255, 215, 0, 0.03) 1px, transparent 1px),
-                linear-gradient(90deg, rgba(255, 215, 0, 0.03) 1px, transparent 1px);
-            background-size: 50px 50px; 
-            background-attachment: fixed; 
+            /* --- Tech Grid Background --- */
+            background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='56' height='98' viewBox='0 0 56 98'%3E%3Cpath d='M28 66L0 50L0 16L28 0L56 16L56 50L28 66L28 100' fill='none' stroke='%23FFD700' stroke-width='1' stroke-opacity='0.08'/%3E%3Cpath d='M28 0L28 33L0 50L0 83L28 100L56 83L56 50L28 33' fill='none' stroke='%23FFD700' stroke-width='1' stroke-opacity='0.08'/%3E%3C/svg%3E");
+            background-size: 56px 98px;
+            background-attachment: fixed;
         }
 
-        /* 防止手機選單開啟時背景滑動 */
+        /* 防止全螢幕或選單開啟時背景滑動 */
         body.no-scroll {
             overflow: hidden;
         }
@@ -102,7 +100,6 @@
         .nav-logo img { height: 55px; width: auto; transition: filter 0.3s; }
         .nav-logo:hover img { filter: drop-shadow(0 0 8px var(--primary-color)); }
 
-        /* 電腦版選單樣式 (強制水平) */
         .nav-menu {
             display: flex;
             align-items: center;
@@ -134,7 +131,7 @@
         }
 
         .menu-toggle {
-            display: none; /* 電腦版隱藏漢堡 */
+            display: none;
             cursor: pointer;
             z-index: 1002;
         }
@@ -144,7 +141,7 @@
             transition: all 0.3s ease-in-out; background-color: white;
         }
 
-        /* --- Page Switching --- */
+        /* --- Page Layout --- */
         .page-section {
             display: none; 
             min-height: 100vh;
@@ -337,8 +334,8 @@
             width: 100%;
         }
 
-        /* Adjust inputs in row - Giving more space to number */
-        #team-number { flex: 1.5; min-width: 150px; }
+        /* Adjust inputs in row - Team Number needs more space now for placeholder */
+        #team-number { flex: 2; min-width: 180px; text-transform: uppercase; }
         #team-name { flex: 2; }
 
         .add-btn {
@@ -385,7 +382,7 @@
         /* Dashboard Panels */
         .tm-panel { background: #111; border: 1px solid #333; border-radius: 8px; overflow: hidden; display: flex; flex-direction: column; position: relative; }
         .tm-header { background: #222; padding: 10px 15px; border-bottom: 1px solid #333; display: flex; justify-content: space-between; align-items: center; color: var(--primary-color); }
-        .tm-content { padding: 10px; overflow-y: auto; flex: 1; }
+        .tm-content { padding: 10px; overflow-y: auto; flex: 1; position: relative; }
         
         /* Rankings */
         #tm-rankings { grid-column: 1 / 2; }
@@ -393,6 +390,22 @@
         .ranking-table th { text-align: left; padding: 8px; color: #888; border-bottom: 1px solid #444; position: sticky; top: 0; background: #111; z-index: 10; }
         .ranking-table td { padding: 8px; border-bottom: 1px solid #222; }
         .rank-num { font-weight: bold; color: var(--primary-color); }
+        
+        /* Marquee Effect for Rankings */
+        #ranking-marquee-container {
+            position: relative;
+            overflow: hidden;
+            height: 100%;
+        }
+        
+        .marquee-content {
+            animation: none; /* Controlled by JS */
+        }
+        
+        @keyframes scrollUp {
+            from { transform: translateY(0); }
+            to { transform: translateY(-50%); } /* Scroll half because content is duplicated */
+        }
 
         /* Schedule */
         #tm-schedule { grid-column: 2 / 3; }
@@ -409,8 +422,20 @@
         #tm-tools { grid-column: 3 / 4; display: grid; grid-template-rows: 1fr 2fr; gap: 15px; border: none; background: transparent; }
         .tool-box { background: #111; border: 1px solid #333; border-radius: 8px; display: flex; flex-direction: column; position: relative; transition: all 0.3s; }
         
-        /* Fullscreen Mode */
-        .tool-box.fullscreen { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 9999; background: #000; border: none; border-radius: 0; padding: 20px; }
+        /* Fullscreen Mode - Fixed for Mobile Address Bar */
+        .tool-box.fullscreen { 
+            position: fixed; 
+            top: 0; 
+            left: 0; 
+            width: 100vw; 
+            height: 100dvh; /* Dynamic viewport height */
+            z-index: 9999; 
+            background: #000; 
+            border: none; 
+            border-radius: 0; 
+            padding: 20px; 
+            overflow-y: auto; /* Allow internal scrolling if content is too tall */
+        }
         .fs-btn { cursor: pointer; color: #666; transition: 0.3s; }
         .fs-btn:hover { color: white; }
 
@@ -646,7 +671,7 @@
                 <input type="text" id="event-name" class="tm-input full-width" placeholder="Enter Event Name...">
                 
                 <div class="input-row">
-                    <input type="text" id="team-number" class="tm-input" placeholder="No. (e.g. 23083Z)">
+                    <input type="text" id="team-number" class="tm-input" maxlength="6" placeholder="No. (e.g. 23083Z)">
                     <input type="text" id="team-name" class="tm-input" placeholder="Name (e.g. Reaper)">
                     <button onclick="addTeam()" class="btn add-btn">+</button>
                 </div>
@@ -667,8 +692,8 @@
                     <span>Rankings</span>
                     <i class="fa-solid fa-trophy"></i>
                 </div>
-                <div class="tm-content">
-                    <table class="ranking-table">
+                <div class="tm-content" id="ranking-container">
+                    <table class="ranking-table" id="ranking-table">
                         <thead>
                             <tr><th>Rank</th><th>Team</th><th>W-L-T</th><th>WP</th><th>AP</th><th>SP</th></tr>
                         </thead>
@@ -963,6 +988,14 @@
         let matches = []; 
         let currentEventName = "";
 
+        // Add input validation for team number
+        const teamNumInput = document.getElementById('team-number');
+        if(teamNumInput) {
+            teamNumInput.addEventListener('input', function() {
+                this.value = this.value.replace(/[^A-Za-z0-9]/g, '').toUpperCase().slice(0, 6);
+            });
+        }
+
         // Add Team Function (New Logic)
         function addTeam() {
             const numInput = document.getElementById('team-number');
@@ -1021,28 +1054,30 @@
             matches = [];
             let matchId = 1;
             
-            // Practice Matches (2 per team)
+            // Practice Matches (2 per team) - Prefix 'P'
             const totalPractice = Math.ceil(teamData.length * 2 / 4);
             for(let i=0; i<totalPractice; i++) {
                 let shuffled = [...teamData].sort(() => 0.5 - Math.random());
-                matches.push(createMatch(matchId++, 'Prac', shuffled[0], shuffled[1], shuffled[2], shuffled[3]));
+                matches.push(createMatch(matchId++, 'P' + (i+1), shuffled[0], shuffled[1], shuffled[2], shuffled[3]));
             }
 
-            // Qual Matches (8 per team)
+            matchId = 1; // Reset for Quals
+
+            // Qual Matches (8 per team) - Prefix 'Q'
             const totalQuals = Math.ceil(teamData.length * 8 / 4);
             for(let i=0; i<totalQuals; i++) {
                 let shuffled = [...teamData].sort(() => 0.5 - Math.random());
-                matches.push(createMatch(matchId++, 'Qual', shuffled[0], shuffled[1], shuffled[2], shuffled[3]));
+                matches.push(createMatch(matchId++, 'Q' + (i+1), shuffled[0], shuffled[1], shuffled[2], shuffled[3]));
             }
             
             populateMatchSelector();
         }
 
-        function createMatch(id, type, r1, r2, b1, b2) {
+        function createMatch(id, label, r1, r2, b1, b2) {
             // Fallback for odd numbers
             if(!r1) r1 = teamData[0]; if(!r2) r2 = teamData[1]; if(!b1) b1 = teamData[2]; if(!b2) b2 = teamData[3];
             return {
-                id: id, type: type,
+                id: id, label: label,
                 red1: r1.number, red2: r2.number, blue1: b1.number, blue2: b2.number,
                 redScore: 0, blueScore: 0, status: "scheduled"
             };
@@ -1050,27 +1085,75 @@
 
         function renderMatches() {
             const container = document.getElementById('match-list');
-            container.innerHTML = matches.map(m => `
-                <div class="match-row ${m.status === 'completed' ? '' : 'active'}" id="match-row-${m.id}">
-                    <div class="match-type-label">${m.type}</div>
-                    <div class="match-name">Q${m.id}</div>
+            // Show only next 4 uncompleted matches
+            const upcoming = matches.filter(m => m.status !== 'completed').slice(0, 4);
+            
+            container.innerHTML = upcoming.map(m => `
+                <div class="match-row" id="match-row-${m.label}">
+                    <div class="match-type-label">${m.label.charAt(0)}</div>
+                    <div class="match-name">${m.label}</div>
                     <div class="alliance">
                         <span class="red-alliance">${m.red1} / ${m.red2}</span>
                         <span style="color:#444">vs</span>
                         <span class="blue-alliance">${m.blue1} / ${m.blue2}</span>
                     </div>
-                    <div class="match-score">${m.status === 'completed' ? m.redScore + '-' + m.blueScore : '-'}</div>
                 </div>
             `).join('');
+
+            if(upcoming.length === 0) {
+                 container.innerHTML = '<div style="text-align:center; padding:20px; color:#666;">No upcoming matches</div>';
+            }
         }
 
         function updateRankings() {
             // Sort by WP, then AP, then SP
             teamData.sort((a, b) => b.wp - a.wp || b.ap - a.ap || b.sp - a.sp);
             const tbody = document.getElementById('ranking-body');
-            tbody.innerHTML = teamData.map((t, index) => `
-                <tr><td class="rank-num">${index + 1}</td><td>${t.number}</td><td>${t.wins}-${t.losses}-${t.ties}</td><td>${t.wp}</td><td>${t.ap}</td><td>${t.sp}</td></tr>
-            `).join('');
+            
+            // Check for Marquee Logic
+            const container = document.getElementById('ranking-container');
+            const table = document.getElementById('ranking-table');
+
+            // Reset Animation first
+            table.style.animation = 'none';
+
+            let displayData = [...teamData];
+            let isMarquee = false;
+
+            if (teamData.length > 10) {
+                isMarquee = true;
+                // Add spacer (empty rows) to separate loop
+                displayData.push({ isSpacer: true });
+                displayData.push({ isSpacer: true });
+                // Duplicate list for infinite scroll
+                displayData = displayData.concat(teamData);
+            }
+            
+            tbody.innerHTML = displayData.map((t, index) => {
+                if (t.isSpacer) return '<tr style="height: 20px;"><td colspan="6"></td></tr>';
+                // Adjust index for duplicated items
+                let realIndex = (index >= (teamData.length + 2)) ? (index - (teamData.length + 2)) : index;
+                
+                return `
+                <tr>
+                    <td class="rank-num">${realIndex + 1}</td>
+                    <td>${t.number}</td>
+                    <td>${t.wins}-${t.losses}-${t.ties}</td>
+                    <td>${t.wp}</td>
+                    <td>${t.ap}</td>
+                    <td>${t.sp}</td>
+                </tr>
+            `}).join('');
+
+            if (isMarquee) {
+                // Apply marquee animation via JS to calculate height dynamically or CSS class
+                // Simple CSS Keyframe application
+                const rowHeight = 40; // Approx
+                const totalHeight = teamData.length * rowHeight + 40; // + spacer
+                const duration = teamData.length * 2; // 2s per item
+                
+                table.style.animation = `scrollUp ${duration}s linear infinite`;
+            }
         }
 
         // --- 8. CALCULATOR LOGIC (Generic Input) ---
@@ -1092,7 +1175,9 @@
 
         function populateMatchSelector() {
             const sel = document.getElementById('calc-match-select');
-            sel.innerHTML = matches.map(m => `<option value="${m.id}">Q${m.id} (${m.type}): ${m.red1}/${m.red2} vs ${m.blue1}/${m.blue2}</option>`).join('');
+            // Filter only non-completed matches
+            const incomplete = matches.filter(m => m.status !== 'completed');
+            sel.innerHTML = incomplete.map(m => `<option value="${m.label}">${m.label}: ${m.red1}/${m.red2} vs ${m.blue1}/${m.blue2}</option>`).join('');
         }
 
         function loadMatchForScoring() {
@@ -1100,9 +1185,9 @@
         }
 
         function submitMatchScore() {
-            const matchId = parseInt(document.getElementById('calc-match-select').value);
+            const matchLabel = document.getElementById('calc-match-select').value;
             calculateTotal(); // Refresh values
-            const match = matches.find(m => m.id === matchId);
+            const match = matches.find(m => m.label === matchLabel);
             if (!match) return;
             
             // Final Score = Input + Auto Bonus(6)
@@ -1111,16 +1196,17 @@
             match.status = 'completed';
             
             recalculateAllRankings();
-            renderMatches();
+            renderMatches(); // This will auto-slide to next matches
+            populateMatchSelector(); // Remove submitted match from dropdown
             updateRankings();
-            alert(`Match Q${matchId} Scores Submitted!`);
+            alert(`Match ${matchLabel} Scores Submitted!`);
         }
 
         function recalculateAllRankings() {
             // Reset Stats
             teamData.forEach(t => { t.wp=0; t.ap=0; t.sp=0; t.wins=0; t.losses=0; t.ties=0; });
             matches.forEach(m => {
-                if (m.status === 'completed' && m.type === 'Qual') { // Only count Quals for Ranking
+                if (m.status === 'completed' && m.label.startsWith('Q')) { // Only count Quals (Q prefix)
                     const redTeams = [teamData.find(t=>t.number===m.red1), teamData.find(t=>t.number===m.red2)];
                     const blueTeams = [teamData.find(t=>t.number===m.blue1), teamData.find(t=>t.number===m.blue2)];
                     let redWP = 0; let blueWP = 0;
@@ -1237,6 +1323,13 @@
         function toggleFullScreen(elementId) {
             const el = document.getElementById(elementId);
             el.classList.toggle('fullscreen');
+            
+            // Toggle body scroll lock
+            if (el.classList.contains('fullscreen')) {
+                document.body.classList.add('no-scroll');
+            } else {
+                document.body.classList.remove('no-scroll');
+            }
         }
 
         // --- Init ---
