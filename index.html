@@ -426,7 +426,7 @@
             <div class="setup-form-container">
                 <input type="text" id="event-name" class="tm-input full-width" placeholder="Enter Event Name...">
                 <div class="input-row">
-                    <input type="text" id="team-number" class="tm-input" maxlength="6" placeholder="No. (e.g. 23083Z)" onkeypress="if(event.key==='Enter') addTeam()">
+                    <input type="text" id="team-number" class="tm-input" maxlength="6" placeholder="No. (e.g. 23083Z)" onkeypress="if(event.key==='Enter') document.getElementById('team-name').focus()">
                     <input type="text" id="team-name" class="tm-input" placeholder="Name (e.g. Reaper)" onkeypress="if(event.key==='Enter') addTeam()">
                     <button onclick="addTeam()" class="btn add-btn">+</button>
                 </div>
@@ -918,10 +918,11 @@
         function playSound(type) {
             let file = '';
             switch(type) {
-                case 'start': file = 'sound/start.wav'; break;
-                case 'pause': file = 'sound/pause.wav'; break;
-                case 'abort': file = 'sound/abort.wav'; break;
-                case 'stop': file = 'sound/stop.wav'; break;
+                case 'start': file = 'sound/Start.wav'; break;
+                case 'pause': file = 'sound/Pause.wav'; break;
+                case 'abort': file = 'sound/Abort.wav'; break;
+                case 'stop': file = 'sound/Stop.wav'; break;
+                case 'warning': file = 'sound/Warning.wav'; break;
             }
             if(file) {
                 const audio = new Audio(file);
@@ -1075,6 +1076,11 @@
 
             timerInterval = setInterval(() => {
                 if (timeLeft > 0) {
+                    // Check for warning at 20s left
+                    if(currentMode === 'match' && matchState === 'driver' && timeLeft === 20) {
+                        playSound('warning');
+                    }
+                    
                     timeLeft--;
                     updateTimerDisplay();
                 } else {
