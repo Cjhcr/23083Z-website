@@ -56,7 +56,7 @@
         ::-webkit-scrollbar-thumb:hover { background: var(--primary-color); }
 
         /* Fonts */
-        h1, h2, h3, .nav-item, .btn, .stat-number, .event-date, .countdown-number, .tm-header, .timer-display, .timer-phase-indicator {
+        h1, h2, h3, .nav-item, .btn, .stat-number, .event-date, .countdown-number, .tm-header, .timer-display, .timer-phase-indicator, .fs-event-title {
             font-family: 'Nasalization', sans-serif; text-transform: uppercase; letter-spacing: 1px;
         }
 
@@ -246,7 +246,7 @@
         .tool-box.fullscreen, .tm-panel.fullscreen { 
             position: fixed !important; 
             top: 0; left: 0; width: 100vw; height: 100vh; 
-            z-index: 20000; background: #000; 
+            z-index: 99999; background: #000; /* Extremely high Z-Index to cover navbar */
             border: none; border-radius: 0; padding: 20px; 
             display: flex; flex-direction: column;
         }
@@ -254,10 +254,14 @@
         .tm-panel.fullscreen .ranking-table th, .tm-panel.fullscreen .ranking-table td { padding: 15px; font-size: 1.2rem; }
         .tm-panel.fullscreen .match-row { padding: 20px; font-size: 1.5rem; }
         
-        .fullscreen-close-btn { display: none; position: absolute; top: 20px; right: 20px; font-size: 2rem; color: #ff4444; cursor: pointer; z-index: 20001; }
+        .fullscreen-close-btn { display: none; position: absolute; top: 20px; right: 20px; font-size: 2rem; color: #ff4444; cursor: pointer; z-index: 100001; }
         .tool-box.fullscreen .fullscreen-close-btn, .tm-panel.fullscreen .fullscreen-close-btn { display: block; }
         .fs-btn { cursor: pointer; color: #666; transition: 0.3s; padding: 5px; }
         .fs-btn:hover { color: white; }
+
+        /* Fullscreen Event Title */
+        .fs-event-title { display: none; width: 100%; text-align: center; color: var(--primary-color); font-size: 1.5rem; margin-bottom: 15px; }
+        .tm-panel.fullscreen .fs-event-title { display: block; }
 
         /* Timer */
         .timer-display { font-size: 3.5rem; font-family: monospace; text-align: center; margin: 2px 0; font-weight: bold; color: white; line-height: 1; transition: color 0.3s; }
@@ -422,8 +426,8 @@
             <div class="setup-form-container">
                 <input type="text" id="event-name" class="tm-input full-width" placeholder="Enter Event Name...">
                 <div class="input-row">
-                    <input type="text" id="team-number" class="tm-input" maxlength="6" placeholder="No. (e.g. 23083Z)">
-                    <input type="text" id="team-name" class="tm-input" placeholder="Name (e.g. Reaper)">
+                    <input type="text" id="team-number" class="tm-input" maxlength="6" placeholder="No. (e.g. 23083Z)" onkeypress="if(event.key==='Enter') addTeam()">
+                    <input type="text" id="team-name" class="tm-input" placeholder="Name (e.g. Reaper)" onkeypress="if(event.key==='Enter') addTeam()">
                     <button onclick="addTeam()" class="btn add-btn">+</button>
                 </div>
             </div>
@@ -446,6 +450,7 @@
                     <span>Rankings (Avg Stats)</span>
                     <i class="fa-solid fa-expand fs-btn" onclick="toggleFullScreen('tm-rankings')"></i>
                 </div>
+                <div class="fs-event-title" id="rank-fs-title">EVENT NAME</div>
                 <div class="ranking-controls">
                     <div class="rank-tab active" id="tab-practice" onclick="switchRankingMode('Practice')">Practice</div>
                     <div class="rank-tab" id="tab-qual" onclick="switchRankingMode('Qualification')">Qualification</div>
@@ -465,6 +470,7 @@
                     <span>Match Schedule</span>
                     <i class="fa-solid fa-expand fs-btn" onclick="toggleFullScreen('tm-schedule')"></i>
                 </div>
+                <div class="fs-event-title" id="sched-fs-title">EVENT NAME</div>
                 <div class="tm-content" id="match-list-container">
                     <i class="fa-solid fa-times fullscreen-close-btn" onclick="toggleFullScreen('tm-schedule')"></i>
                     <div id="match-list"></div>
@@ -705,7 +711,11 @@
                 const parsed = JSON.parse(data);
                 teamData = parsed.teams || []; matches = parsed.matches || [];
                 currentEventName = parsed.eventName || "Restored Event"; currentRankingMode = parsed.mode || 'Practice';
-                document.getElementById('event-name').value = currentEventName; document.getElementById('tm-title').innerText = currentEventName;
+                document.getElementById('event-name').value = currentEventName; 
+                document.getElementById('tm-title').innerText = currentEventName;
+                document.getElementById('rank-fs-title').innerText = currentEventName;
+                document.getElementById('sched-fs-title').innerText = currentEventName;
+                
                 document.getElementById('tm-setup').style.display = 'none'; document.getElementById('tm-dashboard').style.display = 'grid';
                 renderTeamList(); renderMatches(); updateRankings(); populateMatchSelector(); switchRankingMode(currentRankingMode);
             } else { alert("No saved tournament found."); }
@@ -720,6 +730,8 @@
                     q_wp:0, q_ap:0, q_sp:0, q_wins:0, q_losses:0, q_ties:0, q_matches:0
                 });
                 renderTeamList(); document.getElementById('team-number').value=''; document.getElementById('team-name').value='';
+                // Set focus back to number input for quick adding
+                document.getElementById('team-number').focus();
             }
         }
         function renderTeamList() { document.getElementById('team-list-display').innerHTML = teamData.map(t => `<div class="team-tag"><span class="num">${t.number}</span>${t.name ? `<span style="color:#aaa; font-size:0.8em; border-left:1px solid #444; padding-left:5px;">${t.name}</span>` : ''}<i class="fa-solid fa-times delete-btn" onclick="removeTeam('${t.number}')"></i></div>`).join(''); }
@@ -729,6 +741,9 @@
             if (teamData.length < 2) { document.getElementById('setup-error').style.display = 'block'; return; }
             currentEventName = document.getElementById('event-name').value || "VEX Tournament";
             document.getElementById('tm-title').innerText = currentEventName;
+            document.getElementById('rank-fs-title').innerText = currentEventName;
+            document.getElementById('sched-fs-title').innerText = currentEventName;
+            
             generateSchedule(); updateRankings(); renderMatches(); saveToStorage();
             document.getElementById('tm-setup').style.display = 'none'; document.getElementById('tm-dashboard').style.display = 'grid';
         }
@@ -908,7 +923,25 @@
                 case 'abort': file = 'sound/abort.wav'; break;
                 case 'stop': file = 'sound/stop.wav'; break;
             }
-            if(file) new Audio(file).play().catch(e=>console.log(e));
+            if(file) {
+                const audio = new Audio(file);
+                audio.play().catch(e => {
+                    console.warn("WAV failed, using beep fallback", e);
+                    // Fallback to beep if file missing/blocked
+                    playTone(type === 'start' ? 600 : 200, 'square', 0.5);
+                });
+            }
+        }
+        
+        // Fallback tone generator
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function playTone(freq, type, duration) {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
+            osc.type = type; osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            osc.start(); osc.stop(audioCtx.currentTime + duration);
         }
 
         // --- TIMER (REVISED WORKFLOW) ---
@@ -960,9 +993,11 @@
             if (matchState === 'auto' || matchState === 'driver') {
                 btnReset.innerText = "SKIP";
                 btnReset.className = "timer-btn btn-skip";
+                btnReset.onclick = skipTimer;
             } else {
                 btnReset.innerText = "RESET";
                 btnReset.className = "timer-btn btn-reset";
+                btnReset.onclick = resetTimer;
             }
             
             if (matchState === 'ready' || matchState === 'ready_driver') {
