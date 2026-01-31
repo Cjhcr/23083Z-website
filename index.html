@@ -14,7 +14,7 @@
     <!-- 2. 引入 Nasalization (NASA Font) -->
     <link href="https://fonts.cdnfonts.com/css/nasalization-2" rel="stylesheet">
     
-    <!-- 3. Font Awesome (新增用於 Host Game 圖標) -->
+    <!-- 3. Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -47,647 +47,133 @@
             background-attachment: fixed;
         }
 
-        /* 防止手機選單開啟時背景滑動 */
-        body.no-scroll {
-            overflow: hidden;
-        }
+        body.no-scroll { overflow: hidden; }
 
-        /* --- NEW: 自訂黑金捲軸 (更隱形版) --- */
-        ::-webkit-scrollbar {
-            width: 10px;
-        }
-        ::-webkit-scrollbar-track {
-            background: #050505; 
-        }
-        ::-webkit-scrollbar-thumb {
-            background: rgba(255, 215, 0, 0.2); 
-            border-radius: 5px;
-            border: 2px solid #050505; 
-        }
-        ::-webkit-scrollbar-thumb:hover {
-            background: var(--primary-color); 
-        }
+        /* Scrollbar */
+        ::-webkit-scrollbar { width: 10px; }
+        ::-webkit-scrollbar-track { background: #050505; }
+        ::-webkit-scrollbar-thumb { background: rgba(255, 215, 0, 0.2); border-radius: 5px; border: 2px solid #050505; }
+        ::-webkit-scrollbar-thumb:hover { background: var(--primary-color); }
 
-        /* 使用 Nasalization 字體 */
+        /* Fonts */
         h1, h2, h3, .nav-item, .btn, .stat-number, .event-date, .countdown-number, .tm-header, .timer-display, .timer-phase-indicator {
-            font-family: 'Nasalization', sans-serif; 
-            text-transform: uppercase;
-            letter-spacing: 1px;
+            font-family: 'Nasalization', sans-serif; text-transform: uppercase; letter-spacing: 1px;
         }
 
-        /* --- Typewriter Cursor Animation --- */
-        .typewriter-cursor {
-            display: inline-block;
-            color: var(--primary-color);
-            margin-left: 2px;
-            animation: blink-cursor 0.8s step-end infinite;
-            font-weight: bold;
-        }
+        /* Animations */
+        .typewriter-cursor { display: inline-block; color: var(--primary-color); margin-left: 2px; animation: blink-cursor 0.8s step-end infinite; font-weight: bold; }
+        @keyframes blink-cursor { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
+        .scroll-hidden { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
+        .scroll-visible { opacity: 1; transform: translateY(0); }
 
-        @keyframes blink-cursor {
-            0%, 100% { opacity: 1; }
-            50% { opacity: 0; }
-        }
-
-        /* --- 2. Scroll Animation Class --- */
-        .scroll-hidden {
-            opacity: 0;
-            transform: translateY(40px);
-            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
-        }
-
-        .scroll-visible {
-            opacity: 1;
-            transform: translateY(0);
-        }
-
-        /* --- Navigation --- */
-        header {
-            position: fixed;
-            top: 0;
-            width: 100%;
-            background: rgba(0, 0, 0, 0.95);
-            padding: 10px 5%;
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
-            z-index: 1000;
-            border-bottom: 2px solid #222;
-        }
-
-        .nav-logo {
-            text-decoration: none;
-            display: flex;
-            align-items: center;
-            z-index: 1002;
-        }
-
-        .nav-logo img {
-            height: 55px;
-            width: auto;
-            transition: filter 0.3s;
-        }
-        
+        /* Navigation */
+        header { position: fixed; top: 0; width: 100%; background: rgba(0, 0, 0, 0.95); padding: 10px 5%; display: flex; justify-content: space-between; align-items: center; z-index: 1000; border-bottom: 2px solid #222; }
+        .nav-logo { text-decoration: none; display: flex; align-items: center; z-index: 1002; }
+        .nav-logo img { height: 55px; width: auto; transition: filter 0.3s; }
         .nav-logo:hover img { filter: drop-shadow(0 0 8px var(--primary-color)); }
-
-        .nav-menu {
-            display: flex;
-            align-items: center;
-        }
-
+        .nav-menu { display: flex; align-items: center; }
         nav ul { display: flex; list-style: none; gap: 30px; }
-        
-        .nav-item {
-            color: white;
-            text-decoration: none;
-            font-weight: 700;
-            font-size: 0.9rem;
-            cursor: pointer;
-            padding-bottom: 5px;
-            border-bottom: 2px solid transparent;
-            transition: all 0.3s;
-        }
+        .nav-item { color: white; text-decoration: none; font-weight: 700; font-size: 0.9rem; cursor: pointer; padding-bottom: 5px; border-bottom: 2px solid transparent; transition: all 0.3s; }
+        .nav-item:hover, .nav-item.active { color: var(--primary-color); border-bottom: 2px solid var(--primary-color); text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
+        .menu-toggle { display: none; cursor: pointer; z-index: 1002; }
+        .bar { display: block; width: 25px; height: 3px; margin: 5px auto; transition: all 0.3s ease-in-out; background-color: white; }
 
-        .nav-item:hover, .nav-item.active {
-            color: var(--primary-color);
-            border-bottom: 2px solid var(--primary-color);
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-        }
-
-        .menu-toggle {
-            display: none;
-            cursor: pointer;
-            z-index: 1002;
-        }
-
-        .bar {
-            display: block;
-            width: 25px;
-            height: 3px;
-            margin: 5px auto;
-            transition: all 0.3s ease-in-out;
-            background-color: white;
-        }
-
-        /* --- Page Switching --- */
-        .page-section {
-            display: none; 
-            min-height: 100vh;
-            padding-top: 80px;
-            opacity: 0; 
-            transform: translateY(20px);
-            transition: opacity 0.4s ease-out, transform 0.4s ease-out;
-        }
-
+        /* Page Layout */
+        .page-section { display: none; min-height: 100vh; padding-top: 80px; opacity: 0; transform: translateY(20px); transition: opacity 0.4s ease-out, transform 0.4s ease-out; }
         .page-section.active-page { display: block; }
         .page-section.visible { opacity: 1; transform: translateY(0); }
-
         .section-header { text-align: center; padding: 60px 20px 40px; }
         .section-header h2 { font-size: 2.8rem; color: white; margin-bottom: 10px; line-height: 1.4; }
         .section-header span { color: var(--primary-color); }
         .section-header p { color: var(--text-muted); max-width: 800px; margin: 0 auto; font-size: 1.1rem; }
+        .section-logo { width: 100px; height: auto; margin: 0 auto 20px; display: block; filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.3)); }
 
-        .section-logo {
-            width: 100px; 
-            height: auto;
-            margin: 0 auto 20px; 
-            display: block;
-            filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.3));
-        }
-
-        /* --- HOME PAGE & COUNTDOWN --- */
-        #home {
-            padding-top: 0;
-            flex-direction: column;
-            justify-content: center; 
-            align-items: center;
-            text-align: center;
-            background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.6)), url('team.jpg');
-            background-size: cover;
-            background-position: center;
-            padding-bottom: 0;
-        }
+        /* Content Sections */
+        #home { padding-top: 0; flex-direction: column; justify-content: center; align-items: center; text-align: center; background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.6)), url('team.jpg'); background-size: cover; background-position: center; padding-bottom: 0; }
         .home-active { display: flex !important; }
-
-        .hero-content {
-            margin-top: 300px; 
-            width: 100%;
-            padding: 0 20px;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-        }
-
-        .hero-content h1 {
-            font-size: 5rem;
-            margin-bottom: 10px;
-            text-shadow: 
-                3px 3px 0px rgba(0, 0, 0, 0.8),
-                0 0 20px var(--primary-color),
-                0 0 40px var(--primary-color);
-            line-height: 1;
-            color: white;
-            position: relative; /* For Glitch Effect */
-            display: inline-block;
-        }
-
-        /* --- INTENSE Glitch Effect (更明顯的故障效果) --- */
-        .hero-content h1:hover {
-            animation: glitch-skew 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite;
-            color: var(--primary-color);
-        }
-
-        .hero-content h1:hover::before,
-        .hero-content h1:hover::after {
-            content: "REAPER";
-            position: absolute;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: transparent;
-        }
-
-        .hero-content h1:hover::before {
-            left: 4px;
-            text-shadow: 4px 0 #ff00c1;
-            clip: rect(44px, 450px, 56px, 0);
-            animation: glitch-anim 1.5s infinite linear alternate-reverse;
-        }
-
-        .hero-content h1:hover::after {
-            left: -4px;
-            text-shadow: -4px 0 #00fff9;
-            clip: rect(44px, 450px, 56px, 0);
-            animation: glitch-anim2 1.5s infinite linear alternate-reverse;
-        }
-
-        @keyframes glitch-anim {
-            0% { clip: rect(30px, 9999px, 10px, 0); }
-            20% { clip: rect(80px, 9999px, 90px, 0); }
-            40% { clip: rect(10px, 9999px, 50px, 0); }
-            60% { clip: rect(60px, 9999px, 20px, 0); }
-            80% { clip: rect(40px, 9999px, 70px, 0); }
-            100% { clip: rect(90px, 9999px, 30px, 0); }
-        }
-
-        @keyframes glitch-anim2 {
-            0% { clip: rect(10px, 9999px, 80px, 0); }
-            20% { clip: rect(50px, 9999px, 20px, 0); }
-            40% { clip: rect(90px, 9999px, 60px, 0); }
-            60% { clip: rect(30px, 9999px, 40px, 0); }
-            80% { clip: rect(70px, 9999px, 10px, 0); }
-            100% { clip: rect(20px, 9999px, 90px, 0); }
-        }
-
-        @keyframes glitch-skew {
-            0% { transform: skew(0deg); }
-            20% { transform: skew(-10deg); }
-            40% { transform: skew(10deg); }
-            60% { transform: skew(-5deg); }
-            80% { transform: skew(5deg); }
-            100% { transform: skew(0deg); }
-        }
-
-        .hero-content h2 { 
-            font-size: 1.8rem; 
-            color: var(--primary-color); 
-            margin-bottom: 5px;
-            text-shadow: 2px 2px 4px rgba(0,0,0,0.8);
-            /* 保持高度，避免打字時跳動 */
-            min-height: 1.8rem; 
-        }
-
-        /* Countdown Timer CSS */
-        .countdown-wrapper {
-            margin-top: 25px; 
-            animation: fadeIn 1s ease-out 0.5s backwards;
-        }
-
-        .countdown-container {
-            display: flex;
-            justify-content: center;
-            gap: 15px;
-            margin-top: 10px;
-            flex-wrap: wrap;
-        }
-
-        .countdown-item {
-            background: rgba(0, 0, 0, 0.5);
-            padding: 8px 12px;
-            border: 1px solid var(--primary-color);
-            min-width: 70px;
-            backdrop-filter: blur(3px);
-            border-radius: 8px;
-        }
-
-        .countdown-number {
-            display: block;
-            font-size: 1.5rem;
-            color: var(--primary-color);
-            font-weight: bold;
-            line-height: 1;
-        }
-
-        .countdown-label {
-            font-size: 0.75rem;
-            color: #ccc;
-            text-transform: uppercase;
-        }
-
-        .countdown-title {
-            color: #eee;
-            font-size: 0.9rem; 
-            letter-spacing: 2px;
-            text-shadow: 1px 1px 3px black;
-            font-weight: bold;
-            text-transform: uppercase;
-            text-decoration: none;
-            display: inline-block;
-            margin-bottom: 10px;
-            transition: all 0.3s ease;
-            border-bottom: 1px solid transparent;
-        }
-
-        .countdown-title:hover {
-            color: var(--primary-color);
-            border-bottom: 1px solid var(--primary-color);
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-        }
-        
-        .btn {
-            display: inline-block;
-            padding: 15px 40px;
-            border: 2px solid var(--primary-color);
-            color: var(--primary-color);
-            text-decoration: none;
-            font-weight: 900;
-            margin-top: 10px;
-            transition: 0.3s;
-            background: rgba(0,0,0,0.6);
-            cursor: pointer;
-            border-radius: 6px; 
-        }
+        .hero-content { margin-top: 300px; width: 100%; padding: 0 20px; display: flex; flex-direction: column; align-items: center; }
+        .hero-content h1 { font-size: 5rem; margin-bottom: 10px; text-shadow: 3px 3px 0px rgba(0, 0, 0, 0.8), 0 0 20px var(--primary-color), 0 0 40px var(--primary-color); line-height: 1; color: white; position: relative; display: inline-block; }
+        .hero-content h1:hover { animation: glitch-skew 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite; color: var(--primary-color); }
+        .hero-content h1:hover::before, .hero-content h1:hover::after { content: "REAPER"; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: transparent; }
+        .hero-content h1:hover::before { left: 4px; text-shadow: 4px 0 #ff00c1; clip: rect(44px, 450px, 56px, 0); animation: glitch-anim 1.5s infinite linear alternate-reverse; }
+        .hero-content h1:hover::after { left: -4px; text-shadow: -4px 0 #00fff9; clip: rect(44px, 450px, 56px, 0); animation: glitch-anim2 1.5s infinite linear alternate-reverse; }
+        @keyframes glitch-anim { 0% { clip: rect(30px, 9999px, 10px, 0); } 100% { clip: rect(90px, 9999px, 30px, 0); } }
+        @keyframes glitch-anim2 { 0% { clip: rect(10px, 9999px, 80px, 0); } 100% { clip: rect(20px, 9999px, 90px, 0); } }
+        @keyframes glitch-skew { 0% { transform: skew(0deg); } 20% { transform: skew(-10deg); } 40% { transform: skew(10deg); } 60% { transform: skew(-5deg); } 80% { transform: skew(5deg); } 100% { transform: skew(0deg); } }
+        .hero-content h2 { font-size: 1.8rem; color: var(--primary-color); margin-bottom: 5px; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); min-height: 1.8rem; }
+        .countdown-wrapper { margin-top: 25px; animation: fadeIn 1s ease-out 0.5s backwards; }
+        .countdown-container { display: flex; justify-content: center; gap: 15px; margin-top: 10px; flex-wrap: wrap; }
+        .countdown-item { background: rgba(0, 0, 0, 0.5); padding: 8px 12px; border: 1px solid var(--primary-color); min-width: 70px; backdrop-filter: blur(3px); border-radius: 8px; }
+        .countdown-number { display: block; font-size: 1.5rem; color: var(--primary-color); font-weight: bold; line-height: 1; }
+        .countdown-label { font-size: 0.75rem; color: #ccc; text-transform: uppercase; }
+        .countdown-title { color: #eee; font-size: 0.9rem; letter-spacing: 2px; text-shadow: 1px 1px 3px black; font-weight: bold; text-transform: uppercase; text-decoration: none; display: inline-block; margin-bottom: 10px; transition: all 0.3s ease; border-bottom: 1px solid transparent; }
+        .countdown-title:hover { color: var(--primary-color); border-bottom: 1px solid var(--primary-color); text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
+        .btn { display: inline-block; padding: 15px 40px; border: 2px solid var(--primary-color); color: var(--primary-color); text-decoration: none; font-weight: 900; margin-top: 10px; transition: 0.3s; background: rgba(0,0,0,0.6); cursor: pointer; border-radius: 6px; }
         .btn:hover { background: var(--primary-color); color: black; box-shadow: 0 0 30px var(--primary-color); }
 
-        /* --- ABOUT --- */
-        .about-container {
-            max-width: 1200px;
-            margin: 0 auto 80px;
-            padding: 0 20px;
-            display: flex;
-            flex-direction: column;
-            gap: 100px;
-        }
-
-        .about-row {
-            display: flex;
-            align-items: center;
-            gap: 60px;
-        }
-
-        .about-row:nth-child(even) {
-            flex-direction: row-reverse;
-        }
-
-        .about-image-wrapper {
-            flex: 1;
-            min-width: 300px;
-        }
-
-        .about-image-wrapper img {
-            width: 100%;
-            height: auto;
-            border-radius: 4px;
-            border: 2px solid var(--primary-color);
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.15);
-            display: block;
-        }
-
-        .about-text-content {
-            flex: 1;
-            min-width: 300px;
-            font-size: 1.15rem;
-            color: #ddd;
-        }
-
-        .about-text-content h3 {
-            color: white;
-            font-size: 2rem;
-            margin-bottom: 1.5rem;
-            border-left: 4px solid var(--primary-color);
-            padding-left: 15px;
-            line-height: 1.2;
-        }
-
+        .about-container { max-width: 1200px; margin: 0 auto 80px; padding: 0 20px; display: flex; flex-direction: column; gap: 100px; }
+        .about-row { display: flex; align-items: center; gap: 60px; }
+        .about-row:nth-child(even) { flex-direction: row-reverse; }
+        .about-image-wrapper { flex: 1; min-width: 300px; }
+        .about-image-wrapper img { width: 100%; height: auto; border-radius: 4px; border: 2px solid var(--primary-color); box-shadow: 0 0 20px rgba(255, 215, 0, 0.15); display: block; }
+        .about-text-content { flex: 1; min-width: 300px; font-size: 1.15rem; color: #ddd; }
+        .about-text-content h3 { color: white; font-size: 2rem; margin-bottom: 1.5rem; border-left: 4px solid var(--primary-color); padding-left: 15px; line-height: 1.2; }
         .about-text-content p { margin-bottom: 1.5rem; }
 
-        /* --- TEAM Grid --- */
-        .team-grid {
-            display: grid;
-            grid-template-columns: repeat(3, 1fr);
-            gap: 30px;
-            max-width: 1200px;
-            margin: 0 auto 80px;
-            padding: 0 20px;
-        }
-
-        .mentor-wrapper {
-            display: flex;
-            justify-content: center;
-            padding: 0 20px;
-            margin-bottom: 80px;
-            gap: 30px;
-            flex-wrap: wrap;
-        }
-
-        .mentor-wrapper .member-card {
-            width: 100%;
-            max-width: 380px;
-        }
-
-        .member-card {
-            background: var(--card-bg);
-            border: 1px solid #222;
-            overflow: hidden;
-            transition: 0.3s;
-            position: relative;
-        }
+        .team-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; max-width: 1200px; margin: 0 auto 80px; padding: 0 20px; }
+        .mentor-wrapper { display: flex; justify-content: center; padding: 0 20px; margin-bottom: 80px; gap: 30px; flex-wrap: wrap; }
+        .mentor-wrapper .member-card { width: 100%; max-width: 380px; }
+        .member-card { background: var(--card-bg); border: 1px solid #222; overflow: hidden; transition: 0.3s; position: relative; }
         .member-card:hover { transform: translateY(-10px); border-color: var(--primary-color); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-
-        .member-photo {
-            width: 100%;
-            height: 350px;
-            background-color: #222;
-            background-size: cover;
-            background-position: center;
-            transition: 0.5s;
-        }
-        
+        .member-photo { width: 100%; height: 350px; background-color: #222; background-size: cover; background-position: center; transition: 0.5s; }
         .member-info { padding: 20px; text-align: left; border-top: 1px solid #222; }
         .member-name { font-size: 1.3rem; color: white; margin-bottom: 5px; font-weight: 700; font-family: 'Nasalization', sans-serif; }
         .member-role { color: var(--primary-color); font-size: 0.9rem; text-transform: uppercase; font-weight: 500; font-family: 'Rajdhani', sans-serif; letter-spacing: 2px;}
 
-        /* --- GALLERY --- */
-        .gallery-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
-            gap: 20px;
-            padding: 20px 5%;
-            max-width: 1400px;
-            margin: 0 auto;
-        }
+        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 20px; padding: 20px 5%; max-width: 1400px; margin: 0 auto; }
+        .gallery-item { height: 250px; background: #222; overflow: hidden; position: relative; border: 1px solid #333; cursor: zoom-in; transition: transform 0.3s ease; }
+        .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
+        .gallery-item:hover { transform: scale(1.02); border-color: var(--primary-color); z-index: 10; }
+        .gallery-item:hover img { opacity: 1; }
 
-        .gallery-item {
-            height: 250px;
-            background: #222;
-            overflow: hidden;
-            position: relative;
-            border: 1px solid #333;
-            cursor: zoom-in;
-            transition: transform 0.3s ease;
-        }
+        #lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.95); display: none; justify-content: center; align-items: center; z-index: 2000; opacity: 0; transition: opacity 0.3s ease; }
+        #lightbox.active { display: flex; opacity: 1; }
+        #lightbox img { max-width: 90%; max-height: 90%; border: 2px solid var(--primary-color); box-shadow: 0 0 30px rgba(255, 215, 0, 0.3); object-fit: contain; }
+        #lightbox-close { position: absolute; top: 20px; right: 40px; color: white; font-size: 3rem; cursor: pointer; font-family: sans-serif; transition: color 0.3s; }
+        #lightbox-close:hover { color: var(--primary-color); }
 
-        .gallery-item img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: 0.5s;
-        }
+        #back-to-top { position: fixed; bottom: 30px; right: 30px; background-color: var(--primary-color); color: black; width: 50px; height: 50px; border-radius: 50%; border: none; cursor: pointer; display: flex; justify-content: center; align-items: center; z-index: 1000; box-shadow: 0 0 10px rgba(255, 215, 0, 0.5); opacity: 0; pointer-events: none; transition: opacity 0.5s ease, transform 0.3s ease, box-shadow 0.3s ease; }
+        #back-to-top.show { opacity: 0.6; pointer-events: auto; }
+        #back-to-top:hover { opacity: 1; transform: translateY(-5px); box-shadow: 0 0 20px rgba(255, 215, 0, 0.8); }
+        #back-to-top svg { width: 24px; height: 24px; fill: black; }
 
-        .gallery-item:hover {
-            transform: scale(1.02);
-            border-color: var(--primary-color);
-            z-index: 10;
-        }
-
-        .gallery-item:hover img {
-            opacity: 1;
-        }
-
-        /* Lightbox */
-        #lightbox {
-            position: fixed;
-            top: 0;
-            left: 0;
-            width: 100%;
-            height: 100%;
-            background: rgba(0, 0, 0, 0.95);
-            display: none;
-            justify-content: center;
-            align-items: center;
-            z-index: 2000;
-            opacity: 0;
-            transition: opacity 0.3s ease;
-        }
-
-        #lightbox.active {
-            display: flex;
-            opacity: 1;
-        }
-
-        #lightbox img {
-            max-width: 90%;
-            max-height: 90%;
-            border: 2px solid var(--primary-color);
-            box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
-            object-fit: contain;
-        }
-
-        #lightbox-close {
-            position: absolute;
-            top: 20px;
-            right: 40px;
-            color: white;
-            font-size: 3rem;
-            cursor: pointer;
-            font-family: sans-serif;
-            transition: color 0.3s;
-        }
-
-        #lightbox-close:hover {
-            color: var(--primary-color);
-        }
-
-        /* Back to Top Button */
-        #back-to-top {
-            position: fixed;
-            bottom: 30px;
-            right: 30px;
-            background-color: var(--primary-color);
-            color: black;
-            width: 50px;
-            height: 50px;
-            border-radius: 50%;
-            border: none;
-            cursor: pointer;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            z-index: 1000;
-            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
-            opacity: 0; 
-            pointer-events: none;
-            transition: opacity 0.5s ease, transform 0.3s ease, box-shadow 0.3s ease;
-        }
-
-        #back-to-top.show {
-            opacity: 0.6;
-            pointer-events: auto;
-        }
-
-        #back-to-top:hover {
-            opacity: 1;
-            transform: translateY(-5px);
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
-        }
-
-        #back-to-top svg {
-            width: 24px;
-            height: 24px;
-            fill: black;
-        }
-
-        /* --- EVENTS --- */
         .timeline { max-width: 900px; margin: 40px auto; padding: 0 20px; position: relative; }
-        .timeline::before {
-            content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 2px;
-            background: var(--primary-color); transform: translateX(-50%); opacity: 0.3;
-        }
-        
-        .event-card {
-            width: 45%; 
-            background: var(--card-bg); 
-            margin-bottom: 50px;
-            border: 1px solid #333; 
-            position: relative; 
-            transition: 0.3s;
-            display: block; 
-            text-decoration: none; 
-            color: inherit; 
-            padding: 0; 
-            overflow: hidden;
-            border-radius: 8px;
-        }
-        
-        .event-card:hover { 
-            border-color: var(--primary-color); 
-            box-shadow: 0 0 20px rgba(255, 215, 0, 0.1); 
-            transform: translateY(-5px);
-        }
-
-        .event-image {
-            width: 100%;
-            height: 200px;
-            overflow: hidden;
-            border-bottom: 1px solid #222;
-            background: #000;
-        }
-
-        .event-image img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            transition: transform 0.5s ease;
-        }
-
-        .event-image img.square-img {
-            object-fit: contain;
-        }
-
-        .event-card:hover .event-image img {
-            transform: scale(1.1); 
-        }
-
+        .timeline::before { content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: var(--primary-color); transform: translateX(-50%); opacity: 0.3; }
+        .event-card { width: 45%; background: var(--card-bg); margin-bottom: 50px; border: 1px solid #333; position: relative; transition: 0.3s; display: block; text-decoration: none; color: inherit; padding: 0; overflow: hidden; border-radius: 8px; }
+        .event-card:hover { border-color: var(--primary-color); box-shadow: 0 0 20px rgba(255, 215, 0, 0.1); transform: translateY(-5px); }
+        .event-image { width: 100%; height: 200px; overflow: hidden; border-bottom: 1px solid #222; background: #000; }
+        .event-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
+        .event-image img.square-img { object-fit: contain; }
+        .event-card:hover .event-image img { transform: scale(1.1); }
         .event-content { padding: 25px; text-align: inherit; }
-
         .event-card:nth-child(odd) { margin-left: auto; text-align: left; border-left: 3px solid var(--primary-color); }
         .event-card:nth-child(even) { margin-right: auto; text-align: right; border-left: none; border-right: 3px solid var(--primary-color); }
-        
-        .event-card::after {
-            content: ''; position: absolute; top: 20px; width: 15px; height: 15px;
-            background: var(--primary-color); border-radius: 50%; box-shadow: 0 0 10px var(--primary-color);
-        }
+        .event-card::after { content: ''; position: absolute; top: 20px; width: 15px; height: 15px; background: var(--primary-color); border-radius: 50%; box-shadow: 0 0 10px var(--primary-color); }
         .event-card:nth-child(odd)::after { left: -59px; }
         .event-card:nth-child(even)::after { right: -59px; }
-        
         .event-date { color: var(--primary-color); font-weight: 900; font-size: 1.2rem; margin-bottom: 10px; display: block; }
         .event-card h3 { font-size: 1.3rem; margin-bottom: 10px; line-height: 1.4; color: white;}
         .event-card p { font-size: 1rem; color: #aaa; }
 
         footer { background: #050505; padding: 40px; text-align: center; border-top: 1px solid #222; margin-top: 50px; }
         footer p { color: #666; margin-bottom: 5px; }
-
-        .contact-link {
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            gap: 10px;
-            color: #ccc;
-            text-decoration: none;
-            margin-bottom: 12px;
-            transition: color 0.3s, transform 0.2s;
-            font-size: 1.1rem;
-        }
-        .contact-link:hover {
-            color: var(--primary-color);
-            transform: translateX(5px); 
-        }
-        .contact-icon {
-            width: 24px;
-            height: 24px;
-            fill: currentColor;
-        }
-
-        .footer-logo {
-            max-width: 250px; 
-            height: auto;
-            margin-bottom: 30px;
-            display: inline-block;
-        }
+        .contact-link { display: flex; align-items: center; justify-content: center; gap: 10px; color: #ccc; text-decoration: none; margin-bottom: 12px; transition: color 0.3s, transform 0.2s; font-size: 1.1rem; }
+        .contact-link:hover { color: var(--primary-color); transform: translateX(5px); }
+        .contact-icon { width: 24px; height: 24px; fill: currentColor; }
+        .footer-logo { max-width: 250px; height: auto; margin-bottom: 30px; display: inline-block; }
 
         /* =========================================
-           HOST GAME (TOURNAMENT MANAGER) STYLES - NEW ADDITION
+           HOST GAME STYLES
            ========================================= */
         #tm-title { font-size: 2.2rem; color: var(--primary-color); text-align: center; margin-bottom: 15px; margin-top: 0; text-shadow: 0 0 10px rgba(255, 215, 0, 0.3); }
 
@@ -747,11 +233,11 @@
         #tm-tools { grid-column: 3 / 4; display: grid; grid-template-rows: 0.8fr 1.2fr; gap: 10px; border: none; background: transparent; }
         .tool-box { background: #111; border: 1px solid #333; border-radius: 6px; display: flex; flex-direction: column; position: relative; transition: all 0.3s; }
         
-        /* Fullscreen Fix */
+        /* Fullscreen Fix - High Z-Index & Background */
         .tool-box.fullscreen, .tm-panel.fullscreen { 
             position: fixed !important; 
             top: 0; left: 0; width: 100vw; height: 100vh; 
-            z-index: 9999; background: #000; 
+            z-index: 20000; background: #000; /* Extremely high Z-Index to cover navbar */
             border: none; border-radius: 0; padding: 20px; 
             display: flex; flex-direction: column;
         }
@@ -759,7 +245,7 @@
         .tm-panel.fullscreen .ranking-table th, .tm-panel.fullscreen .ranking-table td { padding: 15px; font-size: 1.2rem; }
         .tm-panel.fullscreen .match-row { padding: 20px; font-size: 1.5rem; }
         
-        .fullscreen-close-btn { display: none; position: absolute; top: 20px; right: 20px; font-size: 2rem; color: #ff4444; cursor: pointer; z-index: 10001; }
+        .fullscreen-close-btn { display: none; position: absolute; top: 20px; right: 20px; font-size: 2rem; color: #ff4444; cursor: pointer; z-index: 20001; }
         .tool-box.fullscreen .fullscreen-close-btn, .tm-panel.fullscreen .fullscreen-close-btn { display: block; }
         .fs-btn { cursor: pointer; color: #666; transition: 0.3s; padding: 5px; }
         .fs-btn:hover { color: white; }
@@ -774,6 +260,7 @@
         .btn-start { background: var(--vex-green); color: black; transition: background 0.2s; }
         .btn-start:disabled { background: #444; color: #888; cursor: not-allowed; border: 1px solid #555; }
         .btn-pause { background: var(--vex-orange); color: black; display: none;}
+        .btn-skip { background: #E67E22; color: black; } /* Skip Color */
         .btn-switch { background: #fff; color: #000; border: 2px solid var(--primary-color); display: none; }
         .btn-stop { background: var(--vex-red); color: white; }
         .btn-reset { background: #f39c12; color: black; }
@@ -799,6 +286,9 @@
         .submit-score-btn { width: 100%; padding: 8px; margin-top: 8px; background: linear-gradient(45deg, var(--primary-color), #d4b000); border: none; color: black; font-weight: 900; font-size: 0.9rem; cursor: pointer; border-radius: 4px; font-family: 'Nasalization'; text-transform: uppercase; }
         .submit-score-btn:hover { filter: brightness(1.1); box-shadow: 0 0 10px var(--primary-color); }
         .match-selector { width: 100%; padding: 4px; background: #222; color: white; border: 1px solid #444; margin-bottom: 6px; border-radius: 4px; font-size: 0.85rem; }
+        /* Clear Button */
+        .clear-score-btn { width: 100%; padding: 5px; margin-top: 5px; background: #333; border: 1px solid #555; color: #ccc; cursor: pointer; font-size: 0.8rem; border-radius: 4px; }
+        .clear-score-btn:hover { background: #444; color: white; }
 
         @media (max-width: 768px) {
             .tm-container { grid-template-columns: 1fr; grid-template-rows: auto; height: auto; display: flex; flex-direction: column; }
@@ -859,11 +349,19 @@
         <div class="about-container">
             <div class="about-row scroll-hidden">
                 <div class="about-image-wrapper"><img src="about-1.jpg" alt="Team 23083Z Origin"></div>
-                <div class="about-text-content"><h3>Our Origin</h3><p>Welcome to the official website of <strong>Team Reaper (23083Z)</strong>...</p><p>Inspired by the precision of a "Reaper"...</p></div>
+                <div class="about-text-content">
+                    <h3>Our Origin</h3>
+                    <p>Welcome to the official website of <strong>Team Reaper (23083Z)</strong>, a competitive VEX Robotics team representing <strong>Wego High School</strong> in Taipei, Taiwan. Founded in 2023, our team consists of six passionate students dedicated to pushing the boundaries of engineering, design, and programming.</p>
+                    <p>Inspired by the precision of a "Reaper," we approach every challenge with strategic focus and unwavering determination. Following the VRC Over Under and high stakes seasons, we have honed our skills and built a strong foundation in the VEX V5 system. Our goal is not just to build efficient robots, but to represent Taiwan on the global stage at the VEX Robotics World Championship.</p>
+                </div>
             </div>
             <div class="about-row scroll-hidden">
                 <div class="about-image-wrapper"><img src="about-2.jpg" alt="Team 23083Z Mission"></div>
-                <div class="about-text-content"><h3>COLLABORATIVE ATMOSPHERE</h3><p>Our team members are all from the same class...</p><p>We believe that robotics is more than just building machines...</p></div>
+                <div class="about-text-content">
+                    <h3>COLLABORATIVE ATMOSPHERE</h3>
+                    <p>Our team members are all from the same class, but the club, with three VEX teams this year are composed of different classes and across different grades. Some have participated in previous VEX seasons and some have not. Because our school emphasizes academic performances and have strict rules of when we can practice robotics and have club time, like previous years, we would often only have 2 or 3 people at the room practicing because everyone’s schedule is different. We set rules so that everyone would follow and prevent mistakes and conflicts that have happened in previous seasons.</p>
+                    <p>We believe that robotics is more than just building machines; it is about building character, resilience, and a future where technology serves humanity. Every gear we place and every line of code we write brings us one step closer to that future.</p>
+                </div>
             </div>
         </div>
         <div class="section-header scroll-hidden"><img src="reaper.svg" alt="Reaper Logo" class="section-logo"><h2>The <span>Team Members</span></h2></div>
@@ -933,7 +431,7 @@
             <!-- RANKINGS -->
             <div id="tm-rankings" class="tm-panel">
                 <div class="tm-header">
-                    <span>Rankings (WP/AP/SP)</span>
+                    <span>Rankings (Avg Stats)</span>
                     <i class="fa-solid fa-expand fs-btn" onclick="toggleFullScreen('tm-rankings')"></i>
                 </div>
                 <div class="ranking-controls">
@@ -943,7 +441,7 @@
                 <div class="tm-content" id="ranking-container">
                     <i class="fa-solid fa-times fullscreen-close-btn" onclick="toggleFullScreen('tm-rankings')"></i>
                     <table class="ranking-table" id="ranking-table">
-                        <thead><tr><th>Rank</th><th class="team-cell">Team</th><th>WP</th><th>AP</th><th>SP</th><th>W-L-T</th></tr></thead>
+                        <thead><tr><th>Rank</th><th class="team-cell">Team</th><th>Avg WP</th><th>Avg AP</th><th>Avg SP</th><th>W-L-T</th></tr></thead>
                         <tbody id="ranking-body"></tbody>
                     </table>
                 </div>
@@ -979,8 +477,8 @@
                         <div class="timer-controls">
                             <button id="btn-start" class="timer-btn btn-start" onclick="toggleTimer()">Start</button>
                             <button id="btn-pause" class="timer-btn btn-pause" onclick="pauseTimer()">Pause</button>
+                            <button id="btn-reset" class="timer-btn btn-reset" onclick="handleResetSkip()">Reset</button>
                             <button id="btn-switch" class="timer-btn btn-switch" onclick="switchToDriver()">SWITCH TO DRIVER</button>
-                            <button class="timer-btn btn-reset" onclick="resetTimer()">Reset</button>
                         </div>
                     </div>
                 </div>
@@ -1002,17 +500,18 @@
                         </div>
                         <div class="calc-body">
                             <div class="calc-col col-red">
-                                <div class="calc-input-group"><label>Total Score</label><input type="number" id="red-score-input" class="score-input" value="0" oninput="calculateTotal()"></div>
+                                <div class="calc-input-group"><label>Total Score</label><input type="number" id="red-score-input" class="score-input" value="0" min="0" oninput="calculateTotal()"></div>
                                 <div class="calc-item"><label>Auto Bonus</label><input type="checkbox" id="red-auto"></div>
                                 <div class="calc-item"><label>AWP</label><input type="checkbox" id="red-wp"></div>
                             </div>
                             <div class="calc-col col-blue">
-                                <div class="calc-input-group"><label>Total Score</label><input type="number" id="blue-score-input" class="score-input" value="0" oninput="calculateTotal()"></div>
+                                <div class="calc-input-group"><label>Total Score</label><input type="number" id="blue-score-input" class="score-input" value="0" min="0" oninput="calculateTotal()"></div>
                                 <div class="calc-item"><label>Auto Bonus</label><input type="checkbox" id="blue-auto"></div>
                                 <div class="calc-item"><label>AWP</label><input type="checkbox" id="blue-wp"></div>
                             </div>
                         </div>
                         <button class="submit-score-btn" onclick="submitMatchScore()">SUBMIT</button>
+                        <button class="clear-score-btn" onclick="clearScores()">CLEAR SCORES</button>
                     </div>
                 </div>
             </div>
@@ -1186,10 +685,10 @@
 
         function saveToStorage() {
             const data = { teams: teamData, matches: matches, eventName: currentEventName, mode: currentRankingMode };
-            localStorage.setItem('vex_reaper_tm_v4', JSON.stringify(data));
+            localStorage.setItem('vex_reaper_tm_v5', JSON.stringify(data));
         }
         function loadFromStorage() {
-            const data = localStorage.getItem('vex_reaper_tm_v4');
+            const data = localStorage.getItem('vex_reaper_tm_v5');
             if (data) {
                 const parsed = JSON.parse(data);
                 teamData = parsed.teams || []; matches = parsed.matches || [];
@@ -1203,7 +702,11 @@
             const num = document.getElementById('team-number').value.trim().toUpperCase();
             const name = document.getElementById('team-name').value.trim();
             if (num && !teamData.find(t => t.number === num)) {
-                teamData.push({ number: num, name: name, p_wp:0, p_ap:0, p_sp:0, p_wins:0, p_losses:0, p_ties:0, q_wp:0, q_ap:0, q_sp:0, q_wins:0, q_losses:0, q_ties:0 });
+                teamData.push({ 
+                    number: num, name: name, 
+                    p_wp:0, p_ap:0, p_sp:0, p_wins:0, p_losses:0, p_ties:0, p_matches:0,
+                    q_wp:0, q_ap:0, q_sp:0, q_wins:0, q_losses:0, q_ties:0, q_matches:0
+                });
                 renderTeamList(); document.getElementById('team-number').value=''; document.getElementById('team-name').value='';
             }
         }
@@ -1262,12 +765,25 @@
         function updateRankings() {
             const prefix = currentRankingMode === 'Practice' ? 'p_' : 'q_';
             teamData.sort((a, b) => {
-                if (b[prefix+'wp'] !== a[prefix+'wp']) return b[prefix+'wp'] - a[prefix+'wp'];
-                if (b[prefix+'ap'] !== a[prefix+'ap']) return b[prefix+'ap'] - a[prefix+'ap'];
-                return b[prefix+'sp'] - a[prefix+'sp'];
+                const aAvgWP = a[prefix+'matches'] > 0 ? a[prefix+'wp'] / a[prefix+'matches'] : 0;
+                const bAvgWP = b[prefix+'matches'] > 0 ? b[prefix+'wp'] / b[prefix+'matches'] : 0;
+                if (bAvgWP !== aAvgWP) return bAvgWP - aAvgWP;
+                
+                const aAvgAP = a[prefix+'matches'] > 0 ? a[prefix+'ap'] / a[prefix+'matches'] : 0;
+                const bAvgAP = b[prefix+'matches'] > 0 ? b[prefix+'ap'] / b[prefix+'matches'] : 0;
+                if (bAvgAP !== aAvgAP) return bAvgAP - aAvgAP;
+                
+                const aAvgSP = a[prefix+'matches'] > 0 ? a[prefix+'sp'] / a[prefix+'matches'] : 0;
+                const bAvgSP = b[prefix+'matches'] > 0 ? b[prefix+'sp'] / b[prefix+'matches'] : 0;
+                return bAvgSP - aAvgSP;
             });
+            
             document.getElementById('ranking-body').innerHTML = teamData.map((t, index) => {
-                return `<tr><td class="rank-num">${index + 1}</td><td class="team-cell"><span style="font-weight:bold">${t.number}</span> <span style="font-size:0.85em;color:#aaa">${t.name||''}</span></td><td>${t[prefix+'wp']}</td><td>${t[prefix+'ap']}</td><td>${t[prefix+'sp']}</td><td>${t[prefix+'wins']}-${t[prefix+'losses']}-${t[prefix+'ties']}</td></tr>`;
+                const matches = t[prefix+'matches'] || 1; // Prevent div by zero for display if 0
+                const avgWP = (t[prefix+'wp'] / (t[prefix+'matches'] || 1)).toFixed(2);
+                const avgAP = (t[prefix+'ap'] / (t[prefix+'matches'] || 1)).toFixed(2);
+                const avgSP = (t[prefix+'sp'] / (t[prefix+'matches'] || 1)).toFixed(2);
+                return `<tr><td class="rank-num">${index + 1}</td><td class="team-cell"><span style="font-weight:bold">${t.number}</span> <span style="font-size:0.85em;color:#aaa">${t.name||''}</span></td><td>${t[prefix+'matches']>0?avgWP:'-'}</td><td>${t[prefix+'matches']>0?avgAP:'-'}</td><td>${t[prefix+'matches']>0?avgSP:'-'}</td><td>${t[prefix+'wins']}-${t[prefix+'losses']}-${t[prefix+'ties']}</td></tr>`;
             }).join('');
         }
 
@@ -1276,10 +792,22 @@
             const select = document.getElementById('calc-match-select'); select.value = label; loadMatchForScoring();
         }
         function calculateTotal() {
-            const rScore = parseInt(document.getElementById('red-score-input').value) || 0;
-            const bScore = parseInt(document.getElementById('blue-score-input').value) || 0;
+            let rScore = parseInt(document.getElementById('red-score-input').value) || 0;
+            if(rScore < 0) { rScore = 0; document.getElementById('red-score-input').value = 0; }
+            let bScore = parseInt(document.getElementById('blue-score-input').value) || 0;
+            if(bScore < 0) { bScore = 0; document.getElementById('blue-score-input').value = 0; }
+            
             document.getElementById('score-red-display').innerText = rScore;
             document.getElementById('score-blue-display').innerText = bScore;
+        }
+        function clearScores() {
+            document.getElementById('red-score-input').value = 0;
+            document.getElementById('blue-score-input').value = 0;
+            document.getElementById('red-auto').checked = false;
+            document.getElementById('blue-auto').checked = false;
+            document.getElementById('red-wp').checked = false;
+            document.getElementById('blue-wp').checked = false;
+            calculateTotal();
         }
         function loadMatchForScoring() {
             const label = document.getElementById('calc-match-select').value;
@@ -1288,12 +816,18 @@
             
             const match = matches.find(m => m.label === label);
             if(match) {
-                document.getElementById('score-red-team').innerText = `${match.red1}${match.red2?' / '+match.red2:''}`;
-                document.getElementById('score-blue-team').innerText = `${match.blue1}${match.blue2?' / '+match.blue2:''}`;
+                const rTeamText = match.red2 ? `${match.red1} / ${match.red2}` : match.red1;
+                const bTeamText = match.blue2 ? `${match.blue1} / ${match.blue2}` : match.blue1;
+                document.getElementById('score-red-team').innerText = rTeamText;
+                document.getElementById('score-blue-team').innerText = bTeamText;
             }
         }
         function populateMatchSelector() {
-            document.getElementById('calc-match-select').innerHTML = matches.map(m => `<option value="${m.label}">${m.label}: ${m.red1} vs ${m.blue1}</option>`).join('');
+            document.getElementById('calc-match-select').innerHTML = matches.map(m => {
+                const rTeamText = m.red2 ? `${m.red1}/${m.red2}` : m.red1;
+                const bTeamText = m.blue2 ? `${m.blue1}/${m.blue2}` : m.blue1;
+                return `<option value="${m.label}">${m.label}: ${rTeamText} vs ${bTeamText}</option>`;
+            }).join('');
         }
         function submitMatchScore() {
             const matchLabel = document.getElementById('calc-match-select').value;
@@ -1314,16 +848,24 @@
             if(match.type === 'Qualification' && currentRankingMode !== 'Qualification') switchRankingMode('Qualification');
             recalculateAllRankings(); renderMatches(); updateRankings(); saveToStorage();
             
+            clearScores();
+            
             const nextMatch = matches.find(m => m.id === match.id + 1);
             if (nextMatch) loadMatchIntoCalc(nextMatch.label);
         }
         function recalculateAllRankings() {
-            teamData.forEach(t => { t.p_wp=0; t.p_ap=0; t.p_sp=0; t.p_wins=0; t.p_losses=0; t.p_ties=0; t.q_wp=0; t.q_ap=0; t.q_sp=0; t.q_wins=0; t.q_losses=0; t.q_ties=0; });
+            teamData.forEach(t => { 
+                t.p_wp=0; t.p_ap=0; t.p_sp=0; t.p_wins=0; t.p_losses=0; t.p_ties=0; t.p_matches=0;
+                t.q_wp=0; t.q_ap=0; t.q_sp=0; t.q_wins=0; t.q_losses=0; t.q_ties=0; t.q_matches=0;
+            });
             matches.forEach(m => {
                 if (m.status === 'completed') {
                     const prefix = m.type === 'Practice' ? 'p_' : 'q_';
                     const r = [teamData.find(t=>t.number===m.red1), teamData.find(t=>t.number===m.red2)].filter(x=>x);
                     const b = [teamData.find(t=>t.number===m.blue1), teamData.find(t=>t.number===m.blue2)].filter(x=>x);
+                    
+                    r.forEach(t=>t[prefix+'matches']++);
+                    b.forEach(t=>t[prefix+'matches']++);
                     
                     let rWP = 0; let bWP = 0;
                     if (m.redScore > m.blueScore) { rWP+=2; r.forEach(t=>t[prefix+'wins']++); b.forEach(t=>t[prefix+'losses']++); }
@@ -1386,11 +928,21 @@
             const btnStart = document.getElementById('btn-start');
             const btnPause = document.getElementById('btn-pause');
             const btnSwitch = document.getElementById('btn-switch');
+            const btnReset = document.getElementById('btn-reset');
             
             btnStart.style.display = 'inline-block';
             btnPause.style.display = 'none';
             btnSwitch.style.display = 'none';
             btnStart.disabled = false;
+            
+            // Logic for Reset/Skip button
+            if (matchState === 'auto' || matchState === 'driver') {
+                btnReset.innerText = "SKIP";
+                btnReset.className = "timer-btn btn-skip";
+            } else {
+                btnReset.innerText = "RESET";
+                btnReset.className = "timer-btn btn-reset";
+            }
             
             if (matchState === 'ready' || matchState === 'ready_driver') {
                 btnStart.innerText = "START";
@@ -1425,6 +977,29 @@
             matchState = 'ready';
             updateTimerDisplay();
             updateButtons();
+        }
+        
+        function skipTimer() {
+            // Skips current phase
+            if (matchState === 'auto') {
+                clearInterval(timerInterval);
+                playTone(200, 'sawtooth', 1.0);
+                matchState = 'ended_auto';
+            } else if (matchState === 'driver') {
+                clearInterval(timerInterval);
+                playTone(200, 'sawtooth', 1.0);
+                matchState = 'ended_match';
+            }
+            updateTimerDisplay();
+            updateButtons();
+        }
+        
+        function handleResetSkip() {
+            if (document.getElementById('btn-reset').innerText === "SKIP") {
+                skipTimer();
+            } else {
+                resetTimer();
+            }
         }
 
         function toggleTimer() {
