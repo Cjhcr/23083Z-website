@@ -426,7 +426,9 @@
             <div class="setup-form-container">
                 <input type="text" id="event-name" class="tm-input full-width" placeholder="Enter Event Name...">
                 <div class="input-row">
+                    <!-- Adjusted onkeypress to focus name input -->
                     <input type="text" id="team-number" class="tm-input" maxlength="6" placeholder="No. (e.g. 23083Z)" onkeypress="if(event.key==='Enter') document.getElementById('team-name').focus()">
+                    <!-- Adjusted onkeypress to call addTeam -->
                     <input type="text" id="team-name" class="tm-input" placeholder="Name (e.g. Reaper)" onkeypress="if(event.key==='Enter') addTeam()">
                     <button onclick="addTeam()" class="btn add-btn">+</button>
                 </div>
@@ -436,7 +438,7 @@
                 <button onclick="startTournament()" class="btn full-width" style="font-size: 1.5rem; flex: 2;">START EVENT</button>
                 <button onclick="loadFromStorage()" class="btn full-width" style="font-size: 1rem; flex: 1; border-color: #666; color: #aaa;">LOAD SAVED</button>
             </div>
-            <p id="setup-error" style="color: #e74c3c; margin-top: 10px; display: none;">Need at least 2 teams!</p>
+            <p id="setup-error" style="color: #e74c3c; margin-top: 10px; display: none;">Need at least 4 teams!</p>
         </div>
 
         <div id="tm-dashboard" class="tm-container" style="display: none;">
@@ -738,7 +740,8 @@
         function removeTeam(number) { teamData = teamData.filter(t => t.number !== number); renderTeamList(); }
         
         function startTournament() {
-            if (teamData.length < 2) { document.getElementById('setup-error').style.display = 'block'; return; }
+            // Require at least 4 teams as requested
+            if (teamData.length < 4) { document.getElementById('setup-error').style.display = 'block'; return; }
             currentEventName = document.getElementById('event-name').value || "VEX Tournament";
             document.getElementById('tm-title').innerText = currentEventName;
             document.getElementById('rank-fs-title').innerText = currentEventName;
@@ -915,8 +918,25 @@
         }
 
         // --- AUDIO ---
+        // Global unlock AudioContext on first user interaction
+        let audioCtx;
+        function initAudio() {
+            if (!audioCtx) {
+                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+            }
+            if (audioCtx.state === 'suspended') {
+                audioCtx.resume();
+            }
+        }
+        document.body.addEventListener('click', initAudio, { once: true });
+        document.body.addEventListener('touchstart', initAudio, { once: true });
+
         function playSound(type) {
+            // Ensure context is running if possible
+            if(audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
+
             let file = '';
+            // Updated filenames based on user request (Case Sensitive)
             switch(type) {
                 case 'start': file = 'sound/Start.wav'; break;
                 case 'pause': file = 'sound/Pause.wav'; break;
@@ -924,10 +944,11 @@
                 case 'stop': file = 'sound/Stop.wav'; break;
                 case 'warning': file = 'sound/Warning.wav'; break;
             }
+            
             if(file) {
                 const audio = new Audio(file);
                 audio.play().catch(e => {
-                    console.warn("WAV failed, using beep fallback", e);
+                    console.warn("WAV failed (check path/browser policy), using beep fallback", e);
                     // Fallback to beep if file missing/blocked
                     playTone(type === 'start' ? 600 : 200, 'square', 0.5);
                 });
@@ -935,14 +956,17 @@
         }
         
         // Fallback tone generator
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         function playTone(freq, type, duration) {
-            if (audioCtx.state === 'suspended') audioCtx.resume();
-            const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
-            osc.type = type; osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+            if (!audioCtx) initAudio();
+            const osc = audioCtx.createOscillator(); 
+            const gain = audioCtx.createGain();
+            osc.type = type; 
+            osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
             gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-            osc.connect(gain); gain.connect(audioCtx.destination);
-            osc.start(); osc.stop(audioCtx.currentTime + duration);
+            osc.connect(gain); 
+            gain.connect(audioCtx.destination);
+            osc.start(); 
+            osc.stop(audioCtx.currentTime + duration);
         }
 
         // --- TIMER (REVISED WORKFLOW) ---
