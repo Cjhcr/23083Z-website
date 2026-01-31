@@ -317,6 +317,13 @@
 </head>
 <body>
 
+    <!-- Audio Elements -->
+    <audio id="sfx-start" src="sound/Start.wav" preload="auto"></audio>
+    <audio id="sfx-pause" src="sound/Pause.wav" preload="auto"></audio>
+    <audio id="sfx-abort" src="sound/Abort.wav" preload="auto"></audio>
+    <audio id="sfx-stop" src="sound/Stop.wav" preload="auto"></audio>
+    <audio id="sfx-warning" src="sound/Warning.wav" preload="auto"></audio>
+
     <header>
         <a href="#home" class="nav-logo" onclick="switchTab('home')">
             <img src="logo.png" alt="23083Z Reaper Logo">
@@ -778,9 +785,9 @@
                 <div class="match-row ${m.status === 'completed' ? 'completed' : ''}" id="match-row-${m.label}" onclick="loadMatchIntoCalc('${m.label}')" style="opacity: ${m.status==='completed'?0.5:1}">
                     <div class="match-name">${m.label}</div>
                     <div class="alliance">
-                        <span class="red-alliance">${m.red1}${m.red2 ? '/'+m.red2 : ''}</span>
+                        <span class="red-alliance">${m.red1} ${m.red2 ? '/ '+m.red2 : ''}</span>
                         <span style="color:#444">vs</span>
-                        <span class="blue-alliance">${m.blue1}${m.blue2 ? '/'+m.blue2 : ''}</span>
+                        <span class="blue-alliance">${m.blue1} ${m.blue2 ? '/ '+m.blue2 : ''}</span>
                     </div>
                     ${m.status === 'completed' ? `<div class="match-score">${m.redScore} - ${m.blueScore}</div>` : ''}
                 </div>
@@ -854,8 +861,8 @@
         }
         function populateMatchSelector() {
             document.getElementById('calc-match-select').innerHTML = matches.map(m => {
-                const rTeamText = m.red2 ? `${m.red1}/${m.red2}` : m.red1;
-                const bTeamText = m.blue2 ? `${m.blue1}/${m.blue2}` : m.blue1;
+                const rTeamText = m.red2 ? `${m.red1} / ${m.red2}` : m.red1;
+                const bTeamText = m.blue2 ? `${m.blue1} / ${m.blue2}` : m.blue1;
                 return `<option value="${m.label}">${m.label}: ${rTeamText} vs ${bTeamText}</option>`;
             }).join('');
         }
@@ -918,55 +925,38 @@
         }
 
         // --- AUDIO ---
-        // Global unlock AudioContext on first user interaction
-        let audioCtx;
-        function initAudio() {
-            if (!audioCtx) {
-                audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-            }
-            if (audioCtx.state === 'suspended') {
-                audioCtx.resume();
-            }
-        }
-        document.body.addEventListener('click', initAudio, { once: true });
-        document.body.addEventListener('touchstart', initAudio, { once: true });
-
         function playSound(type) {
-            // Ensure context is running if possible
-            if(audioCtx && audioCtx.state === 'suspended') audioCtx.resume();
-
-            let file = '';
-            // Updated filenames based on user request (Case Sensitive)
+            let id = '';
+            // Match sound to audio tag ID
             switch(type) {
-                case 'start': file = 'sound/Start.mp3'; break;
-                case 'pause': file = 'sound/Pause.wav'; break;
-                case 'abort': file = 'sound/Abort.wav'; break;
-                case 'stop': file = 'sound/Stop.wav'; break;
-                case 'warning': file = 'sound/Warning.wav'; break;
+                case 'start': id = 'sfx-start'; break;
+                case 'pause': id = 'sfx-pause'; break;
+                case 'abort': id = 'sfx-abort'; break;
+                case 'stop': id = 'sfx-stop'; break;
+                case 'warning': id = 'sfx-warning'; break;
             }
-            
-            if(file) {
-                const audio = new Audio(file);
-                audio.play().catch(e => {
-                    console.warn("WAV failed (check path/browser policy), using beep fallback", e);
-                    // Fallback to beep if file missing/blocked
-                    playTone(type === 'start' ? 600 : 200, 'square', 0.5);
-                });
+            if(id) {
+                const el = document.getElementById(id);
+                if(el) {
+                    el.currentTime = 0;
+                    el.play().catch(e => {
+                        console.warn("Audio play failed", e);
+                        // Fallback beep
+                        playTone(type === 'start' ? 600 : 200, 'square', 0.5);
+                    });
+                }
             }
         }
         
         // Fallback tone generator
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
         function playTone(freq, type, duration) {
-            if (!audioCtx) initAudio();
-            const osc = audioCtx.createOscillator(); 
-            const gain = audioCtx.createGain();
-            osc.type = type; 
-            osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
+            osc.type = type; osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
             gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-            osc.connect(gain); 
-            gain.connect(audioCtx.destination);
-            osc.start(); 
-            osc.stop(audioCtx.currentTime + duration);
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            osc.start(); osc.stop(audioCtx.currentTime + duration);
         }
 
         // --- TIMER (REVISED WORKFLOW) ---
