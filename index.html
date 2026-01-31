@@ -14,7 +14,7 @@
     <!-- 2. 引入 Nasalization (NASA Font) -->
     <link href="https://fonts.cdnfonts.com/css/nasalization-2" rel="stylesheet">
     
-    <!-- 3. Font Awesome -->
+    <!-- 3. Font Awesome (新增用於 Host Game 圖標) -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
     
     <style>
@@ -25,9 +25,11 @@
             --text-color: #ffffff;
             --text-muted: #cccccc;
             --border-color: #333;
-            /* 比賽專用色 */
+            /* Host Game 專用色 */
             --vex-red: #E74C3C;
             --vex-blue: #3498DB;
+            --vex-green: #2ECC71;
+            --vex-orange: #F39C12;
         }
 
         * { margin: 0; padding: 0; box-sizing: border-box; }
@@ -185,7 +187,6 @@
         .section-header span { color: var(--primary-color); }
         .section-header p { color: var(--text-muted); max-width: 800px; margin: 0 auto; font-size: 1.1rem; }
 
-        /* 新增：用於 Team Members 上方 Logo 的樣式 */
         .section-logo {
             width: 100px; 
             height: auto;
@@ -686,12 +687,9 @@
         }
 
         /* =========================================
-           HOST GAME (TOURNAMENT MANAGER) STYLES
+           HOST GAME (TOURNAMENT MANAGER) STYLES - NEW ADDITION
            ========================================= */
-        #tm-title {
-            font-size: 2.2rem; color: var(--primary-color); text-align: center; margin-bottom: 15px; margin-top: 0;
-            text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
-        }
+        #tm-title { font-size: 2.2rem; color: var(--primary-color); text-align: center; margin-bottom: 15px; margin-top: 0; text-shadow: 0 0 10px rgba(255, 215, 0, 0.3); }
 
         .tm-container {
             max-width: 1600px; margin: 0 auto; padding: 0 10px; 
@@ -728,8 +726,6 @@
         .ranking-table td { padding: 5px 4px; border-bottom: 1px solid #222; text-align: center; }
         .rank-num { font-weight: bold; color: var(--primary-color); }
         .team-cell { text-align: left !important; }
-        .spacer-row { height: 20px; background: repeating-linear-gradient(45deg, #111, #111 10px, #161616 10px, #161616 20px); }
-        
         .ranking-controls { display: flex; background: #000; border-bottom: 1px solid #333; }
         .rank-tab { flex: 1; padding: 6px; text-align: center; cursor: pointer; color: #888; font-size: 0.8rem; text-transform: uppercase; font-weight: bold; transition: 0.3s; }
         .rank-tab.active { background: #111; color: var(--primary-color); border-bottom: 2px solid var(--primary-color); }
@@ -737,26 +733,33 @@
         /* Schedule */
         #tm-schedule { grid-column: 2 / 3; }
         #match-list { max-height: 100%; } 
-        .match-row { display: flex; align-items: center; padding: 8px 10px; border-bottom: 1px solid #222; background: #161616; border-left: 3px solid transparent; transition: 0.2s; font-size: 0.9rem; }
+        .match-row { display: flex; align-items: center; padding: 8px 10px; border-bottom: 1px solid #222; background: #161616; border-left: 3px solid transparent; transition: 0.2s; font-size: 0.9rem; cursor: pointer; }
         .match-row:hover { background: #1f1f1f; }
         .match-row.active { border-left: 3px solid var(--primary-color); background: #1a1a1a; }
+        .match-row.completed { opacity: 0.6; }
         .match-name { width: 35px; font-weight: bold; color: #aaa; text-align: center; font-size: 0.85rem; margin-right: 10px; }
-        .alliance { flex: 1; display: flex; justify-content: center; gap: 10px; font-weight: bold; }
-        .red-alliance { color: var(--vex-red); }
-        .blue-alliance { color: var(--vex-blue); }
+        .alliance { flex: 1; display: grid; grid-template-columns: 1fr auto 1fr; gap: 10px; font-weight: bold; align-items: center; }
+        .red-alliance { color: var(--vex-red); text-align: right; }
+        .blue-alliance { color: var(--vex-blue); text-align: left; }
         .match-score { width: 80px; text-align: center; color: white; background: #000; padding: 1px; border-radius: 3px; font-family: monospace; font-size: 0.85rem; margin-left: auto; }
 
         /* Tools */
         #tm-tools { grid-column: 3 / 4; display: grid; grid-template-rows: 0.8fr 1.2fr; gap: 10px; border: none; background: transparent; }
         .tool-box { background: #111; border: 1px solid #333; border-radius: 6px; display: flex; flex-direction: column; position: relative; transition: all 0.3s; }
         
-        /* Fullscreen */
-        .tool-box.fullscreen, .tm-panel.fullscreen { position: fixed; top: 0; left: 0; width: 100vw; height: 100vh; z-index: 9999; background: #000; border: none; border-radius: 0; padding: 20px; }
+        /* Fullscreen Fix */
+        .tool-box.fullscreen, .tm-panel.fullscreen { 
+            position: fixed !important; 
+            top: 0; left: 0; width: 100vw; height: 100vh; 
+            z-index: 9999; background: #000; 
+            border: none; border-radius: 0; padding: 20px; 
+            display: flex; flex-direction: column;
+        }
         .tm-panel.fullscreen .tm-content { font-size: 1.2rem; }
         .tm-panel.fullscreen .ranking-table th, .tm-panel.fullscreen .ranking-table td { padding: 15px; font-size: 1.2rem; }
         .tm-panel.fullscreen .match-row { padding: 20px; font-size: 1.5rem; }
         
-        .fullscreen-close-btn { display: none; position: absolute; top: 20px; right: 20px; font-size: 2rem; color: #ff4444; cursor: pointer; z-index: 10000; }
+        .fullscreen-close-btn { display: none; position: absolute; top: 20px; right: 20px; font-size: 2rem; color: #ff4444; cursor: pointer; z-index: 10001; }
         .tool-box.fullscreen .fullscreen-close-btn, .tm-panel.fullscreen .fullscreen-close-btn { display: block; }
         .fs-btn { cursor: pointer; color: #666; transition: 0.3s; padding: 5px; }
         .fs-btn:hover { color: white; }
@@ -766,18 +769,21 @@
         .tool-box.fullscreen .timer-display { font-size: 15rem; margin-top: 5vh; }
         .tool-box.fullscreen .timer-mode-container { margin-top: 80px; transform: scale(1.5); } 
         
-        .timer-controls { display: flex; justify-content: center; gap: 8px; margin-bottom: 5px; }
-        .timer-btn { padding: 5px 12px; border: none; border-radius: 3px; font-weight: bold; cursor: pointer; text-transform: uppercase; font-family: 'Rajdhani'; font-size: 0.9rem; }
-        .btn-start { background: #2ecc71; color: black; transition: background 0.2s; }
+        .timer-controls { display: flex; justify-content: center; gap: 8px; margin-bottom: 5px; flex-wrap: wrap; }
+        .timer-btn { padding: 5px 12px; border: none; border-radius: 3px; font-weight: bold; cursor: pointer; text-transform: uppercase; font-family: 'Rajdhani'; font-size: 0.9rem; flex: 1; min-width: 80px;}
+        .btn-start { background: var(--vex-green); color: black; transition: background 0.2s; }
         .btn-start:disabled { background: #444; color: #888; cursor: not-allowed; border: 1px solid #555; }
-        .btn-stop { background: #e74c3c; color: white; }
+        .btn-pause { background: var(--vex-orange); color: black; display: none;}
+        .btn-switch { background: #fff; color: #000; border: 2px solid var(--primary-color); display: none; }
+        .btn-stop { background: var(--vex-red); color: white; }
         .btn-reset { background: #f39c12; color: black; }
+        
         .timer-phase-indicator { text-align: center; color: var(--primary-color); font-weight: bold; font-size: 1rem; margin-bottom: 2px; }
         .mode-btn { background: #333; color: #888; border: none; padding: 2px 8px; border-radius: 10px; cursor: pointer; margin: 0 3px; font-size: 0.75rem; }
         .mode-btn.active { background: var(--primary-color); color: black; }
 
         /* Calculator */
-        .calc-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; background: #000; padding: 4px 8px; border-radius: 4px; border: 1px solid #333; }
+        .calc-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; background: #000; padding: 4px 8px; border-radius: 4px; border: 1px solid #333; font-size: 0.85rem;}
         .calc-score { font-size: 1.3rem; font-weight: bold; font-family: monospace; }
         .score-red { color: var(--vex-red); }
         .score-blue { color: var(--vex-blue); }
@@ -795,37 +801,6 @@
         .match-selector { width: 100%; padding: 4px; background: #222; color: white; border: 1px solid #444; margin-bottom: 6px; border-radius: 4px; font-size: 0.85rem; }
 
         @media (max-width: 768px) {
-            .hero-content h1 { font-size: 3rem; }
-            .team-grid { grid-template-columns: 1fr; gap: 40px; }
-            .mentor-wrapper { margin-bottom: 40px; }
-            .gallery-grid { grid-template-columns: 1fr; }
-            .about-row, .about-row:nth-child(even) { flex-direction: column !important; gap: 30px; }
-            .about-text-content { text-align: left; }
-            .timeline::before { left: 20px; }
-            .event-card { width: 85%; margin-left: 50px !important; margin-right: 0 !important; text-align: left !important; border-left: 3px solid var(--primary-color) !important; border-right: none !important; }
-            .event-card::after { left: -38px !important; right: auto !important; }
-            .nav-logo img { height: 40px; }
-
-            .menu-toggle { display: block; }
-            .menu-toggle.active .bar:nth-child(2) { opacity: 0; }
-            .menu-toggle.active .bar:nth-child(1) { transform: translateY(8px) rotate(45deg); }
-            .menu-toggle.active .bar:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
-
-            .nav-menu {
-                position: fixed; left: -100%; top: 60px; gap: 0; flex-direction: column;
-                background-color: rgba(0,0,0,0.98); width: 100%; text-align: center;
-                transition: 0.3s; border-bottom: 2px solid var(--primary-color); z-index: 1001;
-                padding-bottom: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.5);
-            }
-            .nav-menu.active { left: 0; }
-            nav ul { flex-direction: column; padding: 20px 0; width: 100%; gap: 0; }
-            .nav-item { display: block; font-size: 1.5rem; padding: 20px 0; border-bottom: 1px solid #222; width: 100%; }
-            .nav-item:hover, .nav-item.active { background: #111; border-bottom: 1px solid var(--primary-color); }
-            
-            .countdown-number { font-size: 1.5rem; }
-            .countdown-item { padding: 8px 10px; min-width: 60px; }
-
-            /* Host Game Mobile Fix */
             .tm-container { grid-template-columns: 1fr; grid-template-rows: auto; height: auto; display: flex; flex-direction: column; }
             #tm-rankings, #tm-schedule, #tm-tools { grid-column: 1 / -1; height: auto; min-height: 400px; }
             #tm-tools { grid-template-columns: 1fr; grid-template-rows: auto; }
@@ -863,15 +838,11 @@
     <!-- 1. HOME PAGE -->
     <div id="home" class="page-section active-page home-active visible">
         <div class="hero-content">
-            <h2>
-                <span id="typewriter-text"></span><span class="typewriter-cursor">_</span>
-            </h2>
+            <h2><span id="typewriter-text"></span><span class="typewriter-cursor">_</span></h2>
             <h1>REAPER</h1>
             <a onclick="switchTab('about')" class="btn">MEET THE TEAM</a>
             <div class="countdown-wrapper">
-                <a href="https://www.robotevents.com/zh-TW/robot-competitions/vex-robotics-competition/RE-V5RC-25-0059.html#%E5%9F%BA%E6%9C%AC%E8%A8%8A%E6%81%AF" target="_blank" class="countdown-title">
-                    2025-2026 VEX TAIWAN OPEN V5RC HS
-                </a>
+                <a href="https://www.robotevents.com/zh-TW/robot-competitions/vex-robotics-competition/RE-V5RC-25-0059.html#%E5%9F%BA%E6%9C%AC%E8%A8%8A%E6%81%AF" target="_blank" class="countdown-title">2025-2026 VEX TAIWAN OPEN V5RC HS</a>
                 <div class="countdown-container" id="countdown">
                     <div class="countdown-item"><span class="countdown-number" id="days">00</span><span class="countdown-label">Days</span></div>
                     <div class="countdown-item"><span class="countdown-number" id="hours">00</span><span class="countdown-label">Hrs</span></div>
@@ -884,32 +855,18 @@
 
     <!-- 2. ABOUT & TEAM PAGE -->
     <div id="about" class="page-section">
-        <div class="section-header scroll-hidden">
-            <h2>About <span>Reaper</span></h2>
-            <p>23083Z is a VEX robotics team striving for perfection. Black represents calm, Gold represents glory.</p>
-        </div>
+        <div class="section-header scroll-hidden"><h2>About <span>Reaper</span></h2><p>23083Z is a VEX robotics team striving for perfection. Black represents calm, Gold represents glory.</p></div>
         <div class="about-container">
             <div class="about-row scroll-hidden">
                 <div class="about-image-wrapper"><img src="about-1.jpg" alt="Team 23083Z Origin"></div>
-                <div class="about-text-content">
-                    <h3>Our Origin</h3>
-                    <p>Welcome to the official website of <strong>Team Reaper (23083Z)</strong>, a competitive VEX Robotics team representing <strong>Wego High School</strong> in Taipei, Taiwan. Founded in 2023, our team consists of six passionate students dedicated to pushing the boundaries of engineering, design, and programming.</p>
-                    <p>Inspired by the precision of a "Reaper," we approach every challenge with strategic focus and unwavering determination. Following the VRC Over Under and High Stakes seasons, we have honed our skills and built a strong foundation in the VEX V5 system. Our goal is not just to build efficient robots, but to represent Taiwan on the global stage at the VEX Robotics World Championship.</p>
-                </div>
+                <div class="about-text-content"><h3>Our Origin</h3><p>Welcome to the official website of <strong>Team Reaper (23083Z)</strong>...</p><p>Inspired by the precision of a "Reaper"...</p></div>
             </div>
             <div class="about-row scroll-hidden">
                 <div class="about-image-wrapper"><img src="about-2.jpg" alt="Team 23083Z Mission"></div>
-                <div class="about-text-content">
-                    <h3>COLLABORATIVE ATMOSPHERE</h3>
-                    <p>Our team members are all from the same class, but the club, with three VEX teams this year are composed of different classes and across different grades. Some have participated in previous VEX seasons and some have not. Because our school emphasizes academic performances and have strict rules of when we can practice robotics and have club time, like previous years, we would often only have 2 or 3 people at the room practicing because everyone’s schedule is different. We set rules so that everyone would follow and prevent mistakes and conflicts that have happened in previous seasons.</p>
-                    <p>We believe that robotics is more than just building machines; it is about building character, resilience, and a future where technology serves humanity. Every gear we place and every line of code we write brings us one step closer to that future.</p>
-                </div>
+                <div class="about-text-content"><h3>COLLABORATIVE ATMOSPHERE</h3><p>Our team members are all from the same class...</p><p>We believe that robotics is more than just building machines...</p></div>
             </div>
         </div>
-        <div class="section-header scroll-hidden">
-            <img src="reaper.svg" alt="Reaper Logo" class="section-logo">
-            <h2>The <span>Team Members</span></h2>
-        </div>
+        <div class="section-header scroll-hidden"><img src="reaper.svg" alt="Reaper Logo" class="section-logo"><h2>The <span>Team Members</span></h2></div>
         <div class="team-grid">
             <div class="member-card scroll-hidden"><div class="member-photo" style="background-image: url('members/pennlaine.jpg');"></div><div class="member-info"><div class="member-name">Pennlaine</div><div class="member-role">Club President & Team Leader</div></div></div>
             <div class="member-card scroll-hidden"><div class="member-photo" style="background-image: url('members/adam.jpg');"></div><div class="member-info"><div class="member-name">Adam</div><div class="member-role">Programmer/main driver</div></div></div>
@@ -927,37 +884,28 @@
 
     <!-- 3. MEDIA PAGE -->
     <div id="media" class="page-section">
-        <div class="section-header scroll-hidden">
-            <h2>Media <span>Gallery</span></h2>
-            <p>Documenting our journey and every exciting moment.</p>
-        </div>
+        <div class="section-header scroll-hidden"><h2>Media <span>Gallery</span></h2><p>Documenting our journey and every exciting moment.</p></div>
         <div id="media-gallery" class="gallery-grid"></div>
     </div>
 
     <!-- 4. EVENTS PAGE -->
     <div id="events" class="page-section">
-        <div class="section-header scroll-hidden">
-            <h2>Season <span>Timeline</span></h2>
-            <p>Push Back 2025-2026 Season Plan</p>
-        </div>
+        <div class="section-header scroll-hidden"><h2>Season <span>Timeline</span></h2><p>Push Back 2025-2026 Season Plan</p></div>
         <div class="timeline">
-            <a href="https://www.robotevents.com/zh-TW/robot-competitions/vex-robotics-competition/RE-V5RC-25-0319.html#%E5%9F%BA%E6%9C%AC%E8%A8%8A%E6%81%AF" target="_blank" class="event-card scroll-hidden"><div class="event-image"><img src="event/tai.jpg" alt="TAI-VEX Scrimmage" class="square-img"></div><div class="event-content"><span class="event-date">SEP 2025</span><h3>TAI-VEX 25-26 Push Back Scrimmage</h3><p>The first scrimmage of the new season! A great opportunity to test our initial robot design and strategy against other local teams in a friendly environment.</p></div></a>
-            <a href="https://www.robotevents.com/zh-TW/robot-competitions/vex-robotics-competition/RE-V5RC-25-0320.html#%E5%9F%BA%E6%9C%AC%E8%A8%8A%E6%81%AF" target="_blank" class="event-card scroll-hidden"><div class="event-image"><img src="event/tai.jpg" alt="TAI-VEX Tournament" class="square-img"></div><div class="event-content"><span class="event-date">OCT 2025</span><h3>TAI-VEX Tournament MS 25-26 Push Back</h3><p>Participating in the TAI-VEX Tournament. Our goal is to refine our autonomous routines and driver skills, aiming for excellence in the qualification matches.</p></div></a>
-            <a href="https://www.robotevents.com/zh-TW/robot-competitions/vex-robotics-competition/RE-V5RC-25-0121.html#%E5%9F%BA%E6%9C%AC%E8%A8%8A%E6%81%AF" target="_blank" class="event-card scroll-hidden"><div class="event-image"><img src="event/pas.jpg" alt="PAS-VEX Signature"></div><div class="event-content"><span class="event-date">DEC 2025</span><h3>2025-2026 PAS-VEX V5RC Signature Event</h3><p>Competing in the prestigious PAS-VEX Signature Event. We will face top-tier teams from around the region, striving to secure an early qualification for Worlds.</p></div></a>
-            <a href="https://www.robotevents.com/zh-TW/robot-competitions/vex-robotics-competition/RE-V5RC-25-0059.html#%E5%9F%BA%E6%9C%AC%E8%A8%8A%E6%81%AF" target="_blank" class="event-card scroll-hidden"><div class="event-image"><img src="event/vto.jpg" alt="VEX Taiwan Open" class="square-img"></div><div class="event-content"><span class="event-date">FEB 2026</span><h3>2025-2026 VEX TAIWAN OPEN V5RC HS</h3><p>The VEX Taiwan Open Championship. This is the final regional showdown to secure our spot at the World Championship. All systems go!</p></div></a>
+            <a href="#" class="event-card scroll-hidden"><div class="event-image"><img src="event/tai.jpg" alt="TAI-VEX Scrimmage" class="square-img"></div><div class="event-content"><span class="event-date">SEP 2025</span><h3>TAI-VEX 25-26 Push Back Scrimmage</h3><p>The first scrimmage of the new season! A great opportunity to test our initial robot design and strategy against other local teams in a friendly environment.</p></div></a>
+            <a href="#" class="event-card scroll-hidden"><div class="event-image"><img src="event/tai.jpg" alt="TAI-VEX Tournament" class="square-img"></div><div class="event-content"><span class="event-date">OCT 2025</span><h3>TAI-VEX Tournament MS 25-26 Push Back</h3><p>Participating in the TAI-VEX Tournament. Our goal is to refine our autonomous routines and driver skills, aiming for excellence in the qualification matches.</p></div></a>
+            <a href="#" class="event-card scroll-hidden"><div class="event-image"><img src="event/pas.jpg" alt="PAS-VEX Signature"></div><div class="event-content"><span class="event-date">DEC 2025</span><h3>2025-2026 PAS-VEX V5RC Signature Event</h3><p>Competing in the prestigious PAS-VEX Signature Event. We will face top-tier teams from around the region, striving to secure an early qualification for Worlds.</p></div></a>
+            <a href="#" class="event-card scroll-hidden"><div class="event-image"><img src="event/vto.jpg" alt="VEX Taiwan Open" class="square-img"></div><div class="event-content"><span class="event-date">FEB 2026</span><h3>2025-2026 VEX TAIWAN OPEN V5RC HS</h3><p>The VEX Taiwan Open Championship. This is the final regional showdown to secure our spot at the World Championship. All systems go!</p></div></a>
         </div>
     </div>
 
     <!-- 5. ROBOT PAGE -->
     <div id="specs" class="page-section">
-        <div class="section-header scroll-hidden">
-            <h2>Our <span>Robot</span></h2>
-            <p>Engineering perfection in detail.</p>
-        </div>
+        <div class="section-header scroll-hidden"><h2>Our <span>Robot</span></h2><p>Engineering perfection in detail.</p></div>
         <div id="robot-gallery" class="gallery-grid"></div>
     </div>
 
-    <!-- 6. HOST GAME (TOURNAMENT MANAGER) -->
+    <!-- 6. HOST GAME (TOURNAMENT MANAGER) - NEW SECTION -->
     <div id="tournament" class="page-section">
         <div id="tm-setup">
             <h2 style="font-size: 3rem; margin-bottom: 30px; color: var(--primary-color);">HOST A GAME</h2>
@@ -970,8 +918,11 @@
                 </div>
             </div>
             <div class="team-list-preview" id="team-list-display"></div>
-            <button onclick="startTournament()" class="btn" style="font-size: 1.5rem;">START EVENT</button>
-            <p id="setup-error" style="color: #e74c3c; margin-top: 10px; display: none;">Need at least 4 teams!</p>
+            <div style="display: flex; gap: 10px; width: 100%; max-width: 500px;">
+                <button onclick="startTournament()" class="btn full-width" style="font-size: 1.5rem; flex: 2;">START EVENT</button>
+                <button onclick="loadFromStorage()" class="btn full-width" style="font-size: 1rem; flex: 1; border-color: #666; color: #aaa;">LOAD SAVED</button>
+            </div>
+            <p id="setup-error" style="color: #e74c3c; margin-top: 10px; display: none;">Need at least 2 teams!</p>
         </div>
 
         <div id="tm-dashboard" class="tm-container" style="display: none;">
@@ -982,7 +933,7 @@
             <!-- RANKINGS -->
             <div id="tm-rankings" class="tm-panel">
                 <div class="tm-header">
-                    <span>Rankings</span>
+                    <span>Rankings (WP/AP/SP)</span>
                     <i class="fa-solid fa-expand fs-btn" onclick="toggleFullScreen('tm-rankings')"></i>
                 </div>
                 <div class="ranking-controls">
@@ -1024,11 +975,11 @@
                             <button class="mode-btn" onclick="setTimerMode('skills')">Skills</button>
                         </div>
                         <div class="timer-phase-indicator" id="timer-phase">READY</div>
-                        <div class="timer-display" id="timer-val">0:15</div>
+                        <div class="timer-display" id="timer-val">0:00</div>
                         <div class="timer-controls">
-                            <!-- ID added for disabling -->
-                            <button id="btn-start" class="timer-btn btn-start" onclick="startTimer()">Start</button>
-                            <button class="timer-btn btn-stop" onclick="stopTimer()">Stop</button>
+                            <button id="btn-start" class="timer-btn btn-start" onclick="toggleTimer()">Start</button>
+                            <button id="btn-pause" class="timer-btn btn-pause" onclick="pauseTimer()">Pause</button>
+                            <button id="btn-switch" class="timer-btn btn-switch" onclick="switchToDriver()">SWITCH TO DRIVER</button>
                             <button class="timer-btn btn-reset" onclick="resetTimer()">Reset</button>
                         </div>
                     </div>
@@ -1043,20 +994,22 @@
                     <div class="tm-content">
                         <select id="calc-match-select" class="match-selector" onchange="loadMatchForScoring()"></select>
                         <div class="calc-header">
+                            <div style="flex:1; text-align:right; color:var(--vex-red); padding-right:10px; font-weight:bold;" id="score-red-team">Red</div>
                             <div class="calc-score score-red" id="score-red-display">0</div>
-                            <span style="color:#666">VS</span>
+                            <span style="color:#666; margin:0 5px;">VS</span>
                             <div class="calc-score score-blue" id="score-blue-display">0</div>
+                            <div style="flex:1; text-align:left; color:var(--vex-blue); padding-left:10px; font-weight:bold;" id="score-blue-team">Blue</div>
                         </div>
                         <div class="calc-body">
                             <div class="calc-col col-red">
                                 <div class="calc-input-group"><label>Total Score</label><input type="number" id="red-score-input" class="score-input" value="0" oninput="calculateTotal()"></div>
-                                <div class="calc-item"><label>Auto Win (+6)</label><input type="checkbox" id="red-auto" onchange="calculateTotal()"></div>
-                                <div class="calc-item"><label>Auto WP (+1)</label><input type="checkbox" id="red-wp" onchange="calculateTotal()"></div>
+                                <div class="calc-item"><label>Auto Bonus</label><input type="checkbox" id="red-auto"></div>
+                                <div class="calc-item"><label>AWP</label><input type="checkbox" id="red-wp"></div>
                             </div>
                             <div class="calc-col col-blue">
                                 <div class="calc-input-group"><label>Total Score</label><input type="number" id="blue-score-input" class="score-input" value="0" oninput="calculateTotal()"></div>
-                                <div class="calc-item"><label>Auto Win (+6)</label><input type="checkbox" id="blue-auto" onchange="calculateTotal()"></div>
-                                <div class="calc-item"><label>Auto WP (+1)</label><input type="checkbox" id="blue-wp" onchange="calculateTotal()"></div>
+                                <div class="calc-item"><label>Auto Bonus</label><input type="checkbox" id="blue-auto"></div>
+                                <div class="calc-item"><label>AWP</label><input type="checkbox" id="blue-wp"></div>
                             </div>
                         </div>
                         <button class="submit-score-btn" onclick="submitMatchScore()">SUBMIT</button>
@@ -1094,7 +1047,7 @@
 
     <!-- Logic -->
     <script>
-        // 1. Typewriter Effect Logic
+        // 1. Typewriter Effect Logic (Original)
         const textToType = "VEX TEAM 23083Z";
         const typeWriterElement = document.getElementById('typewriter-text');
         let typeIndex = 0;
@@ -1107,24 +1060,21 @@
             }
         }
 
-        // 2. Countdown Timer Logic
+        // 2. Countdown Timer Logic (Original)
         function startCountdown() {
             const targetDate = new Date('Feb 03, 2026 09:00:00').getTime();
-            setInterval(() => {
+            const timerInterval = setInterval(() => {
                 const now = new Date().getTime();
                 const distance = targetDate - now;
-
                 if (distance < 0) {
                     clearInterval(timerInterval);
                     document.getElementById("countdown").innerHTML = "EVENT STARTED!";
                     return;
                 }
-
                 const days = Math.floor(distance / (1000 * 60 * 60 * 24));
                 const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                 const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
                 const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
                 document.getElementById("days").innerText = days < 10 ? '0' + days : days;
                 document.getElementById("hours").innerText = hours < 10 ? '0' + hours : hours;
                 document.getElementById("minutes").innerText = minutes < 10 ? '0' + minutes : minutes;
@@ -1133,7 +1083,7 @@
         }
         startCountdown();
 
-        // 3. Scroll Animation Logic (Intersection Observer)
+        // 3. Scroll Animation (Original)
         const observerOptions = { threshold: 0.1 };
         const scrollObserver = new IntersectionObserver((entries) => {
             entries.forEach(entry => {
@@ -1142,12 +1092,9 @@
                 }
             });
         }, observerOptions);
+        document.querySelectorAll('.scroll-hidden').forEach(el => { scrollObserver.observe(el); });
 
-        document.querySelectorAll('.scroll-hidden').forEach(el => {
-            scrollObserver.observe(el);
-        });
-
-        // 4. Page Switching Logic
+        // 4. Page Switching Logic (Original + Host Game Integration)
         function switchTab(tabId, updateHistory = true) {
             const targetSection = document.getElementById(tabId);
             const currentSection = document.querySelector('.page-section.active-page');
@@ -1193,7 +1140,7 @@
             if (event.state && event.state.tabId) { switchTab(event.state.tabId, false); } else { switchTab('home', false); }
         });
 
-        // 5. Lightbox Logic
+        // 5. Lightbox Logic (Original)
         const lightbox = document.createElement('div');
         lightbox.id = 'lightbox';
         lightbox.innerHTML = `<span id="lightbox-close">&times;</span><img id="lightbox-img" src="" alt="Enlarged Image">`;
@@ -1211,7 +1158,7 @@
         }
         lightbox.addEventListener('click', e => { if (e.target !== lightboxImg) lightbox.classList.remove('active'); });
 
-        // Fullscreen ESC handler
+        // Fullscreen ESC handler (Shared)
         document.addEventListener('keydown', (e) => { 
             if(e.key === 'Escape') {
                 if(lightbox.classList.contains('active')) lightbox.classList.remove('active');
@@ -1220,7 +1167,7 @@
             }
         });
 
-        // 6. AUTO LOAD IMAGES Logic
+        // 6. AUTO LOAD IMAGES Logic (Original)
         function loadGallery(containerId, folderName, totalCount, filePrefix) {
             const container = document.getElementById(containerId);
             if (!container) return;
@@ -1232,193 +1179,309 @@
             container.querySelectorAll('.scroll-hidden').forEach(el => { scrollObserver.observe(el); });
         }
 
-        // --- TOURNAMENT MANAGER ---
+        // --- 7. TOURNAMENT MANAGER LOGIC (Host Game Feature) ---
         let teamData = []; let matches = []; let currentEventName = ""; let currentRankingMode = 'Practice';
         const teamNumInput = document.getElementById('team-number');
         if(teamNumInput) { teamNumInput.addEventListener('input', function() { this.value = this.value.replace(/[^A-Za-z0-9]/g, '').toUpperCase().slice(0, 6); }); }
 
+        function saveToStorage() {
+            const data = { teams: teamData, matches: matches, eventName: currentEventName, mode: currentRankingMode };
+            localStorage.setItem('vex_reaper_tm_v4', JSON.stringify(data));
+        }
+        function loadFromStorage() {
+            const data = localStorage.getItem('vex_reaper_tm_v4');
+            if (data) {
+                const parsed = JSON.parse(data);
+                teamData = parsed.teams || []; matches = parsed.matches || [];
+                currentEventName = parsed.eventName || "Restored Event"; currentRankingMode = parsed.mode || 'Practice';
+                document.getElementById('event-name').value = currentEventName; document.getElementById('tm-title').innerText = currentEventName;
+                document.getElementById('tm-setup').style.display = 'none'; document.getElementById('tm-dashboard').style.display = 'grid';
+                renderTeamList(); renderMatches(); updateRankings(); populateMatchSelector(); switchRankingMode(currentRankingMode);
+            } else { alert("No saved tournament found."); }
+        }
         function addTeam() {
-            const numInput = document.getElementById('team-number'); const nameInput = document.getElementById('team-name');
-            const teamNum = numInput.value.trim().toUpperCase(); const teamName = nameInput.value.trim();
-            if (teamNum && !teamData.find(t => t.number === teamNum)) {
-                // Initialize stats for both modes
-                teamData.push({ 
-                    number: teamNum, name: teamName, 
-                    p_wp:0, p_ap:0, p_sp:0, p_wins:0, p_losses:0, p_ties:0,
-                    q_wp:0, q_ap:0, q_sp:0, q_wins:0, q_losses:0, q_ties:0
-                });
-                renderTeamList(); numInput.value = ''; nameInput.value = ''; numInput.focus();
+            const num = document.getElementById('team-number').value.trim().toUpperCase();
+            const name = document.getElementById('team-name').value.trim();
+            if (num && !teamData.find(t => t.number === num)) {
+                teamData.push({ number: num, name: name, p_wp:0, p_ap:0, p_sp:0, p_wins:0, p_losses:0, p_ties:0, q_wp:0, q_ap:0, q_sp:0, q_wins:0, q_losses:0, q_ties:0 });
+                renderTeamList(); document.getElementById('team-number').value=''; document.getElementById('team-name').value='';
             }
         }
         function renderTeamList() { document.getElementById('team-list-display').innerHTML = teamData.map(t => `<div class="team-tag"><span class="num">${t.number}</span>${t.name ? `<span style="color:#aaa; font-size:0.8em; border-left:1px solid #444; padding-left:5px;">${t.name}</span>` : ''}<i class="fa-solid fa-times delete-btn" onclick="removeTeam('${t.number}')"></i></div>`).join(''); }
         function removeTeam(number) { teamData = teamData.filter(t => t.number !== number); renderTeamList(); }
+        
         function startTournament() {
-            if (teamData.length < 4) { document.getElementById('setup-error').style.display = 'block'; return; }
+            if (teamData.length < 2) { document.getElementById('setup-error').style.display = 'block'; return; }
             currentEventName = document.getElementById('event-name').value || "VEX Tournament";
             document.getElementById('tm-title').innerText = currentEventName;
-            generateSchedule(); updateRankings(); renderMatches();
+            generateSchedule(); updateRankings(); renderMatches(); saveToStorage();
             document.getElementById('tm-setup').style.display = 'none'; document.getElementById('tm-dashboard').style.display = 'grid';
         }
+
         function generateSchedule() {
             matches = []; let matchId = 1;
-            const totalPractice = Math.ceil(teamData.length * 2 / 4);
-            for(let i=0; i<totalPractice; i++) { let s = [...teamData].sort(() => 0.5 - Math.random()); matches.push(createMatch(matchId++, 'P' + (i+1), 'Practice', s[0], s[1], s[2], s[3])); }
-            matchId = 1;
-            const totalQuals = Math.ceil(teamData.length * 8 / 4);
-            for(let i=0; i<totalQuals; i++) { let s = [...teamData].sort(() => 0.5 - Math.random()); matches.push(createMatch(matchId++, 'Q' + (i+1), 'Qualification', s[0], s[1], s[2], s[3])); }
+            if (teamData.length < 4) {
+                 const totalMatches = teamData.length * 2;
+                 for(let i=0; i<totalMatches; i++) {
+                     let s = [...teamData].sort(() => 0.5 - Math.random());
+                     matches.push(createMatch(matchId++, 'P' + (i+1), 'Practice', s[0], null, s[1], null));
+                 }
+            } else {
+                const practiceMatchCount = Math.ceil(teamData.length / 4); 
+                for(let i=0; i<practiceMatchCount; i++) { 
+                    let s = [...teamData].sort(() => 0.5 - Math.random()); 
+                    matches.push(createMatch(matchId++, 'P' + (i+1), 'Practice', s[0], s[1], s[2], s[3])); 
+                }
+                const totalQuals = teamData.length; 
+                for(let i=0; i<totalQuals; i++) { let s = [...teamData].sort(() => 0.5 - Math.random()); matches.push(createMatch(matchId++, 'Q' + (i+1), 'Qualification', s[0], s[1], s[2], s[3])); }
+            }
             populateMatchSelector();
         }
         function createMatch(id, label, type, r1, r2, b1, b2) {
-            if(!r1) r1 = teamData[0]; if(!r2) r2 = teamData[1]; if(!b1) b1 = teamData[2]; if(!b2) b2 = teamData[3];
-            return { id: id, label: label, type: type, red1: r1.number, red2: r2.number, blue1: b1.number, blue2: b2.number, redScore: 0, blueScore: 0, status: "scheduled" };
+            return { id, label, type, red1: r1?r1.number:'', red2: r2?r2.number:'', blue1: b1?b1.number:'', blue2: b2?b2.number:'', redScore: 0, blueScore: 0, status: "scheduled" };
         }
-
-        // Match Schedule
-        let scrollTimeout;
-        const matchListContainer = document.getElementById('match-list-container');
         function renderMatches() {
             document.getElementById('match-list').innerHTML = matches.map(m => `
-                <div class="match-row ${m.status === 'completed' ? 'completed' : ''}" id="match-row-${m.label}" style="opacity: ${m.status==='completed'?0.5:1}">
+                <div class="match-row ${m.status === 'completed' ? 'completed' : ''}" id="match-row-${m.label}" onclick="loadMatchIntoCalc('${m.label}')" style="opacity: ${m.status==='completed'?0.5:1}">
                     <div class="match-name">${m.label}</div>
-                    <div class="alliance"><span class="red-alliance">${m.red1} / ${m.red2}</span><span style="color:#444">vs</span><span class="blue-alliance">${m.blue1} / ${m.blue2}</span></div>
+                    <div class="alliance">
+                        <span class="red-alliance">${m.red1}${m.red2 ? '/'+m.red2 : ''}</span>
+                        <span style="color:#444">vs</span>
+                        <span class="blue-alliance">${m.blue1}${m.blue2 ? '/'+m.blue2 : ''}</span>
+                    </div>
+                    ${m.status === 'completed' ? `<div class="match-score">${m.redScore} - ${m.blueScore}</div>` : ''}
                 </div>
             `).join('');
-            scrollToCurrentMatch();
         }
-        function scrollToCurrentMatch() {
-            const firstUpcoming = matches.find(m => m.status !== 'completed');
-            if(firstUpcoming) { const el = document.getElementById(`match-row-${firstUpcoming.label}`); if(el) el.scrollIntoView({ behavior: 'smooth', block: 'start' }); }
-        }
-
-        // Ranking
         function switchRankingMode(mode) {
             currentRankingMode = mode;
             document.getElementById('tab-practice').classList.toggle('active', mode === 'Practice');
             document.getElementById('tab-qual').classList.toggle('active', mode === 'Qualification');
             updateRankings();
         }
-
         function updateRankings() {
-            // Sort based on current mode stats
             const prefix = currentRankingMode === 'Practice' ? 'p_' : 'q_';
-            teamData.sort((a, b) => b[prefix+'wp'] - a[prefix+'wp'] || b[prefix+'ap'] - a[prefix+'ap'] || b[prefix+'sp'] - a[prefix+'sp']);
-            
-            const tbody = document.getElementById('ranking-body');
-            const table = document.getElementById('ranking-table');
-            table.style.animation = 'none';
-            let displayData = [...teamData];
-            let isMarquee = teamData.length > 10;
-            if (isMarquee) { displayData.push({ isSpacer: true }); displayData.push({ isSpacer: true }); displayData = displayData.concat(teamData); }
-            
-            tbody.innerHTML = displayData.map((t, index) => {
-                if (t.isSpacer) return '<tr class="spacer-row"><td colspan="6"></td></tr>';
-                let realIndex = (index >= (teamData.length + 2)) ? (index - (teamData.length + 2)) : index;
-                // Get stats
-                const wp = t[prefix+'wp'], ap = t[prefix+'ap'], sp = t[prefix+'sp'];
-                const rec = `${t[prefix+'wins']}-${t[prefix+'losses']}-${t[prefix+'ties']}`;
-                return `<tr><td class="rank-num">${realIndex + 1}</td><td class="team-cell"><span style="font-weight:bold">${t.number}</span> <span style="font-size:0.85em;color:#aaa">${t.name||''}</span></td><td>${wp}</td><td>${ap}</td><td>${sp}</td><td>${rec}</td></tr>`;
+            teamData.sort((a, b) => {
+                if (b[prefix+'wp'] !== a[prefix+'wp']) return b[prefix+'wp'] - a[prefix+'wp'];
+                if (b[prefix+'ap'] !== a[prefix+'ap']) return b[prefix+'ap'] - a[prefix+'ap'];
+                return b[prefix+'sp'] - a[prefix+'sp'];
+            });
+            document.getElementById('ranking-body').innerHTML = teamData.map((t, index) => {
+                return `<tr><td class="rank-num">${index + 1}</td><td class="team-cell"><span style="font-weight:bold">${t.number}</span> <span style="font-size:0.85em;color:#aaa">${t.name||''}</span></td><td>${t[prefix+'wp']}</td><td>${t[prefix+'ap']}</td><td>${t[prefix+'sp']}</td><td>${t[prefix+'wins']}-${t[prefix+'losses']}-${t[prefix+'ties']}</td></tr>`;
             }).join('');
+        }
 
-            if (isMarquee) {
-                const duration = teamData.length * 2.5; table.style.transform = "translateY(0)"; table.style.animation = `scrollUp ${duration}s linear infinite`;
+        // Scoring Logic
+        function loadMatchIntoCalc(label) {
+            const select = document.getElementById('calc-match-select'); select.value = label; loadMatchForScoring();
+        }
+        function calculateTotal() {
+            const rScore = parseInt(document.getElementById('red-score-input').value) || 0;
+            const bScore = parseInt(document.getElementById('blue-score-input').value) || 0;
+            document.getElementById('score-red-display').innerText = rScore;
+            document.getElementById('score-blue-display').innerText = bScore;
+        }
+        function loadMatchForScoring() {
+            const label = document.getElementById('calc-match-select').value;
+            document.querySelectorAll('.match-row').forEach(r => r.classList.remove('active'));
+            const row = document.getElementById(`match-row-${label}`); if(row) row.classList.add('active');
+            
+            const match = matches.find(m => m.label === label);
+            if(match) {
+                document.getElementById('score-red-team').innerText = `${match.red1}${match.red2?' / '+match.red2:''}`;
+                document.getElementById('score-blue-team').innerText = `${match.blue1}${match.blue2?' / '+match.blue2:''}`;
             }
         }
-        const styleSheet = document.createElement("style");
-        styleSheet.innerText = `@keyframes scrollUp { 0% { transform: translateY(0); } 100% { transform: translateY(-50%); } }`;
-        document.head.appendChild(styleSheet);
-
-        // Scoring
-        let calcScores = { red: { total: 0, auto: false, wp: false }, blue: { total: 0, auto: false, wp: false } };
-        function calculateTotal() {
-            calcScores.red.total = parseInt(document.getElementById('red-score-input').value) || 0;
-            calcScores.red.auto = document.getElementById('red-auto').checked; calcScores.red.wp = document.getElementById('red-wp').checked;
-            calcScores.blue.total = parseInt(document.getElementById('blue-score-input').value) || 0;
-            calcScores.blue.auto = document.getElementById('blue-auto').checked; calcScores.blue.wp = document.getElementById('blue-wp').checked;
-            document.getElementById('score-red-display').innerText = calcScores.red.total + (calcScores.red.auto ? 6 : 0);
-            document.getElementById('score-blue-display').innerText = calcScores.blue.total + (calcScores.blue.auto ? 6 : 0);
-        }
         function populateMatchSelector() {
-            const sel = document.getElementById('calc-match-select');
-            const incomplete = matches.filter(m => m.status !== 'completed');
-            sel.innerHTML = incomplete.map(m => `<option value="${m.label}">${m.label}: ${m.red1}/${m.red2} vs ${m.blue1}/${m.blue2}</option>`).join('');
+            document.getElementById('calc-match-select').innerHTML = matches.map(m => `<option value="${m.label}">${m.label}: ${m.red1} vs ${m.blue1}</option>`).join('');
         }
         function submitMatchScore() {
             const matchLabel = document.getElementById('calc-match-select').value;
-            calculateTotal();
-            const match = matches.find(m => m.label === matchLabel);
-            if (!match) return;
-            match.redScore = calcScores.red.total + (calcScores.red.auto ? 6 : 0);
-            match.blueScore = calcScores.blue.total + (calcScores.blue.auto ? 6 : 0);
+            const match = matches.find(m => m.label === matchLabel); if (!match) return;
+
+            match.redScore = parseInt(document.getElementById('score-red-display').innerText);
+            match.blueScore = parseInt(document.getElementById('score-blue-display').innerText);
             match.status = 'completed';
             
-            // Auto switch ranking view if it's first qual
-            if(match.type === 'Qualification' && currentRankingMode !== 'Qualification') {
-                switchRankingMode('Qualification');
-            }
-            recalculateAllRankings(); renderMatches(); populateMatchSelector(); updateRankings();
-            alert(`Match ${matchLabel} Submitted!`);
+            // Save checkbox states for WP/AP calc
+            match.flags = {
+                rWP: document.getElementById('red-wp').checked,
+                bWP: document.getElementById('blue-wp').checked,
+                rBonus: document.getElementById('red-auto').checked,
+                bBonus: document.getElementById('blue-auto').checked
+            };
+            
+            if(match.type === 'Qualification' && currentRankingMode !== 'Qualification') switchRankingMode('Qualification');
+            recalculateAllRankings(); renderMatches(); updateRankings(); saveToStorage();
+            
+            const nextMatch = matches.find(m => m.id === match.id + 1);
+            if (nextMatch) loadMatchIntoCalc(nextMatch.label);
         }
         function recalculateAllRankings() {
-            // Reset
-            teamData.forEach(t => { 
-                t.p_wp=0; t.p_ap=0; t.p_sp=0; t.p_wins=0; t.p_losses=0; t.p_ties=0;
-                t.q_wp=0; t.q_ap=0; t.q_sp=0; t.q_wins=0; t.q_losses=0; t.q_ties=0;
-            });
+            teamData.forEach(t => { t.p_wp=0; t.p_ap=0; t.p_sp=0; t.p_wins=0; t.p_losses=0; t.p_ties=0; t.q_wp=0; t.q_ap=0; t.q_sp=0; t.q_wins=0; t.q_losses=0; t.q_ties=0; });
             matches.forEach(m => {
                 if (m.status === 'completed') {
                     const prefix = m.type === 'Practice' ? 'p_' : 'q_';
-                    const r = [teamData.find(t=>t.number===m.red1), teamData.find(t=>t.number===m.red2)];
-                    const b = [teamData.find(t=>t.number===m.blue1), teamData.find(t=>t.number===m.blue2)];
+                    const r = [teamData.find(t=>t.number===m.red1), teamData.find(t=>t.number===m.red2)].filter(x=>x);
+                    const b = [teamData.find(t=>t.number===m.blue1), teamData.find(t=>t.number===m.blue2)].filter(x=>x);
+                    
                     let rWP = 0; let bWP = 0;
                     if (m.redScore > m.blueScore) { rWP+=2; r.forEach(t=>t[prefix+'wins']++); b.forEach(t=>t[prefix+'losses']++); }
                     else if (m.blueScore > m.redScore) { bWP+=2; b.forEach(t=>t[prefix+'wins']++); r.forEach(t=>t[prefix+'losses']++); }
                     else { rWP+=1; bWP+=1; r.forEach(t=>t[prefix+'ties']++); b.forEach(t=>t[prefix+'ties']++); }
                     
-                    if (calcScores.red.wp) rWP+=1; if (calcScores.blue.wp) bWP+=1;
-                    if (calcScores.red.auto) r.forEach(t=>t[prefix+'ap']+=6); if (calcScores.blue.auto) b.forEach(t=>t[prefix+'ap']+=6);
-                    
-                    let loser = Math.min(m.redScore, m.blueScore);
-                    r.forEach(t=>{if(t){t[prefix+'wp']+=rWP; t[prefix+'sp']+=loser}}); 
-                    b.forEach(t=>{if(t){t[prefix+'wp']+=bWP; t[prefix+'sp']+=loser}});
+                    if(m.flags) {
+                        if(m.flags.rWP) rWP+=1;
+                        if(m.flags.bWP) bWP+=1;
+                        if(m.flags.rBonus && m.flags.bBonus) { r.forEach(t=>t[prefix+'ap']+=5); b.forEach(t=>t[prefix+'ap']+=5); }
+                        else if(m.flags.rBonus) { r.forEach(t=>t[prefix+'ap']+=10); }
+                        else if(m.flags.bBonus) { b.forEach(t=>t[prefix+'ap']+=10); }
+                    }
+
+                    let loserScore = Math.min(m.redScore, m.blueScore);
+                    r.forEach(t=>{ t[prefix+'wp']+=rWP; t[prefix+'sp']+=loserScore; }); 
+                    b.forEach(t=>{ t[prefix+'wp']+=bWP; t[prefix+'sp']+=loserScore; });
                 }
             });
         }
 
-        // Timer
-        let timerInterval; let timeLeft = 15; let currentMode = 'match'; let currentPhase = 'auto'; let isRunning = false;
+        // --- AUDIO ---
+        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
+        function playTone(freq, type, duration) {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
+            osc.type = type; osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
+            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
+            osc.connect(gain); gain.connect(audioCtx.destination);
+            osc.start(); osc.stop(audioCtx.currentTime + duration);
+        }
+
+        // --- TIMER (REVISED WORKFLOW) ---
+        let timerInterval; let timeLeft = 0; let currentMode = 'match'; 
+        let matchState = 'ready'; // ready, auto, ended_auto, ready_driver, driver, paused, ended_match
+        
         function updateTimerDisplay() {
             const m = Math.floor(timeLeft / 60); const s = timeLeft % 60;
-            document.getElementById('timer-val').innerText = `${m}:${s < 10 ? '0' : ''}${s}`;
+            const display = document.getElementById('timer-val');
+            display.innerText = `${m}:${s < 10 ? '0' : ''}${s}`;
+            
+            const phaseText = document.getElementById('timer-phase');
+            if(matchState === 'ready') phaseText.innerText = currentMode === 'match' ? "AUTONOMOUS READY" : "SKILLS READY";
+            else if(matchState === 'auto') phaseText.innerText = "AUTONOMOUS";
+            else if(matchState === 'ended_auto') phaseText.innerText = "AUTO ENDED";
+            else if(matchState === 'ready_driver') phaseText.innerText = "DRIVER READY";
+            else if(matchState === 'driver') phaseText.innerText = "DRIVER CONTROL";
+            else if(matchState === 'paused') phaseText.innerText = "PAUSED";
+            else if(matchState === 'ended_match') phaseText.innerText = "MATCH ENDED";
+
+            if(currentMode === 'match') {
+                if(matchState === 'driver' && timeLeft <= 10) display.style.color = '#E74C3C'; 
+                else if(matchState === 'driver') display.style.color = '#3498DB';
+                else if(matchState === 'paused') display.style.color = '#F39C12';
+                else display.style.color = 'white';
+            }
         }
+        
+        function updateButtons() {
+            const btnStart = document.getElementById('btn-start');
+            const btnPause = document.getElementById('btn-pause');
+            const btnSwitch = document.getElementById('btn-switch');
+            
+            btnStart.style.display = 'inline-block';
+            btnPause.style.display = 'none';
+            btnSwitch.style.display = 'none';
+            btnStart.disabled = false;
+            
+            if (matchState === 'ready' || matchState === 'ready_driver') {
+                btnStart.innerText = "START";
+            } else if (matchState === 'auto' || matchState === 'driver') {
+                btnStart.style.display = 'none';
+                btnPause.style.display = 'inline-block';
+                btnPause.innerText = "PAUSE";
+            } else if (matchState === 'paused') {
+                btnStart.style.display = 'none';
+                btnPause.style.display = 'inline-block';
+                btnPause.innerText = "RESUME";
+            } else if (matchState === 'ended_auto') {
+                btnStart.style.display = 'none';
+                btnSwitch.style.display = 'inline-block';
+            } else if (matchState === 'ended_match') {
+                btnStart.disabled = true;
+                btnStart.innerText = "ENDED";
+            }
+        }
+
         function setTimerMode(mode) {
-            currentMode = mode; isRunning = false; clearInterval(timerInterval);
-            document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active')); event.target.classList.add('active');
-            if (mode === 'skills') { timeLeft = 60; currentPhase = 'skills'; document.getElementById('timer-phase').innerText = "SKILLS"; }
-            else { timeLeft = 15; currentPhase = 'auto'; document.getElementById('timer-phase').innerText = "AUTO"; }
-            updateTimerDisplay(); document.getElementById('btn-start').disabled = false;
+            currentMode = mode; 
+            document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active')); 
+            event.target.classList.add('active');
+            resetTimer();
         }
-        function startTimer() {
-            if (isRunning) return;
-            if (currentMode === 'match' && currentPhase === 'ended') return;
-            isRunning = true;
-            document.getElementById('btn-start').disabled = true; // Disable Start Button
+
+        function resetTimer() {
+            clearInterval(timerInterval); timerInterval = null;
+            if (currentMode === 'skills') { timeLeft = 60; } 
+            else { timeLeft = 15; }
+            matchState = 'ready';
+            updateTimerDisplay();
+            updateButtons();
+        }
+
+        function toggleTimer() {
+            if(matchState === 'ready' || matchState === 'ready_driver') {
+                startTimerInterval();
+            }
+        }
+
+        function startTimerInterval() {
+            if (audioCtx.state === 'suspended') audioCtx.resume();
+            playTone(600, 'square', 0.5); 
+            
+            if(matchState === 'ready') matchState = currentMode === 'skills' ? 'driver' : 'auto';
+            else if(matchState === 'ready_driver') matchState = 'driver';
+            
+            updateButtons();
+            updateTimerDisplay();
+
             timerInterval = setInterval(() => {
-                if (timeLeft > 0) { timeLeft--; updateTimerDisplay(); } else {
-                    stopTimer();
-                    if (currentMode === 'match') {
-                        if (currentPhase === 'auto') { currentPhase = 'waiting'; timeLeft = 90; document.getElementById('timer-phase').innerText = "DRIVER READY?"; updateTimerDisplay(); }
-                        else if (currentPhase === 'driver') { currentPhase = 'ended'; document.getElementById('timer-phase').innerText = "MATCH END"; }
+                if (timeLeft > 0) {
+                    timeLeft--;
+                    updateTimerDisplay();
+                    if(currentMode === 'match' && matchState === 'driver' && timeLeft === 10) playTone(500, 'sawtooth', 0.2); 
+                } else {
+                    clearInterval(timerInterval);
+                    playTone(200, 'sawtooth', 1.0); 
+                    if(currentMode === 'match' && matchState === 'auto') {
+                        matchState = 'ended_auto';
+                    } else {
+                        matchState = 'ended_match';
                     }
+                    updateButtons();
+                    updateTimerDisplay();
                 }
             }, 1000);
         }
-        function stopTimer() { clearInterval(timerInterval); isRunning = false; document.getElementById('btn-start').disabled = false;
-            if(currentMode === 'match' && currentPhase === 'waiting') { currentPhase = 'driver'; document.getElementById('timer-phase').innerText = "DRIVER"; }
+
+        function pauseTimer() {
+            if(timerInterval) {
+                clearInterval(timerInterval);
+                timerInterval = null;
+                matchState = 'paused';
+            } else {
+                if(currentMode === 'match' && timeLeft <= 15 && timeLeft > 0 && matchState !== 'driver') matchState = 'auto'; 
+                else matchState = 'driver';
+                startTimerInterval();
+                return; 
+            }
+            updateButtons();
+            updateTimerDisplay();
         }
-        function resetTimer() { stopTimer(); 
-            if (currentMode === 'skills') { timeLeft = 60; currentPhase = 'skills'; document.getElementById('timer-phase').innerText = "SKILLS"; }
-            else { timeLeft = 15; currentPhase = 'auto'; document.getElementById('timer-phase').innerText = "AUTO"; }
-            updateTimerDisplay(); 
+
+        function switchToDriver() {
+            timeLeft = 105; // 1:45
+            matchState = 'ready_driver';
+            updateTimerDisplay();
+            updateButtons();
         }
 
         function toggleFullScreen(id) { 
@@ -1427,27 +1490,55 @@
             else document.body.classList.remove('no-scroll');
         }
 
+        // --- 8. DOM LOADED & INIT (Merged) ---
+        const mediaCount = 12; 
+        const robotCount = 22; 
+
         document.addEventListener('DOMContentLoaded', () => {
-            setTimeout(typeWriter, 500); startCountdown();
-            const mediaCount = 12; const robotCount = 22; 
+            setTimeout(typeWriter, 500); 
+            startCountdown();
             loadGallery('media-gallery', 'media', mediaCount, 'media');
             loadGallery('robot-gallery', 'robot', robotCount, 'robot');
             bindLightboxEvents();
-            document.querySelectorAll('.scroll-hidden').forEach(el => scrollObserver.observe(el));
-            const menuToggle = document.getElementById('mobile-menu-btn'); const navMenu = document.getElementById('nav-menu');
-            menuToggle.addEventListener('click', () => { menuToggle.classList.toggle('active'); navMenu.classList.toggle('active'); if(navMenu.classList.contains('active')) document.body.classList.add('no-scroll'); else document.body.classList.remove('no-scroll'); });
-            const backToTopBtn = document.getElementById('back-to-top');
-            window.addEventListener('scroll', () => { if (window.scrollY > 300) backToTopBtn.classList.add('show'); else backToTopBtn.classList.remove('show'); });
-            backToTopBtn.addEventListener('click', () => window.scrollTo({ top: 0, behavior: 'smooth' }));
-            switchTab('home');
 
+            const menuToggle = document.getElementById('mobile-menu-btn');
+            const navMenu = document.getElementById('nav-menu');
+            menuToggle.addEventListener('click', () => {
+                menuToggle.classList.toggle('active');
+                navMenu.classList.toggle('active');
+                // Added no-scroll toggle for mobile menu consistency with original styles
+                if(navMenu.classList.contains('active')) document.body.classList.add('no-scroll'); 
+                else document.body.classList.remove('no-scroll');
+            });
+
+            // Handle Hash Navigation
+            const hash = window.location.hash.substring(1); 
+            if (hash) { switchTab(hash, false); } 
+            else { 
+                const home = document.getElementById('home');
+                if(home) { home.classList.add('active-page', 'visible'); }
+            }
+
+            // Scroll Back To Top
+            const backToTopBtn = document.getElementById('back-to-top');
+            window.addEventListener('scroll', () => {
+                if (window.scrollY > 300) { backToTopBtn.classList.add('show'); } 
+                else { backToTopBtn.classList.remove('show'); }
+            });
+            backToTopBtn.addEventListener('click', () => {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            });
+
+            // Match List Auto Scroll
             const matchListContainer = document.getElementById('match-list-container');
             if (matchListContainer) {
                 matchListContainer.addEventListener('scroll', () => {
                     clearTimeout(scrollTimeout);
-                    scrollTimeout = setTimeout(scrollToCurrentMatch, 5000);
                 });
             }
+            
+            // Initialize Timer
+            resetTimer();
         });
     </script>
 </body>
