@@ -249,6 +249,7 @@
             z-index: 99999; background: #000; /* Extremely high Z-Index to cover navbar */
             border: none; border-radius: 0; padding: 20px; 
             display: flex; flex-direction: column;
+            overflow: hidden; /* Fix horizontal scroll */
         }
         .tm-panel.fullscreen .tm-content { font-size: 1.2rem; }
         .tm-panel.fullscreen .ranking-table th, .tm-panel.fullscreen .ranking-table td { padding: 15px; font-size: 1.2rem; }
@@ -260,7 +261,15 @@
         .fs-btn:hover { color: white; }
 
         /* Fullscreen Event Title */
-        .fs-event-title { display: none; width: 100%; text-align: center; color: var(--primary-color); font-size: 1.5rem; margin-bottom: 15px; }
+        .fs-event-title { 
+            display: none; 
+            width: 100%; 
+            text-align: center; 
+            color: var(--primary-color); 
+            font-size: 1.5rem; 
+            margin-bottom: 15px; 
+            margin-top: 60px; /* Move down in fullscreen */
+        }
         .tm-panel.fullscreen .fs-event-title { display: block; }
 
         /* Timer */
@@ -317,7 +326,7 @@
 </head>
 <body>
 
-    <!-- Audio Elements -->
+    <!-- Audio Elements (Preloaded for low latency) -->
     <audio id="sfx-start" src="sound/Start.wav" preload="auto"></audio>
     <audio id="sfx-pause" src="sound/Pause.wav" preload="auto"></audio>
     <audio id="sfx-abort" src="sound/Abort.wav" preload="auto"></audio>
@@ -785,9 +794,9 @@
                 <div class="match-row ${m.status === 'completed' ? 'completed' : ''}" id="match-row-${m.label}" onclick="loadMatchIntoCalc('${m.label}')" style="opacity: ${m.status==='completed'?0.5:1}">
                     <div class="match-name">${m.label}</div>
                     <div class="alliance">
-                        <span class="red-alliance">${m.red1} ${m.red2 ? '/ '+m.red2 : ''}</span>
-                        <span style="color:#444">vs</span>
-                        <span class="blue-alliance">${m.blue1} ${m.blue2 ? '/ '+m.blue2 : ''}</span>
+                        <span class="red-alliance">${m.red1}${m.red2 ? ' / ' + m.red2 : ''}</span>
+                        <span style="color:#444; margin: 0 8px;">vs</span>
+                        <span class="blue-alliance">${m.blue1}${m.blue2 ? ' / ' + m.blue2 : ''}</span>
                     </div>
                     ${m.status === 'completed' ? `<div class="match-score">${m.redScore} - ${m.blueScore}</div>` : ''}
                 </div>
