@@ -66,6 +66,15 @@
         .scroll-hidden { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
         .scroll-visible { opacity: 1; transform: translateY(0); }
 
+        /* Flash Animation for 20s Warning */
+        @keyframes flash-warning {
+            0%, 100% { background-color: var(--dark-bg); }
+            50% { background-color: #333; }
+        }
+        .flash-active {
+            animation: flash-warning 0.2s 5; /* Flash 5 times in 1 second */
+        }
+
         /* Navigation */
         header { position: fixed; top: 0; width: 100%; background: rgba(0, 0, 0, 0.95); padding: 10px 5%; display: flex; justify-content: space-between; align-items: center; z-index: 1000; border-bottom: 2px solid #222; }
         .nav-logo { text-decoration: none; display: flex; align-items: center; z-index: 1002; }
@@ -230,14 +239,14 @@
         .match-score { width: 80px; text-align: center; color: white; background: #000; padding: 1px; border-radius: 3px; font-family: monospace; font-size: 0.85rem; margin-left: auto; }
 
         /* Tools */
-        #tm-tools { grid-column: 3 / 4; display: grid; grid-template-rows: 0.8fr 1.2fr; gap: 10px; border: none; background: transparent; }
+        #tm-tools { grid-column: 3 / 4; display: grid; grid-template-rows: 0.7fr 1.3fr; gap: 10px; border: none; background: transparent; }
         .tool-box { background: #111; border: 1px solid #333; border-radius: 6px; display: flex; flex-direction: column; position: relative; transition: all 0.3s; }
         
         /* Fullscreen Fix - High Z-Index & Background */
         .tool-box.fullscreen, .tm-panel.fullscreen { 
             position: fixed !important; 
             top: 0; left: 0; width: 100vw; height: 100vh; 
-            z-index: 20000; background: #000; /* Extremely high Z-Index to cover navbar */
+            z-index: 20000; background: #000; 
             border: none; border-radius: 0; padding: 20px; 
             display: flex; flex-direction: column;
         }
@@ -251,10 +260,13 @@
         .fs-btn:hover { color: white; }
 
         /* Timer */
-        .timer-display { font-size: 3.5rem; font-family: monospace; text-align: center; margin: 2px 0; font-weight: bold; color: white; line-height: 1; }
+        .timer-display { font-size: 3.5rem; font-family: monospace; text-align: center; margin: 2px 0; font-weight: bold; color: white; line-height: 1; transition: color 0.3s; }
         .tool-box.fullscreen .timer-display { font-size: 15rem; margin-top: 5vh; }
         .tool-box.fullscreen .timer-mode-container { margin-top: 80px; transform: scale(1.5); } 
         
+        /* Timer Warning Style */
+        .timer-warning { color: yellow !important; }
+
         .timer-controls { display: flex; justify-content: center; gap: 8px; margin-bottom: 5px; flex-wrap: wrap; }
         .timer-btn { padding: 5px 12px; border: none; border-radius: 3px; font-weight: bold; cursor: pointer; text-transform: uppercase; font-family: 'Rajdhani'; font-size: 0.9rem; flex: 1; min-width: 80px;}
         .btn-start { background: var(--vex-green); color: black; transition: background 0.2s; }
@@ -269,23 +281,23 @@
         .mode-btn { background: #333; color: #888; border: none; padding: 2px 8px; border-radius: 10px; cursor: pointer; margin: 0 3px; font-size: 0.75rem; }
         .mode-btn.active { background: var(--primary-color); color: black; }
 
-        /* Calculator */
+        /* Calculator - Compacted */
         .calc-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; background: #000; padding: 4px 8px; border-radius: 4px; border: 1px solid #333; font-size: 0.85rem;}
         .calc-score { font-size: 1.3rem; font-weight: bold; font-family: monospace; }
         .score-red { color: var(--vex-red); }
         .score-blue { color: var(--vex-blue); }
-        .calc-body { display: grid; grid-template-columns: 1fr 1fr; gap: 6px; overflow-y: auto; padding: 0 2px; }
+        .calc-body { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; overflow-y: auto; padding: 0 2px; }
         .calc-col { padding: 4px; border-radius: 4px; }
         .col-red { background: rgba(231, 76, 60, 0.05); border: 1px solid rgba(231, 76, 60, 0.2); }
         .col-blue { background: rgba(52, 152, 219, 0.05); border: 1px solid rgba(52, 152, 219, 0.2); }
-        .calc-input-group { margin-bottom: 6px; display: flex; flex-direction: column; align-items: center; }
+        .calc-input-group { margin-bottom: 4px; display: flex; flex-direction: column; align-items: center; }
         .calc-input-group label { font-size: 0.75rem; margin-bottom: 1px; color: #ccc; }
-        .score-input { width: 80%; padding: 4px; background: #222; border: 1px solid #444; color: white; font-size: 1.1rem; text-align: center; border-radius: 4px; font-weight: bold; }
+        .score-input { width: 80%; padding: 3px; background: #222; border: 1px solid #444; color: white; font-size: 1.1rem; text-align: center; border-radius: 4px; font-weight: bold; }
         .score-input:focus { outline: none; border-color: var(--primary-color); }
-        .calc-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 3px; font-size: 0.8rem; }
-        .submit-score-btn { width: 100%; padding: 8px; margin-top: 8px; background: linear-gradient(45deg, var(--primary-color), #d4b000); border: none; color: black; font-weight: 900; font-size: 0.9rem; cursor: pointer; border-radius: 4px; font-family: 'Nasalization'; text-transform: uppercase; }
+        .calc-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px; font-size: 0.8rem; }
+        .submit-score-btn { width: 100%; padding: 8px; margin-top: 5px; background: linear-gradient(45deg, var(--primary-color), #d4b000); border: none; color: black; font-weight: 900; font-size: 0.9rem; cursor: pointer; border-radius: 4px; font-family: 'Nasalization'; text-transform: uppercase; }
         .submit-score-btn:hover { filter: brightness(1.1); box-shadow: 0 0 10px var(--primary-color); }
-        .match-selector { width: 100%; padding: 4px; background: #222; color: white; border: 1px solid #444; margin-bottom: 6px; border-radius: 4px; font-size: 0.85rem; }
+        .match-selector { width: 100%; padding: 4px; background: #222; color: white; border: 1px solid #444; margin-bottom: 5px; border-radius: 4px; font-size: 0.85rem; }
         /* Clear Button */
         .clear-score-btn { width: 100%; padding: 5px; margin-top: 5px; background: #333; border: 1px solid #555; color: #ccc; cursor: pointer; font-size: 0.8rem; border-radius: 4px; }
         .clear-score-btn:hover { background: #444; color: white; }
@@ -352,7 +364,7 @@
                 <div class="about-text-content">
                     <h3>Our Origin</h3>
                     <p>Welcome to the official website of <strong>Team Reaper (23083Z)</strong>, a competitive VEX Robotics team representing <strong>Wego High School</strong> in Taipei, Taiwan. Founded in 2023, our team consists of six passionate students dedicated to pushing the boundaries of engineering, design, and programming.</p>
-                    <p>Inspired by the precision of a "Reaper," we approach every challenge with strategic focus and unwavering determination. Following the VRC Over Under and high stakes seasons, we have honed our skills and built a strong foundation in the VEX V5 system. Our goal is not just to build efficient robots, but to represent Taiwan on the global stage at the VEX Robotics World Championship.</p>
+                    <p>Inspired by the precision of a "Reaper," we approach every challenge with strategic focus and unwavering determination. Following the VRC Spin Up and Over Under seasons, we have honed our skills and built a strong foundation in the VEX V5 system. Our goal is not just to build efficient robots, but to represent Taiwan on the global stage at the VEX Robotics World Championship.</p>
                 </div>
             </div>
             <div class="about-row scroll-hidden">
@@ -888,14 +900,15 @@
         }
 
         // --- AUDIO ---
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        function playTone(freq, type, duration) {
-            if (audioCtx.state === 'suspended') audioCtx.resume();
-            const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
-            osc.type = type; osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-            osc.connect(gain); gain.connect(audioCtx.destination);
-            osc.start(); osc.stop(audioCtx.currentTime + duration);
+        function playSound(type) {
+            let file = '';
+            switch(type) {
+                case 'start': file = 'sound/start.wav'; break;
+                case 'pause': file = 'sound/pause.wav'; break;
+                case 'abort': file = 'sound/abort.wav'; break;
+                case 'stop': file = 'sound/stop.wav'; break;
+            }
+            if(file) new Audio(file).play().catch(e=>console.log(e));
         }
 
         // --- TIMER (REVISED WORKFLOW) ---
@@ -916,7 +929,15 @@
             else if(matchState === 'paused') phaseText.innerText = "PAUSED";
             else if(matchState === 'ended_match') phaseText.innerText = "MATCH ENDED";
 
+            display.classList.remove('timer-warning');
+            document.body.classList.remove('flash-active');
+
             if(currentMode === 'match') {
+                if(matchState === 'driver' && timeLeft <= 20 && timeLeft > 0) {
+                    display.classList.add('timer-warning');
+                    if(timeLeft === 20) document.body.classList.add('flash-active');
+                }
+                
                 if(matchState === 'driver' && timeLeft <= 10) display.style.color = '#E74C3C'; 
                 else if(matchState === 'driver') display.style.color = '#3498DB';
                 else if(matchState === 'paused') display.style.color = '#F39C12';
@@ -983,11 +1004,11 @@
             // Skips current phase
             if (matchState === 'auto') {
                 clearInterval(timerInterval);
-                playTone(200, 'sawtooth', 1.0);
+                playSound('pause');
                 matchState = 'ended_auto';
             } else if (matchState === 'driver') {
                 clearInterval(timerInterval);
-                playTone(200, 'sawtooth', 1.0);
+                playSound('stop');
                 matchState = 'ended_match';
             }
             updateTimerDisplay();
@@ -1009,8 +1030,7 @@
         }
 
         function startTimerInterval() {
-            if (audioCtx.state === 'suspended') audioCtx.resume();
-            playTone(600, 'square', 0.5); 
+            playSound('start');
             
             if(matchState === 'ready') matchState = currentMode === 'skills' ? 'driver' : 'auto';
             else if(matchState === 'ready_driver') matchState = 'driver';
@@ -1022,13 +1042,14 @@
                 if (timeLeft > 0) {
                     timeLeft--;
                     updateTimerDisplay();
-                    if(currentMode === 'match' && matchState === 'driver' && timeLeft === 10) playTone(500, 'sawtooth', 0.2); 
                 } else {
                     clearInterval(timerInterval);
-                    playTone(200, 'sawtooth', 1.0); 
+                    
                     if(currentMode === 'match' && matchState === 'auto') {
+                        playSound('pause');
                         matchState = 'ended_auto';
                     } else {
+                        playSound('stop');
                         matchState = 'ended_match';
                     }
                     updateButtons();
@@ -1042,6 +1063,7 @@
                 clearInterval(timerInterval);
                 timerInterval = null;
                 matchState = 'paused';
+                playSound('abort');
             } else {
                 if(currentMode === 'match' && timeLeft <= 15 && timeLeft > 0 && matchState !== 'driver') matchState = 'auto'; 
                 else matchState = 'driver';
