@@ -117,14 +117,14 @@
         .countdown-label { font-size: 0.75rem; color: #ccc; text-transform: uppercase; }
         .countdown-title { color: #eee; font-size: 0.9rem; letter-spacing: 2px; text-shadow: 1px 1px 3px black; font-weight: bold; text-transform: uppercase; text-decoration: none; display: inline-block; margin-bottom: 10px; transition: all 0.3s ease; border-bottom: 1px solid transparent; }
         .countdown-title:hover { color: var(--primary-color); border-bottom: 1px solid var(--primary-color); text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
-        .btn { display: inline-block; padding: 15px 40px; border: 2px solid var(--primary-color); color: var(--primary-color); text-decoration: none; font-weight: 900; margin-top: 10px; transition: 0.3s; background: rgba(0,0,0,0.6); cursor: pointer; border-radius: 6px; }
+        .btn { display: inline-block; padding: 15px 40px; border: 2px solid var(--primary-color); color: var(--primary-color); text-decoration: none; font-weight: 900; margin-top: 10px; transition: 0.3s; background: rgba(0,0,0,0.6); cursor: pointer; border-radius: 8px; }
         .btn:hover { background: var(--primary-color); color: black; box-shadow: 0 0 30px var(--primary-color); }
 
         .about-container { max-width: 1200px; margin: 0 auto 80px; padding: 0 20px; display: flex; flex-direction: column; gap: 100px; }
         .about-row { display: flex; align-items: center; gap: 60px; }
         .about-row:nth-child(even) { flex-direction: row-reverse; }
         .about-image-wrapper { flex: 1; min-width: 300px; }
-        .about-image-wrapper img { width: 100%; height: auto; border-radius: 4px; border: 2px solid var(--primary-color); box-shadow: 0 0 20px rgba(255, 215, 0, 0.15); display: block; }
+        .about-image-wrapper img { width: 100%; height: auto; border-radius: 8px; border: 2px solid var(--primary-color); box-shadow: 0 0 20px rgba(255, 215, 0, 0.15); display: block; }
         .about-text-content { flex: 1; min-width: 300px; font-size: 1.15rem; color: #ddd; }
         .about-text-content h3 { color: white; font-size: 2rem; margin-bottom: 1.5rem; border-left: 4px solid var(--primary-color); padding-left: 15px; line-height: 1.2; }
         .about-text-content p { margin-bottom: 1.5rem; }
@@ -132,7 +132,7 @@
         .team-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; max-width: 1200px; margin: 0 auto 80px; padding: 0 20px; }
         .mentor-wrapper { display: flex; justify-content: center; padding: 0 20px; margin-bottom: 80px; gap: 30px; flex-wrap: wrap; }
         .mentor-wrapper .member-card { width: 100%; max-width: 380px; }
-        .member-card { background: var(--card-bg); border: 1px solid #222; overflow: hidden; transition: 0.3s; position: relative; }
+        .member-card { background: var(--card-bg); border: 1px solid #222; overflow: hidden; transition: 0.3s; position: relative; border-radius: 12px; }
         .member-card:hover { transform: translateY(-10px); border-color: var(--primary-color); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
         .member-photo { width: 100%; height: 350px; background-color: #222; background-size: cover; background-position: center; transition: 0.5s; }
         .member-info { padding: 20px; text-align: left; border-top: 1px solid #222; }
@@ -140,14 +140,14 @@
         .member-role { color: var(--primary-color); font-size: 0.9rem; text-transform: uppercase; font-weight: 500; font-family: 'Rajdhani', sans-serif; letter-spacing: 2px;}
 
         .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 20px; padding: 20px 5%; max-width: 1400px; margin: 0 auto; }
-        .gallery-item { height: 250px; background: #222; overflow: hidden; position: relative; border: 1px solid #333; cursor: zoom-in; transition: transform 0.3s ease; }
+        .gallery-item { height: 250px; background: #222; overflow: hidden; position: relative; border: 1px solid #333; cursor: zoom-in; transition: transform 0.3s ease; border-radius: 8px; }
         .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
         .gallery-item:hover { transform: scale(1.02); border-color: var(--primary-color); z-index: 10; }
         .gallery-item:hover img { opacity: 1; }
 
         #lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.95); display: none; justify-content: center; align-items: center; z-index: 2000; opacity: 0; transition: opacity 0.3s ease; }
         #lightbox.active { display: flex; opacity: 1; }
-        #lightbox img { max-width: 90%; max-height: 90%; border: 2px solid var(--primary-color); box-shadow: 0 0 30px rgba(255, 215, 0, 0.3); object-fit: contain; }
+        #lightbox img { max-width: 90%; max-height: 90%; border: 2px solid var(--primary-color); box-shadow: 0 0 30px rgba(255, 215, 0, 0.3); object-fit: contain; border-radius: 8px; }
         #lightbox-close { position: absolute; top: 20px; right: 40px; color: white; font-size: 3rem; cursor: pointer; font-family: sans-serif; transition: color 0.3s; }
         #lightbox-close:hover { color: var(--primary-color); }
 
@@ -158,7 +158,7 @@
 
         .timeline { max-width: 900px; margin: 40px auto; padding: 0 20px; position: relative; }
         .timeline::before { content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: var(--primary-color); transform: translateX(-50%); opacity: 0.3; }
-        .event-card { width: 45%; background: var(--card-bg); margin-bottom: 50px; border: 1px solid #333; position: relative; transition: 0.3s; display: block; text-decoration: none; color: inherit; padding: 0; overflow: hidden; border-radius: 8px; }
+        .event-card { width: 45%; background: var(--card-bg); margin-bottom: 50px; border: 1px solid #333; position: relative; transition: 0.3s; display: block; text-decoration: none; color: inherit; padding: 0; overflow: hidden; border-radius: 12px; }
         .event-card:hover { border-color: var(--primary-color); box-shadow: 0 0 20px rgba(255, 215, 0, 0.1); transform: translateY(-5px); }
         .event-image { width: 100%; height: 200px; overflow: hidden; border-bottom: 1px solid #222; background: #000; }
         .event-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
@@ -182,7 +182,7 @@
         .footer-logo { max-width: 250px; height: auto; margin-bottom: 30px; display: inline-block; }
 
         /* =========================================
-           HOST GAME STYLES
+           HOST GAME STYLES - BEAUTIFIED & ROUNDED
            ========================================= */
         #tm-title { font-size: 2.2rem; color: var(--primary-color); text-align: center; margin-bottom: 15px; margin-top: 0; text-shadow: 0 0 10px rgba(255, 215, 0, 0.3); }
 
@@ -197,81 +197,83 @@
         
         #tm-setup { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 80vh; text-align: center; width: 100%; }
         .setup-form-container { display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 500px; }
-        .tm-input { background: #111; border: 1px solid #444; color: white; padding: 12px; border-radius: 5px; font-size: 1rem; font-family: 'Rajdhani', sans-serif; transition: border-color 0.3s; }
+        .tm-input { background: #111; border: 1px solid #444; color: white; padding: 12px; border-radius: 12px; font-size: 1rem; font-family: 'Rajdhani', sans-serif; transition: border-color 0.3s; }
         .tm-input:focus { border-color: var(--primary-color); outline: none; box-shadow: 0 0 10px rgba(255, 215, 0, 0.2); }
         .full-width { width: 100%; }
         .input-row { display: flex; gap: 10px; width: 100%; }
         #team-number { flex: 1.5; min-width: 150px; text-transform: uppercase; }
         #team-name { flex: 2; }
-        .add-btn { margin-top: 0 !important; padding: 0 20px !important; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; }
+        .add-btn { margin-top: 0 !important; padding: 0 20px !important; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; border-radius: 12px; }
         .team-list-preview { display: flex; flex-wrap: wrap; gap: 8px; max-width: 800px; margin: 20px 0; justify-content: center; }
         .team-tag { background: #222; border: 1px solid #444; color: #ddd; padding: 6px 12px; border-radius: 20px; font-size: 0.9rem; display: flex; align-items: center; gap: 8px; animation: fadeIn 0.3s ease; }
         .team-tag span.num { color: var(--primary-color); font-weight: bold; }
         .delete-btn { cursor: pointer; margin-left: 5px; color: #ff4444; transition: 0.2s; }
         .delete-btn:hover { color: #ff0000; transform: scale(1.2); }
 
-        .tm-panel { background: #111; border: 1px solid #333; border-radius: 6px; overflow: hidden; display: flex; flex-direction: column; position: relative; }
-        .tm-header { background: #1a1a1a; padding: 8px 12px; border-bottom: 1px solid #333; display: flex; justify-content: space-between; align-items: center; color: var(--primary-color); font-size: 0.9rem; }
-        .tm-content { padding: 0; overflow-y: auto; flex: 1; position: relative; scroll-behavior: smooth; }
+        /* Panels & Boxes */
+        .tm-panel { background: #111; border: 1px solid #333; border-radius: 15px; overflow: hidden; display: flex; flex-direction: column; position: relative; }
+        .tm-header { background: #1a1a1a; padding: 10px 15px; border-bottom: 1px solid #333; display: flex; justify-content: space-between; align-items: center; color: var(--primary-color); font-size: 1rem; letter-spacing: 1px; }
+        .tm-content { padding: 10px; overflow-y: auto; flex: 1; position: relative; scroll-behavior: smooth; }
         
         /* Ranking */
         #tm-rankings { grid-column: 1 / 2; }
-        .ranking-table { width: 100%; border-collapse: collapse; font-size: 0.85rem; }
-        .ranking-table th { text-align: center; padding: 5px 4px; color: #888; border-bottom: 1px solid #444; position: sticky; top: 0; background: #111; z-index: 10; font-size: 0.8rem; }
-        .ranking-table td { padding: 5px 4px; border-bottom: 1px solid #222; text-align: center; }
-        .rank-num { font-weight: bold; color: var(--primary-color); }
+        .ranking-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 0.85rem; }
+        .ranking-table th { text-align: center; padding: 10px; color: #888; border-bottom: 1px solid #444; position: sticky; top: 0; background: #111; z-index: 10; font-size: 0.8rem; }
+        .ranking-table td { padding: 10px; border-bottom: 1px solid #222; text-align: center; }
+        .rank-num { font-weight: bold; color: var(--primary-color); font-size: 1rem; }
         .team-cell { text-align: left !important; }
         .ranking-controls { display: flex; background: #000; border-bottom: 1px solid #333; }
-        .rank-tab { flex: 1; padding: 6px; text-align: center; cursor: pointer; color: #888; font-size: 0.8rem; text-transform: uppercase; font-weight: bold; transition: 0.3s; }
+        .rank-tab { flex: 1; padding: 8px; text-align: center; cursor: pointer; color: #888; font-size: 0.9rem; text-transform: uppercase; font-weight: bold; transition: 0.3s; }
         .rank-tab.active { background: #111; color: var(--primary-color); border-bottom: 2px solid var(--primary-color); }
 
-        /* Schedule */
+        /* Schedule - Card Style Grid Layout */
         #tm-schedule { grid-column: 2 / 3; }
-        #match-list { max-height: 100%; } 
-        .match-row { display: flex; align-items: center; padding: 8px 10px; border-bottom: 1px solid #222; background: #161616; border-left: 3px solid transparent; transition: 0.2s; font-size: 0.9rem; cursor: pointer; }
-        .match-row:hover { background: #1f1f1f; }
-        .match-row.active { border-left: 3px solid var(--primary-color); background: #1a1a1a; }
+        #match-list { max-height: 100%; padding: 10px; } 
+        .match-row { 
+            display: grid; 
+            grid-template-columns: 50px 1fr 100px; /* Name | Teams | Score */
+            align-items: center; 
+            padding: 12px 15px; 
+            margin-bottom: 10px; /* Card spacing */
+            border: 1px solid #222; 
+            background: #161616; 
+            border-radius: 12px; /* Rounded corners */
+            transition: 0.2s; 
+            font-size: 0.95rem; 
+            cursor: pointer; 
+        }
+        .match-row:hover { background: #1f1f1f; border-color: #444; transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
+        .match-row.active { border-color: var(--primary-color); background: #1f1f1f; box-shadow: 0 0 15px rgba(255, 215, 0, 0.1); }
         .match-row.completed { opacity: 0.6; }
-        .match-name { width: 35px; font-weight: bold; color: #aaa; text-align: center; font-size: 0.85rem; margin-right: 10px; }
-        .alliance { flex: 1; display: grid; grid-template-columns: 1fr auto 1fr; gap: 10px; font-weight: bold; align-items: center; }
+        .match-name { font-weight: bold; color: #aaa; text-align: center; font-size: 0.9rem; }
+        .alliance { display: flex; justify-content: center; align-items: center; font-weight: bold; }
         .red-alliance { color: var(--vex-red); text-align: right; }
         .blue-alliance { color: var(--vex-blue); text-align: left; }
-        .match-score { width: 80px; text-align: center; color: white; background: #000; padding: 1px; border-radius: 3px; font-family: monospace; font-size: 0.85rem; margin-left: auto; }
+        .match-score { text-align: center; color: white; background: #000; padding: 4px 8px; border-radius: 6px; font-family: monospace; font-size: 0.9rem; border: 1px solid #333; }
 
         /* Tools */
         #tm-tools { grid-column: 3 / 4; display: grid; grid-template-rows: 0.7fr 1.3fr; gap: 10px; border: none; background: transparent; }
-        .tool-box { background: #111; border: 1px solid #333; border-radius: 6px; display: flex; flex-direction: column; position: relative; transition: all 0.3s; }
+        .tool-box { background: #111; border: 1px solid #333; border-radius: 15px; display: flex; flex-direction: column; position: relative; transition: all 0.3s; }
         
-        /* Fullscreen Fix - High Z-Index & Background & Padding Fix */
+        /* Fullscreen Fix - Rounded & Clean */
         .tool-box.fullscreen, .tm-panel.fullscreen { 
             position: fixed !important; 
             top: 0; left: 0; 
-            width: 100%; height: 100vh; /* Changed width from 100vw to 100% to fix horizontal scroll */
-            z-index: 99999; background: #000; /* Extremely high Z-Index to cover navbar */
+            width: 100%; height: 100vh; 
+            z-index: 99999; background: #000; 
             border: none; border-radius: 0; 
             padding: 20px; 
             padding-top: 100px !important; /* Force title down */
             display: flex; flex-direction: column;
-            overflow-x: hidden; /* Fix horizontal scroll */
-            box-sizing: border-box; /* Ensure padding doesn't add to width */
+            overflow-x: hidden; 
+            box-sizing: border-box; 
         }
-        .tm-panel.fullscreen .tm-content { font-size: 1.2rem; }
+        .tm-panel.fullscreen .tm-content { font-size: 1.2rem; padding: 20px; }
         .tm-panel.fullscreen .ranking-table th, .tm-panel.fullscreen .ranking-table td { padding: 15px; font-size: 1.2rem; }
-        .tm-panel.fullscreen .match-row { padding: 20px; font-size: 1.5rem; }
+        .tm-panel.fullscreen .match-row { padding: 20px; font-size: 1.5rem; margin-bottom: 15px; border-radius: 15px; grid-template-columns: 80px 1fr 150px; }
         
-        /* Close button adjustment */
-        .fullscreen-close-btn { 
-            display: none; 
-            position: absolute; 
-            top: 40px; right: 40px; /* Moved down and left slightly */
-            font-size: 3rem; /* Bigger size */
-            color: #ff4444; 
-            cursor: pointer; 
-            z-index: 100001; 
-        }
-        .tool-box.fullscreen .fullscreen-close-btn, .tm-panel.fullscreen .fullscreen-close-btn { display: block; }
         .fs-btn { cursor: pointer; color: #666; transition: 0.3s; padding: 5px; }
-        .fs-btn:hover { color: white; }
+        .fs-btn:hover { color: white; transform: scale(1.1); }
 
         /* Fullscreen Event Title */
         .fs-event-title { 
@@ -279,54 +281,101 @@
             width: 100%; 
             text-align: center; 
             color: var(--primary-color); 
-            font-size: 1.5rem; 
-            margin-bottom: 15px; 
-            /* Margin top removed as padding-top on container handles it now */
+            font-size: 2rem; 
+            margin-bottom: 20px; 
+            margin-top: 90px; /* Specific request */
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
         }
         .tm-panel.fullscreen .fs-event-title { display: block; }
 
         /* Timer */
-        .timer-display { font-size: 3.5rem; font-family: monospace; text-align: center; margin: 2px 0; font-weight: bold; color: white; line-height: 1; transition: color 0.3s; }
-        .tool-box.fullscreen .timer-display { font-size: 15rem; margin-top: 5vh; }
+        .timer-display { font-size: 3.5rem; font-family: monospace; text-align: center; margin: 10px 0; font-weight: bold; color: white; line-height: 1; transition: color 0.3s; text-shadow: 0 0 20px rgba(0,0,0,0.5); }
+        .tool-box.fullscreen .timer-display { font-size: 18rem; margin-top: 5vh; }
         .tool-box.fullscreen .timer-mode-container { margin-top: 80px; transform: scale(1.5); } 
-        
-        /* Timer Warning Style */
         .timer-warning { color: yellow !important; }
 
-        .timer-controls { display: flex; justify-content: center; gap: 8px; margin-bottom: 5px; flex-wrap: wrap; }
-        .timer-btn { padding: 5px 12px; border: none; border-radius: 3px; font-weight: bold; cursor: pointer; text-transform: uppercase; font-family: 'Rajdhani'; font-size: 0.9rem; flex: 1; min-width: 80px;}
-        .btn-start { background: var(--vex-green); color: black; transition: background 0.2s; }
-        .btn-start:disabled { background: #444; color: #888; cursor: not-allowed; border: 1px solid #555; }
+        .timer-controls { display: flex; justify-content: center; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
+        .timer-btn { padding: 8px 15px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; text-transform: uppercase; font-family: 'Rajdhani'; font-size: 1rem; flex: 1; min-width: 80px; transition: 0.2s;}
+        .timer-btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
+        .btn-start { background: var(--vex-green); color: black; }
+        .btn-start:disabled { background: #444; color: #888; cursor: not-allowed; border: 1px solid #555; transform: none; }
         .btn-pause { background: var(--vex-orange); color: black; display: none;}
-        .btn-skip { background: #E67E22; color: black; } /* Skip Color */
-        .btn-switch { background: #fff; color: #000; border: 2px solid var(--primary-color); display: none; }
+        .btn-skip { background: #E67E22; color: black; } 
+        .btn-switch { background: transparent; color: var(--primary-color); border: 2px solid var(--primary-color); display: none; }
+        .btn-switch:hover { background: var(--primary-color); color: black; }
         .btn-stop { background: var(--vex-red); color: white; }
         .btn-reset { background: #f39c12; color: black; }
         
-        .timer-phase-indicator { text-align: center; color: var(--primary-color); font-weight: bold; font-size: 1rem; margin-bottom: 2px; }
-        .mode-btn { background: #333; color: #888; border: none; padding: 2px 8px; border-radius: 10px; cursor: pointer; margin: 0 3px; font-size: 0.75rem; }
-        .mode-btn.active { background: var(--primary-color); color: black; }
+        .timer-phase-indicator { text-align: center; color: var(--primary-color); font-weight: bold; font-size: 1.2rem; margin-bottom: 5px; letter-spacing: 2px; }
+        .mode-btn { background: #222; color: #666; border: 1px solid #333; padding: 4px 12px; border-radius: 20px; cursor: pointer; margin: 0 5px; font-size: 0.8rem; transition: 0.3s; }
+        .mode-btn:hover { border-color: #666; color: #aaa; }
+        .mode-btn.active { background: var(--primary-color); color: black; border-color: var(--primary-color); font-weight: bold; }
 
-        /* Calculator - Compacted */
-        .calc-header { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; background: #000; padding: 4px 8px; border-radius: 4px; border: 1px solid #333; font-size: 0.85rem;}
-        .calc-score { font-size: 1.3rem; font-weight: bold; font-family: monospace; }
+        /* Calculator - Rounded & Stylish */
+        .calc-header { 
+            display: flex; justify-content: space-between; align-items: center; 
+            margin-bottom: 10px; 
+            background: #000; 
+            padding: 5px; 
+            border-radius: 12px; 
+            border: 1px solid #333; 
+            font-size: 0.9rem;
+        }
+        .calc-score { font-size: 2rem; font-weight: bold; font-family: monospace; min-width: 50px; text-align: center; }
         .score-red { color: var(--vex-red); }
         .score-blue { color: var(--vex-blue); }
-        .calc-body { display: grid; grid-template-columns: 1fr 1fr; gap: 4px; overflow-y: auto; padding: 0 2px; }
-        .calc-col { padding: 4px; border-radius: 4px; }
+        
+        /* Alliance Header Badge */
+        .alliance-badge { flex: 1; text-align: center; padding: 5px; border-radius: 8px; font-weight: bold; font-size: 1rem; }
+        .badge-red { background: rgba(231, 76, 60, 0.1); color: var(--vex-red); border: 1px solid rgba(231, 76, 60, 0.3); }
+        .badge-blue { background: rgba(52, 152, 219, 0.1); color: var(--vex-blue); border: 1px solid rgba(52, 152, 219, 0.3); }
+
+        .calc-body { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; overflow-y: auto; padding: 0 2px; }
+        .calc-col { padding: 8px; border-radius: 12px; }
         .col-red { background: rgba(231, 76, 60, 0.05); border: 1px solid rgba(231, 76, 60, 0.2); }
         .col-blue { background: rgba(52, 152, 219, 0.05); border: 1px solid rgba(52, 152, 219, 0.2); }
-        .calc-input-group { margin-bottom: 4px; display: flex; flex-direction: column; align-items: center; }
-        .calc-input-group label { font-size: 0.75rem; margin-bottom: 1px; color: #ccc; }
-        .score-input { width: 80%; padding: 3px; background: #222; border: 1px solid #444; color: white; font-size: 1.1rem; text-align: center; border-radius: 4px; font-weight: bold; }
-        .score-input:focus { outline: none; border-color: var(--primary-color); }
-        .calc-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 2px; font-size: 0.8rem; }
-        .submit-score-btn { width: 100%; padding: 8px; margin-top: 5px; background: linear-gradient(45deg, var(--primary-color), #d4b000); border: none; color: black; font-weight: 900; font-size: 0.9rem; cursor: pointer; border-radius: 4px; font-family: 'Nasalization'; text-transform: uppercase; }
-        .submit-score-btn:hover { filter: brightness(1.1); box-shadow: 0 0 10px var(--primary-color); }
-        .match-selector { width: 100%; padding: 4px; background: #222; color: white; border: 1px solid #444; margin-bottom: 5px; border-radius: 4px; font-size: 0.85rem; }
-        /* Clear Button */
-        .clear-score-btn { width: 100%; padding: 5px; margin-top: 5px; background: #333; border: 1px solid #555; color: #ccc; cursor: pointer; font-size: 0.8rem; border-radius: 4px; }
-        .clear-score-btn:hover { background: #444; color: white; }
+        
+        .calc-input-group { margin-bottom: 8px; display: flex; flex-direction: column; align-items: center; }
+        .calc-input-group label { font-size: 0.8rem; margin-bottom: 3px; color: #ccc; text-transform: uppercase; letter-spacing: 1px; }
+        .score-input { 
+            width: 80%; padding: 8px; 
+            background: #000; 
+            border: 1px solid #444; 
+            color: white; 
+            font-size: 1.5rem; 
+            text-align: center; 
+            border-radius: 10px; 
+            font-weight: bold; 
+            font-family: monospace;
+        }
+        .score-input:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 10px rgba(255, 215, 0, 0.2); }
+        
+        .calc-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; font-size: 0.85rem; background: rgba(0,0,0,0.3); padding: 5px 8px; border-radius: 6px; }
+        
+        .submit-score-btn { width: 100%; padding: 12px; margin-top: 10px; background: linear-gradient(45deg, var(--primary-color), #d4b000); border: none; color: black; font-weight: 900; font-size: 1rem; cursor: pointer; border-radius: 12px; font-family: 'Nasalization'; text-transform: uppercase; transition: 0.3s; }
+        .submit-score-btn:hover { filter: brightness(1.1); box-shadow: 0 0 15px rgba(255, 215, 0, 0.4); transform: translateY(-2px); }
+        
+        /* Stylish Select Dropdown */
+        .match-selector { 
+            width: 100%; padding: 10px; 
+            background: #1a1a1a; color: white; 
+            border: 1px solid #444; 
+            margin-bottom: 10px; 
+            border-radius: 10px; 
+            font-size: 0.95rem; 
+            cursor: pointer;
+            outline: none;
+            transition: border-color 0.3s;
+            appearance: none; /* Remove default arrow */
+            background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23FFD700%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
+            background-repeat: no-repeat;
+            background-position: right 10px top 50%;
+            background-size: 12px auto;
+        }
+        .match-selector:hover, .match-selector:focus { border-color: var(--primary-color); }
+        
+        .clear-score-btn { width: 100%; padding: 8px; margin-top: 5px; background: rgba(255, 68, 68, 0.1); border: 1px solid rgba(255, 68, 68, 0.3); color: #ff6666; cursor: pointer; font-size: 0.8rem; border-radius: 12px; transition: 0.3s; font-weight: bold; }
+        .clear-score-btn:hover { background: rgba(255, 68, 68, 0.8); color: white; }
 
         @media (max-width: 768px) {
             .tm-container { grid-template-columns: 1fr; grid-template-rows: auto; height: auto; display: flex; flex-direction: column; }
@@ -487,7 +536,6 @@
                     <div class="rank-tab" id="tab-qual" onclick="switchRankingMode('Qualification')">Qualification</div>
                 </div>
                 <div class="tm-content" id="ranking-container">
-                    <i class="fa-solid fa-times fullscreen-close-btn" onclick="toggleFullScreen('tm-rankings')"></i>
                     <table class="ranking-table" id="ranking-table">
                         <thead><tr><th>Rank</th><th class="team-cell">Team</th><th>Avg WP</th><th>Avg AP</th><th>Avg SP</th><th>W-L-T</th></tr></thead>
                         <tbody id="ranking-body"></tbody>
@@ -503,7 +551,6 @@
                 </div>
                 <div class="fs-event-title" id="sched-fs-title">EVENT NAME</div>
                 <div class="tm-content" id="match-list-container">
-                    <i class="fa-solid fa-times fullscreen-close-btn" onclick="toggleFullScreen('tm-schedule')"></i>
                     <div id="match-list"></div>
                 </div>
             </div>
@@ -515,7 +562,6 @@
                         <span>Timer</span>
                         <i class="fa-solid fa-expand fs-btn" onclick="toggleFullScreen('timer-box')"></i>
                     </div>
-                    <i class="fa-solid fa-times fullscreen-close-btn" onclick="toggleFullScreen('timer-box')"></i>
                     <div class="tm-content" style="display: flex; flex-direction: column; justify-content: center;">
                         <div class="timer-mode-container" style="text-align: center; margin-bottom: 5px;">
                             <button class="mode-btn active" onclick="setTimerMode('match')">Match</button>
@@ -537,15 +583,16 @@
                         <span>Score Calculator</span>
                         <i class="fa-solid fa-expand fs-btn" onclick="toggleFullScreen('calc-box')"></i>
                     </div>
-                    <i class="fa-solid fa-times fullscreen-close-btn" onclick="toggleFullScreen('calc-box')"></i>
                     <div class="tm-content">
                         <select id="calc-match-select" class="match-selector" onchange="loadMatchForScoring()"></select>
                         <div class="calc-header">
-                            <div style="flex:1; text-align:right; color:var(--vex-red); padding-right:10px; font-weight:bold;" id="score-red-team">Red</div>
-                            <div class="calc-score score-red" id="score-red-display">0</div>
-                            <span style="color:#666; margin:0 5px;">VS</span>
-                            <div class="calc-score score-blue" id="score-blue-display">0</div>
-                            <div style="flex:1; text-align:left; color:var(--vex-blue); padding-left:10px; font-weight:bold;" id="score-blue-team">Blue</div>
+                            <div class="alliance-badge badge-red" id="score-red-team">Red</div>
+                            <div style="flex:1; display:flex; justify-content:center; align-items:center;">
+                                <div class="calc-score score-red" id="score-red-display">0</div>
+                                <span style="color:#666; margin:0 10px;">VS</span>
+                                <div class="calc-score score-blue" id="score-blue-display">0</div>
+                            </div>
+                            <div class="alliance-badge badge-blue" id="score-blue-team">Blue</div>
                         </div>
                         <div class="calc-body">
                             <div class="calc-col col-red">
@@ -808,10 +855,10 @@
                     <div class="match-name">${m.label}</div>
                     <div class="alliance">
                         <span class="red-alliance">${m.red1}${m.red2 ? ' / ' + m.red2 : ''}</span>
-                        <span style="color:#444; margin: 0 8px;">vs</span>
+                        <span style="color:#444; margin: 0 10px;">vs</span>
                         <span class="blue-alliance">${m.blue1}${m.blue2 ? ' / ' + m.blue2 : ''}</span>
                     </div>
-                    ${m.status === 'completed' ? `<div class="match-score">${m.redScore} - ${m.blueScore}</div>` : ''}
+                    <div class="match-score">${m.status === 'completed' ? m.redScore + ' - ' + m.blueScore : '-'}</div>
                 </div>
             `).join('');
         }
@@ -1009,7 +1056,7 @@
                 }
                 
                 if(matchState === 'driver' && timeLeft <= 10) display.style.color = '#E74C3C'; 
-                else if(matchState === 'driver') display.style.color = '#3498DB';
+                else if(matchState === 'driver') display.style.color = 'white';
                 else if(matchState === 'paused') display.style.color = '#F39C12';
                 else display.style.color = 'white';
             }
