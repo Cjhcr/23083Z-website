@@ -210,7 +210,7 @@
             display: grid; 
             grid-template-columns: 32fr 38fr 30fr; 
             /* Fix: Use minmax(0, 1fr) to prevent grid blowout causing overflow */
-            grid-template-rows: minmax(0, 1fr); 
+            grid-template-rows: auto 1fr; 
             gap: 15px;
             /* Fix: Add margin bottom to avoid touching footer */
             margin-bottom: 60px;
@@ -307,7 +307,7 @@
             z-index: 99999; background: #000; 
             border: none; border-radius: 0; 
             padding: 20px; 
-            padding-top: 140px !important; /* Move content way down (was 100px) */
+            padding-top: 100px !important; /* Move content way down (was 100px) */
             display: flex; flex-direction: column;
             overflow-x: hidden; 
             box-sizing: border-box; 
