@@ -139,18 +139,19 @@
         .member-name { font-size: 1.3rem; color: white; margin-bottom: 5px; font-weight: 700; font-family: 'Nasalization', sans-serif; }
         .member-role { color: var(--primary-color); font-size: 0.9rem; text-transform: uppercase; font-weight: 500; font-family: 'Rajdhani', sans-serif; letter-spacing: 2px;}
 
-        /* --- New Mentor Card Style --- */
+        /* --- Mentor Card Style --- */
         .mentor-wrapper .member-info {
             display: flex;
             justify-content: space-between;
             align-items: center;
         }
+        /* Base logo style for Logo-1 */
         .member-logo {
-            width: 100px; /* Increased size */
-            height: 100px; /* Increased size */
+            width: 100px;
+            height: 100px;
             object-fit: contain;
             margin-left: 15px;
-            /* Removed circular styling */
+            /* No border radius or background */
         }
 
         .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 20px; padding: 20px 5%; max-width: 1400px; margin: 0 auto; }
@@ -498,7 +499,7 @@
         <div class="section-header scroll-hidden"><h2>The <span>Mentors</span></h2></div>
         <div class="mentor-wrapper">
             <div class="member-card scroll-hidden"><div class="member-photo" style="background-image: url('members/justin.jpg');"></div><div class="member-info"><div class="info-text"><div class="member-name">Justin</div><div class="member-role">Coach, Mentor</div></div><img src="members/logo-1.png" class="member-logo" alt="Logo"></div></div>
-            <div class="member-card scroll-hidden"><div class="member-photo" style="background-image: url('members/mentor-2.jpg');"></div><div class="member-info"><div class="info-text"><div class="member-name">肉包</div><div class="member-role">Coach, Mentor</div></div><img src="members/logo-2.png" class="member-logo" alt="Logo"></div></div>
+            <div class="member-card scroll-hidden"><div class="member-photo" style="background-image: url('members/mentor-2.jpg');"></div><div class="member-info"><div class="info-text"><div class="member-name">肉包</div><div class="member-role">Coach, Mentor</div></div><img src="members/logo-2.png" class="member-logo" style="width: 150px; height: 150px;" alt="Logo"></div></div>
         </div>
     </div>
 
