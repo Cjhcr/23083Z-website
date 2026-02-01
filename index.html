@@ -139,24 +139,22 @@
         .member-name { font-size: 1.3rem; color: white; margin-bottom: 5px; font-weight: 700; font-family: 'Nasalization', sans-serif; }
         .member-role { color: var(--primary-color); font-size: 0.9rem; text-transform: uppercase; font-weight: 500; font-family: 'Rajdhani', sans-serif; letter-spacing: 2px;}
 
-        /* --- Mentor Card Style (Fixed for No-Squeeze) --- */
+        /* --- Mentor Card Style --- */
         .mentor-wrapper .member-info {
-            display: block; /* 改回預設區塊顯示，不使用 Flexbox */
+            display: block; 
             position: relative;
-            z-index: 2; /* 確保文字在 Logo 之上 */
+            z-index: 2; 
         }
-
-        /* Mentor Logo - Absolute Position (Floating) */
         .member-logo {
-            position: absolute; /* 絕對定位：不佔用框框空間 */
-            bottom: 0px; /* Adjusted per request */
+            position: absolute; 
+            bottom: 0px; 
             right: 15px;
-            width: 100px; /* Logo 1 預設大小 */
+            width: 100px; 
             height: 100px;
             object-fit: contain;
-            z-index: 1; /* 在文字層之下，背景之上 */
+            z-index: 1; 
             opacity: 0.9;
-            pointer-events: none; /* 讓滑鼠穿透圖片，不影響操作 */
+            pointer-events: none; 
         }
 
         .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 20px; padding: 20px 5%; max-width: 1400px; margin: 0 auto; }
@@ -295,8 +293,8 @@
         .tool-box { 
             background: #111; 
             border: 1px solid #333; 
-            border-radius: 16px; 
-            overflow: hidden; 
+            border-radius: 16px; /* Increased radius */
+            overflow: hidden; /* CRITICAL FIX */
             display: flex; flex-direction: column; position: relative; transition: all 0.3s; 
             height: 100%;
         }
@@ -309,7 +307,7 @@
             z-index: 99999; background: #000; 
             border: none; border-radius: 0; 
             padding: 20px; 
-            padding-top: 100px !important; /* Force title down */
+            padding-top: 140px !important; /* Move content way down */
             display: flex; flex-direction: column;
             overflow-x: hidden; 
             box-sizing: border-box; 
@@ -317,6 +315,9 @@
         .tm-panel.fullscreen .tm-content { font-size: 1.2rem; padding: 20px; }
         .tm-panel.fullscreen .ranking-table th, .tm-panel.fullscreen .ranking-table td { padding: 15px; font-size: 1.2rem; }
         .tm-panel.fullscreen .match-row { padding: 20px; font-size: 1.5rem; margin-bottom: 15px; border-radius: 15px; grid-template-columns: 80px 1fr 150px; }
+        
+        /* Removed Red X */
+        .fullscreen-close-btn { display: none !important; }
         
         .fs-btn { cursor: pointer; color: #666; transition: 0.3s; padding: 5px; }
         .fs-btn:hover { color: white; transform: scale(1.1); }
@@ -328,15 +329,20 @@
             text-align: center; 
             color: var(--primary-color); 
             font-size: 2rem; 
-            margin-bottom: 20px; 
-            margin-top: 90px; /* Specific request */
+            margin-bottom: 30px; 
+            /* Spacing handled by padding-top in container */
             text-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
         }
         .tm-panel.fullscreen .fs-event-title { display: block; }
 
         /* Timer */
         .timer-display { font-size: 3.5rem; font-family: monospace; text-align: center; margin: 10px 0; font-weight: bold; color: white; line-height: 1; transition: color 0.3s; text-shadow: 0 0 20px rgba(0,0,0,0.5); }
-        .tool-box.fullscreen .timer-display { font-size: 18rem; margin-top: 5vh; }
+        .tool-box.fullscreen .timer-display { 
+            font-size: 18rem; 
+            margin-top: 0; /* Align */
+            width: 100%; 
+            overflow: hidden; /* Fix horizontal scroll */
+        }
         .tool-box.fullscreen .timer-mode-container { margin-top: 80px; transform: scale(1.5); } 
         .timer-warning { color: yellow !important; }
 
@@ -424,21 +430,9 @@
         .clear-score-btn:hover { background: rgba(255, 68, 68, 0.8); color: white; }
 
         @media (max-width: 768px) {
-            .tm-container { 
-                grid-template-columns: 1fr; 
-                grid-template-rows: auto; /* Mobile allows auto height */
-                height: auto; /* Mobile removes fixed height constraint */
-                display: flex; flex-direction: column; 
-            }
-            #tm-rankings, #tm-schedule, #tm-tools { 
-                grid-column: 1 / -1; 
-                height: 500px; /* Give a fixed height on mobile for scrollable areas, or min-height */
-                /* Better: let them be fixed height so they scroll internally, preventing massive page length */
-                max-height: 80vh;
-            }
-            #tm-tools { 
-                display: flex; flex-direction: column; gap: 15px; height: auto;
-            }
+            .tm-container { grid-template-columns: 1fr; grid-template-rows: auto; height: auto; display: flex; flex-direction: column; }
+            #tm-rankings, #tm-schedule, #tm-tools { grid-column: 1 / -1; height: auto; min-height: 400px; }
+            #tm-tools { grid-template-columns: 1fr; grid-template-rows: auto; }
             .input-row { flex-direction: column; }
             .add-btn { width: 100%; padding: 15px !important; }
         }
