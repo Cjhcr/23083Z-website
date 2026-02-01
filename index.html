@@ -141,20 +141,22 @@
 
         /* --- Mentor Card Style (Fixed for No-Squeeze) --- */
         .mentor-wrapper .member-info {
-            display: block; 
+            display: block; /* 改回預設區塊顯示，不使用 Flexbox */
             position: relative;
-            z-index: 2; 
+            z-index: 2; /* 確保文字在 Logo 之上 */
         }
+
+        /* Mentor Logo - Absolute Position (Floating) */
         .member-logo {
-            position: absolute; 
+            position: absolute; /* 絕對定位：不佔用框框空間 */
             bottom: 0px; 
             right: 15px;
-            width: 100px; 
+            width: 100px; /* Logo 1 預設大小 */
             height: 100px;
             object-fit: contain;
-            z-index: 1; 
+            z-index: 1; /* 在文字層之下，背景之上 */
             opacity: 0.9;
-            pointer-events: none; 
+            pointer-events: none; /* 讓滑鼠穿透圖片，不影響操作 */
         }
 
         .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 20px; padding: 20px 5%; max-width: 1400px; margin: 0 auto; }
@@ -209,7 +211,7 @@
             height: calc(100vh - 140px);
             display: grid; 
             grid-template-columns: 32fr 38fr 30fr; 
-            /* Fix: Use minmax(0, 1fr) to prevent grid blowout causing overflow */
+            /* Fix: Use auto 1fr to let title take space it needs without overlap */
             grid-template-rows: auto 1fr; 
             gap: 15px;
             /* Fix: Add margin bottom to avoid touching footer */
@@ -284,7 +286,7 @@
             grid-column: 3 / 4; 
             display: grid; 
             /* Let Timer size to content, Calculator take rest */
-            grid-template-rows: auto minmax(0, 1fr); 
+            grid-template-rows: auto 1fr; 
             gap: 10px; 
             border: none; 
             background: transparent;
@@ -307,7 +309,7 @@
             z-index: 99999; background: #000; 
             border: none; border-radius: 0; 
             padding: 20px; 
-            padding-top: 100px !important; /* Move content way down (was 100px) */
+            padding-top: 100px !important; /* Move content way down (Reverted from 140px) */
             display: flex; flex-direction: column;
             overflow-x: hidden; 
             box-sizing: border-box; 
