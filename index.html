@@ -139,24 +139,22 @@
         .member-name { font-size: 1.3rem; color: white; margin-bottom: 5px; font-weight: 700; font-family: 'Nasalization', sans-serif; }
         .member-role { color: var(--primary-color); font-size: 0.9rem; text-transform: uppercase; font-weight: 500; font-family: 'Rajdhani', sans-serif; letter-spacing: 2px;}
 
-        /* --- Mentor Card Style (Fixed for No-Squeeze) --- */
+        /* --- Mentor Card Style --- */
         .mentor-wrapper .member-info {
-            display: block; /* 改回預設區塊顯示，不使用 Flexbox */
+            display: block; 
             position: relative;
-            z-index: 2; /* 確保文字在 Logo 之上 */
+            z-index: 2; 
         }
-
-        /* Mentor Logo - Absolute Position (Floating) */
         .member-logo {
-            position: absolute; /* 絕對定位：不佔用框框空間 */
-            bottom: 0px; 
+            position: absolute; 
+            bottom: 5px; /* Updated: Moved up slightly */
             right: 15px;
-            width: 100px; /* Logo 1 預設大小 */
+            width: 100px; 
             height: 100px;
             object-fit: contain;
-            z-index: 1; /* 在文字層之下，背景之上 */
+            z-index: 1; 
             opacity: 0.9;
-            pointer-events: none; /* 讓滑鼠穿透圖片，不影響操作 */
+            pointer-events: none; 
         }
 
         .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 20px; padding: 20px 5%; max-width: 1400px; margin: 0 auto; }
@@ -202,19 +200,19 @@
         .footer-logo { max-width: 250px; height: auto; margin-bottom: 30px; display: inline-block; }
 
         /* =========================================
-           HOST GAME STYLES - BEAUTIFIED & ROUNDED
+           HOST GAME STYLES
            ========================================= */
         #tm-title { font-size: 2.2rem; color: var(--primary-color); text-align: center; margin-bottom: 20px; padding-top: 40px; text-shadow: 0 0 10px rgba(255, 215, 0, 0.3); }
 
         .tm-container {
             max-width: 1600px; margin: 0 auto; padding: 0 10px; 
-            /* Fix: Changed to 80vh and max-content row to prevent overlap */
-            height: 80vh; 
+            /* Fix: Increased height to give calculator more space */
+            height: calc(100vh - 100px); 
             display: grid; 
             grid-template-columns: 32fr 38fr 30fr; 
-            grid-template-rows: max-content minmax(0, 1fr); 
+            grid-template-rows: auto minmax(0, 1fr); 
             gap: 15px;
-            margin-bottom: 40px;
+            margin-bottom: 50px;
         }
         
         #tm-setup { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 80vh; text-align: center; width: 100%; }
@@ -232,17 +230,17 @@
         .delete-btn { cursor: pointer; margin-left: 5px; color: #ff4444; transition: 0.2s; }
         .delete-btn:hover { color: #ff0000; transform: scale(1.2); }
 
-        /* Panels & Boxes - FIXED ROUNDED CORNERS & HEIGHT */
+        /* Panels & Boxes */
         .tm-panel { 
             background: #111; 
             border: 1px solid #333; 
             border-radius: 16px; 
-            overflow: hidden; /* Fixes corner clipping */
+            overflow: hidden; 
             display: flex; flex-direction: column; position: relative; 
-            height: 100%; /* Ensure it respects grid row height */
-            min-height: 0; /* CRITICAL FIX for grid blowout */
+            height: 100%;
+            min-height: 0; /* CRITICAL FIX: Allows panel to shrink within grid row */
         }
-        .tm-header { background: #1a1a1a; padding: 10px 15px; border-bottom: 1px solid #333; display: flex; justify-content: space-between; align-items: center; color: var(--primary-color); font-size: 1rem; letter-spacing: 1px; border-radius: 16px 16px 0 0; /* Forced rounded corners top */ }
+        .tm-header { background: #1a1a1a; padding: 10px 15px; border-bottom: 1px solid #333; display: flex; justify-content: space-between; align-items: center; color: var(--primary-color); font-size: 1rem; letter-spacing: 1px; border-radius: 16px 16px 0 0; }
         .tm-content { padding: 10px; overflow-y: auto; flex: 1; position: relative; scroll-behavior: smooth; }
         
         /* Ranking */
@@ -256,18 +254,18 @@
         .rank-tab { flex: 1; padding: 6px; text-align: center; cursor: pointer; color: #888; font-size: 0.8rem; text-transform: uppercase; font-weight: bold; transition: 0.3s; }
         .rank-tab.active { background: #111; color: var(--primary-color); border-bottom: 2px solid var(--primary-color); }
 
-        /* Schedule - Card Style Grid Layout */
+        /* Schedule */
         #tm-schedule { grid-column: 2 / 3; }
         #match-list { max-height: 100%; padding: 10px; } 
         .match-row { 
             display: grid; 
-            grid-template-columns: 50px 1fr 100px; /* Name | Teams | Score */
+            grid-template-columns: 50px 1fr 100px; 
             align-items: center; 
             padding: 12px 15px; 
-            margin-bottom: 10px; /* Card spacing */
+            margin-bottom: 10px; 
             border: 1px solid #222; 
             background: #161616; 
-            border-radius: 12px; /* Rounded corners */
+            border-radius: 12px; 
             transition: 0.2s; 
             font-size: 0.95rem; 
             cursor: pointer; 
@@ -281,12 +279,11 @@
         .blue-alliance { color: var(--vex-blue); text-align: left; }
         .match-score { text-align: center; color: white; background: #000; padding: 4px 8px; border-radius: 6px; font-family: monospace; font-size: 0.9rem; border: 1px solid #333; }
 
-        /* Tools - Height Adjustment */
+        /* Tools */
         #tm-tools { 
             grid-column: 3 / 4; 
             display: grid; 
-            /* Let Timer size to content, Calculator take rest */
-            grid-template-rows: auto minmax(0, 1fr); 
+            grid-template-rows: auto minmax(0, 1fr); /* Timer gets what it needs, Calc gets the rest */
             gap: 10px; 
             border: none; 
             background: transparent;
@@ -295,14 +292,14 @@
         .tool-box { 
             background: #111; 
             border: 1px solid #333; 
-            border-radius: 16px; /* Increased radius */
-            overflow: hidden; /* CRITICAL FIX */
+            border-radius: 16px; 
+            overflow: hidden; /* Fixes corner clipping */
             display: flex; flex-direction: column; position: relative; transition: all 0.3s; 
             height: 100%;
             min-height: 0; /* CRITICAL FIX for grid blowout */
         }
         
-        /* Fullscreen Fix - Rounded & Clean */
+        /* Fullscreen Fix */
         .tool-box.fullscreen, .tm-panel.fullscreen { 
             position: fixed !important; 
             top: 0; left: 0; 
@@ -310,7 +307,7 @@
             z-index: 99999; background: #000; 
             border: none; border-radius: 0; 
             padding: 20px; 
-            padding-top: 100px !important; /* Move content way down */
+            padding-top: 100px !important; 
             display: flex; flex-direction: column;
             overflow-x: hidden; 
             box-sizing: border-box; 
@@ -320,6 +317,7 @@
         .tm-panel.fullscreen .match-row { padding: 20px; font-size: 1.5rem; margin-bottom: 15px; border-radius: 15px; grid-template-columns: 80px 1fr 150px; }
         
         /* Removed Red X */
+        .fullscreen-close-btn { display: none !important; }
         
         .fs-btn { cursor: pointer; color: #666; transition: 0.3s; padding: 5px; }
         .fs-btn:hover { color: white; transform: scale(1.1); }
@@ -332,7 +330,6 @@
             color: var(--primary-color); 
             font-size: 2rem; 
             margin-bottom: 20px; 
-            /* Spacing handled by padding-top in container */
             text-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
         }
         .tm-panel.fullscreen .fs-event-title { display: block; }
@@ -341,9 +338,9 @@
         .timer-display { font-size: 3.5rem; font-family: monospace; text-align: center; margin: 10px 0; font-weight: bold; color: white; line-height: 1; transition: color 0.3s; text-shadow: 0 0 20px rgba(0,0,0,0.5); }
         .tool-box.fullscreen .timer-display { 
             font-size: 18rem; 
-            margin-top: 0; /* Align */
+            margin-top: 0; 
             width: 100%; 
-            overflow: hidden; /* Fix horizontal scroll */
+            overflow: hidden; 
         }
         .tool-box.fullscreen .timer-mode-container { margin-top: 80px; transform: scale(1.5); } 
         .timer-warning { color: yellow !important; }
@@ -365,10 +362,10 @@
         .mode-btn:hover { border-color: #666; color: #aaa; }
         .mode-btn.active { background: var(--primary-color); color: black; border-color: var(--primary-color); font-weight: bold; }
 
-        /* Calculator - Rounded & Stylish */
+        /* Calculator */
         .calc-header { 
             display: flex; justify-content: space-between; align-items: center; 
-            margin-bottom: 10px; 
+            margin-bottom: 8px; 
             background: #000; 
             padding: 5px; 
             border-radius: 12px; 
@@ -379,7 +376,6 @@
         .score-red { color: var(--vex-red); }
         .score-blue { color: var(--vex-blue); }
         
-        /* Alliance Header Badge */
         .alliance-badge { flex: 1; text-align: center; padding: 5px; border-radius: 8px; font-weight: bold; font-size: 1rem; }
         .badge-red { background: rgba(231, 76, 60, 0.1); color: var(--vex-red); border: 1px solid rgba(231, 76, 60, 0.3); }
         .badge-blue { background: rgba(52, 152, 219, 0.1); color: var(--vex-blue); border: 1px solid rgba(52, 152, 219, 0.3); }
@@ -389,7 +385,7 @@
         .col-red { background: rgba(231, 76, 60, 0.05); border: 1px solid rgba(231, 76, 60, 0.2); }
         .col-blue { background: rgba(52, 152, 219, 0.05); border: 1px solid rgba(52, 152, 219, 0.2); }
         
-        .calc-input-group { margin-bottom: 8px; display: flex; flex-direction: column; align-items: center; }
+        .calc-input-group { margin-bottom: 5px; display: flex; flex-direction: column; align-items: center; }
         .calc-input-group label { font-size: 0.8rem; margin-bottom: 3px; color: #ccc; text-transform: uppercase; letter-spacing: 1px; }
         .score-input { 
             width: 80%; padding: 8px; 
@@ -409,7 +405,6 @@
         .submit-score-btn { width: 100%; padding: 12px; margin-top: 10px; background: linear-gradient(45deg, var(--primary-color), #d4b000); border: none; color: black; font-weight: 900; font-size: 1rem; cursor: pointer; border-radius: 12px; font-family: 'Nasalization'; text-transform: uppercase; transition: 0.3s; }
         .submit-score-btn:hover { filter: brightness(1.1); box-shadow: 0 0 15px rgba(255, 215, 0, 0.4); transform: translateY(-2px); }
         
-        /* Stylish Select Dropdown */
         .match-selector { 
             width: 100%; padding: 10px; 
             background: #1a1a1a; color: white; 
@@ -420,7 +415,7 @@
             cursor: pointer;
             outline: none;
             transition: border-color 0.3s;
-            appearance: none; /* Remove default arrow */
+            appearance: none; 
             background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23FFD700%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
             background-repeat: no-repeat;
             background-position: right 10px top 50%;
@@ -523,8 +518,8 @@
         </div>
         <div class="section-header scroll-hidden"><h2>The <span>Mentors</span></h2></div>
         <div class="mentor-wrapper">
-            <div class="member-card scroll-hidden"><div class="member-photo" style="background-image: url('members/justin.jpg');"></div><div class="member-info"><div class="info-text"><div class="member-name">Justin</div><div class="member-role">Coach, Mentor</div></div><img src="members/logo-1.png" class="member-logo" style="bottom: 0px;" alt="Logo"></div></div>
-            <div class="member-card scroll-hidden"><div class="member-photo" style="background-image: url('members/mentor-2.jpg');"></div><div class="member-info"><div class="info-text"><div class="member-name">肉包</div><div class="member-role">Coach, Mentor</div></div><img src="members/logo-2.png" class="member-logo" style="width: 150px; height: 150px; bottom: -35px;" alt="Logo"></div></div>
+            <div class="member-card scroll-hidden"><div class="member-photo" style="background-image: url('members/justin.jpg');"></div><div class="member-info"><div class="info-text"><div class="member-name">Justin</div><div class="member-role">Coach, Mentor</div></div><img src="members/logo-1.png" class="member-logo" style="bottom: 5px;" alt="Logo"></div></div>
+            <div class="member-card scroll-hidden"><div class="member-photo" style="background-image: url('members/mentor-2.jpg');"></div><div class="member-info"><div class="info-text"><div class="member-name">肉包</div><div class="member-role">Coach, Mentor</div></div><img src="members/logo-2.png" class="member-logo" style="width: 150px; height: 150px; bottom: -25px;" alt="Logo"></div></div>
         </div>
     </div>
 
