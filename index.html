@@ -139,19 +139,28 @@
         .member-name { font-size: 1.3rem; color: white; margin-bottom: 5px; font-weight: 700; font-family: 'Nasalization', sans-serif; }
         .member-role { color: var(--primary-color); font-size: 0.9rem; text-transform: uppercase; font-weight: 500; font-family: 'Rajdhani', sans-serif; letter-spacing: 2px;}
 
-        /* --- Mentor Card Style --- */
-        .mentor-wrapper .member-info {
-            display: flex;
-            justify-content: space-between;
-            align-items: center;
+        /* --- Mentor Card Style (Fixed for No-Squeeze) --- */
+        .mentor-wrapper .member-card {
+            position: relative; /* 定位基準點 */
         }
-        /* Base logo style for Logo-1 */
+        
+        .mentor-wrapper .member-info {
+            display: block; /* 改回預設區塊顯示，不使用 Flexbox */
+            position: relative;
+            z-index: 2; /* 確保文字在 Logo 之上 */
+        }
+
+        /* Mentor Logo - Absolute Position (Floating) */
         .member-logo {
-            width: 100px;
+            position: absolute; /* 絕對定位：不佔用框框空間 */
+            bottom: 10px;
+            right: 15px;
+            width: 100px; /* Logo 1 預設大小 */
             height: 100px;
             object-fit: contain;
-            margin-left: 15px;
-            /* No border radius or background */
+            z-index: 1; /* 在文字層之下，背景之上 */
+            opacity: 0.9;
+            pointer-events: none; /* 讓滑鼠穿透圖片，不影響操作 */
         }
 
         .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 20px; padding: 20px 5%; max-width: 1400px; margin: 0 auto; }
