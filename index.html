@@ -204,18 +204,17 @@
         /* =========================================
            HOST GAME STYLES - BEAUTIFIED & ROUNDED
            ========================================= */
-        #tm-title { font-size: 2.2rem; color: var(--primary-color); text-align: center; margin-bottom: 15px; margin-top: 0; text-shadow: 0 0 10px rgba(255, 215, 0, 0.3); }
+        #tm-title { font-size: 2.2rem; color: var(--primary-color); text-align: center; margin-bottom: 20px; padding-top: 40px; text-shadow: 0 0 10px rgba(255, 215, 0, 0.3); }
 
         .tm-container {
             max-width: 1600px; margin: 0 auto; padding: 0 10px; 
-            height: calc(100vh - 140px);
+            /* Fix: Changed to 80vh and max-content row to prevent overlap */
+            height: 80vh; 
             display: grid; 
             grid-template-columns: 32fr 38fr 30fr; 
-            /* Fix: Use auto 1fr to let title take space it needs without overlap */
-            grid-template-rows: auto 1fr; 
+            grid-template-rows: max-content minmax(0, 1fr); 
             gap: 15px;
-            /* Fix: Add margin bottom to avoid touching footer */
-            margin-bottom: 60px;
+            margin-bottom: 40px;
         }
         
         #tm-setup { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 80vh; text-align: center; width: 100%; }
@@ -241,6 +240,7 @@
             overflow: hidden; /* Fixes corner clipping */
             display: flex; flex-direction: column; position: relative; 
             height: 100%; /* Ensure it respects grid row height */
+            min-height: 0; /* CRITICAL FIX for grid blowout */
         }
         .tm-header { background: #1a1a1a; padding: 10px 15px; border-bottom: 1px solid #333; display: flex; justify-content: space-between; align-items: center; color: var(--primary-color); font-size: 1rem; letter-spacing: 1px; border-radius: 16px 16px 0 0; /* Forced rounded corners top */ }
         .tm-content { padding: 10px; overflow-y: auto; flex: 1; position: relative; scroll-behavior: smooth; }
@@ -286,7 +286,7 @@
             grid-column: 3 / 4; 
             display: grid; 
             /* Let Timer size to content, Calculator take rest */
-            grid-template-rows: auto 1fr; 
+            grid-template-rows: auto minmax(0, 1fr); 
             gap: 10px; 
             border: none; 
             background: transparent;
@@ -299,6 +299,7 @@
             overflow: hidden; /* CRITICAL FIX */
             display: flex; flex-direction: column; position: relative; transition: all 0.3s; 
             height: 100%;
+            min-height: 0; /* CRITICAL FIX for grid blowout */
         }
         
         /* Fullscreen Fix - Rounded & Clean */
@@ -309,7 +310,7 @@
             z-index: 99999; background: #000; 
             border: none; border-radius: 0; 
             padding: 20px; 
-            padding-top: 100px !important; /* Move content way down (Reverted from 140px) */
+            padding-top: 100px !important; /* Move content way down */
             display: flex; flex-direction: column;
             overflow-x: hidden; 
             box-sizing: border-box; 
@@ -318,8 +319,7 @@
         .tm-panel.fullscreen .ranking-table th, .tm-panel.fullscreen .ranking-table td { padding: 15px; font-size: 1.2rem; }
         .tm-panel.fullscreen .match-row { padding: 20px; font-size: 1.5rem; margin-bottom: 15px; border-radius: 15px; grid-template-columns: 80px 1fr 150px; }
         
-        /* Removed Red X as requested */
-        .fullscreen-close-btn { display: none !important; }
+        /* Removed Red X */
         
         .fs-btn { cursor: pointer; color: #666; transition: 0.3s; padding: 5px; }
         .fs-btn:hover { color: white; transform: scale(1.1); }
