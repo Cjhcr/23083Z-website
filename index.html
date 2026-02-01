@@ -139,7 +139,7 @@
         .member-name { font-size: 1.3rem; color: white; margin-bottom: 5px; font-weight: 700; font-family: 'Nasalization', sans-serif; }
         .member-role { color: var(--primary-color); font-size: 0.9rem; text-transform: uppercase; font-weight: 500; font-family: 'Rajdhani', sans-serif; letter-spacing: 2px;}
 
-        /* --- Mentor Card Style --- */
+        /* --- Mentor Card Style (Fixed for No-Squeeze) --- */
         .mentor-wrapper .member-info {
             display: block; 
             position: relative;
@@ -240,7 +240,7 @@
             display: flex; flex-direction: column; position: relative; 
             height: 100%; /* Ensure it respects grid row height */
         }
-        .tm-header { background: #1a1a1a; padding: 10px 15px; border-bottom: 1px solid #333; display: flex; justify-content: space-between; align-items: center; color: var(--primary-color); font-size: 1rem; letter-spacing: 1px; }
+        .tm-header { background: #1a1a1a; padding: 10px 15px; border-bottom: 1px solid #333; display: flex; justify-content: space-between; align-items: center; color: var(--primary-color); font-size: 1rem; letter-spacing: 1px; border-radius: 16px 16px 0 0; /* Forced rounded corners top */ }
         .tm-content { padding: 10px; overflow-y: auto; flex: 1; position: relative; scroll-behavior: smooth; }
         
         /* Ranking */
@@ -307,7 +307,7 @@
             z-index: 99999; background: #000; 
             border: none; border-radius: 0; 
             padding: 20px; 
-            padding-top: 140px !important; /* Move content way down */
+            padding-top: 140px !important; /* Move content way down (was 100px) */
             display: flex; flex-direction: column;
             overflow-x: hidden; 
             box-sizing: border-box; 
@@ -316,7 +316,7 @@
         .tm-panel.fullscreen .ranking-table th, .tm-panel.fullscreen .ranking-table td { padding: 15px; font-size: 1.2rem; }
         .tm-panel.fullscreen .match-row { padding: 20px; font-size: 1.5rem; margin-bottom: 15px; border-radius: 15px; grid-template-columns: 80px 1fr 150px; }
         
-        /* Removed Red X */
+        /* Removed Red X as requested */
         .fullscreen-close-btn { display: none !important; }
         
         .fs-btn { cursor: pointer; color: #666; transition: 0.3s; padding: 5px; }
@@ -329,7 +329,7 @@
             text-align: center; 
             color: var(--primary-color); 
             font-size: 2rem; 
-            margin-bottom: 30px; 
+            margin-bottom: 20px; 
             /* Spacing handled by padding-top in container */
             text-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
         }
@@ -440,7 +440,7 @@
 </head>
 <body>
 
-    <!-- Audio Elements (Preloaded for low latency) -->
+    <!-- Audio Elements (HTML5 Recommended method) -->
     <audio id="sfx-start" src="sound/Start.wav" preload="auto"></audio>
     <audio id="sfx-pause" src="sound/Pause.wav" preload="auto"></audio>
     <audio id="sfx-abort" src="sound/Abort.wav" preload="auto"></audio>
