@@ -146,15 +146,11 @@
             align-items: center;
         }
         .member-logo {
-            width: 60px;
-            height: 60px;
+            width: 100px; /* Increased size */
+            height: 100px; /* Increased size */
             object-fit: contain;
-            margin-left: 10px;
-            /* background: white;  Optional: if logo needs background to be visible */
-            border-radius: 50%;
-            padding: 5px;
-            background: rgba(255, 255, 255, 0.05);
-            border: 1px solid #333;
+            margin-left: 15px;
+            /* Removed circular styling */
         }
 
         .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 20px; padding: 20px 5%; max-width: 1400px; margin: 0 auto; }
@@ -301,6 +297,8 @@
         .tm-panel.fullscreen .tm-content { font-size: 1.2rem; padding: 20px; }
         .tm-panel.fullscreen .ranking-table th, .tm-panel.fullscreen .ranking-table td { padding: 15px; font-size: 1.2rem; }
         .tm-panel.fullscreen .match-row { padding: 20px; font-size: 1.5rem; margin-bottom: 15px; border-radius: 15px; grid-template-columns: 80px 1fr 150px; }
+        
+        /* Removed .fullscreen-close-btn as requested */
         
         .fs-btn { cursor: pointer; color: #666; transition: 0.3s; padding: 5px; }
         .fs-btn:hover { color: white; transform: scale(1.1); }
