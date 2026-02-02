@@ -149,7 +149,7 @@
         /* Mentor Logo - Absolute Position (Floating) */
         .member-logo {
             position: absolute; /* 絕對定位：不佔用框框空間 */
-            bottom: 0px; 
+            bottom: 5px; 
             right: 15px;
             width: 100px; /* Logo 1 預設大小 */
             height: 100px;
@@ -204,17 +204,17 @@
         /* =========================================
            HOST GAME STYLES - BEAUTIFIED & ROUNDED
            ========================================= */
-        #tm-title { font-size: 2.2rem; color: var(--primary-color); text-align: center; margin-bottom: 15px; margin-top: 0; text-shadow: 0 0 10px rgba(255, 215, 0, 0.3); }
+        #tm-title { font-size: 2.2rem; color: var(--primary-color); text-align: center; margin-bottom: 20px; padding-top: 40px; text-shadow: 0 0 10px rgba(255, 215, 0, 0.3); }
 
         .tm-container {
             max-width: 1600px; margin: 0 auto; padding: 0 10px; 
-            height: calc(150vh - 180px);
+            /* Fix: Increased height to give calculator more space */
+            height: calc(100vh - 120px); 
             display: grid; 
             grid-template-columns: 32fr 38fr 30fr; 
-            /* Fix: Use auto 1fr to let title take space it needs without overlap */
-            grid-template-rows: auto 1fr; 
+            /* Fix: Use auto minmax(0, 1fr) to prevent overlap of title while keeping content bounded */
+            grid-template-rows: auto minmax(0, 1fr); 
             gap: 15px;
-            /* Fix: Add margin bottom to avoid touching footer */
             margin-bottom: 60px;
         }
         
@@ -241,6 +241,7 @@
             overflow: hidden; /* Fixes corner clipping */
             display: flex; flex-direction: column; position: relative; 
             height: 100%; /* Ensure it respects grid row height */
+            min-height: 0; /* CRITICAL FIX for grid blowout */
         }
         .tm-header { background: #1a1a1a; padding: 10px 15px; border-bottom: 1px solid #333; display: flex; justify-content: space-between; align-items: center; color: var(--primary-color); font-size: 1rem; letter-spacing: 1px; border-radius: 16px 16px 0 0; /* Forced rounded corners top */ }
         .tm-content { padding: 10px; overflow-y: auto; flex: 1; position: relative; scroll-behavior: smooth; }
@@ -286,7 +287,7 @@
             grid-column: 3 / 4; 
             display: grid; 
             /* Let Timer size to content, Calculator take rest */
-            grid-template-rows: auto 1fr; 
+            grid-template-rows: auto minmax(0, 1fr); 
             gap: 10px; 
             border: none; 
             background: transparent;
@@ -299,6 +300,7 @@
             overflow: hidden; /* CRITICAL FIX */
             display: flex; flex-direction: column; position: relative; transition: all 0.3s; 
             height: 100%;
+            min-height: 0; /* CRITICAL FIX for grid blowout */
         }
         
         /* Fullscreen Fix - Rounded & Clean */
@@ -309,7 +311,7 @@
             z-index: 99999; background: #000; 
             border: none; border-radius: 0; 
             padding: 20px; 
-            padding-top: 100px !important; /* Move content way down (Reverted from 140px) */
+            padding-top: 100px !important; /* Move content way down */
             display: flex; flex-direction: column;
             overflow-x: hidden; 
             box-sizing: border-box; 
@@ -318,7 +320,7 @@
         .tm-panel.fullscreen .ranking-table th, .tm-panel.fullscreen .ranking-table td { padding: 15px; font-size: 1.2rem; }
         .tm-panel.fullscreen .match-row { padding: 20px; font-size: 1.5rem; margin-bottom: 15px; border-radius: 15px; grid-template-columns: 80px 1fr 150px; }
         
-        /* Removed Red X as requested */
+        /* Removed Red X */
         .fullscreen-close-btn { display: none !important; }
         
         .fs-btn { cursor: pointer; color: #666; transition: 0.3s; padding: 5px; }
@@ -368,7 +370,7 @@
         /* Calculator - Rounded & Stylish */
         .calc-header { 
             display: flex; justify-content: space-between; align-items: center; 
-            margin-bottom: 10px; 
+            margin-bottom: 8px; 
             background: #000; 
             padding: 5px; 
             border-radius: 12px; 
@@ -379,17 +381,17 @@
         .score-red { color: var(--vex-red); }
         .score-blue { color: var(--vex-blue); }
         
-        /* Alliance Header Badge */
         .alliance-badge { flex: 1; text-align: center; padding: 5px; border-radius: 8px; font-weight: bold; font-size: 1rem; }
         .badge-red { background: rgba(231, 76, 60, 0.1); color: var(--vex-red); border: 1px solid rgba(231, 76, 60, 0.3); }
         .badge-blue { background: rgba(52, 152, 219, 0.1); color: var(--vex-blue); border: 1px solid rgba(52, 152, 219, 0.3); }
 
-        .calc-body { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; overflow-y: auto; padding: 0 2px; }
+        /* FIX: Removed overflow-y: auto to show full calculator content */
+        .calc-body { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; overflow-y: visible; padding: 0 2px; }
         .calc-col { padding: 8px; border-radius: 12px; }
         .col-red { background: rgba(231, 76, 60, 0.05); border: 1px solid rgba(231, 76, 60, 0.2); }
         .col-blue { background: rgba(52, 152, 219, 0.05); border: 1px solid rgba(52, 152, 219, 0.2); }
         
-        .calc-input-group { margin-bottom: 8px; display: flex; flex-direction: column; align-items: center; }
+        .calc-input-group { margin-bottom: 5px; display: flex; flex-direction: column; align-items: center; }
         .calc-input-group label { font-size: 0.8rem; margin-bottom: 3px; color: #ccc; text-transform: uppercase; letter-spacing: 1px; }
         .score-input { 
             width: 80%; padding: 8px; 
@@ -409,7 +411,6 @@
         .submit-score-btn { width: 100%; padding: 12px; margin-top: 10px; background: linear-gradient(45deg, var(--primary-color), #d4b000); border: none; color: black; font-weight: 900; font-size: 1rem; cursor: pointer; border-radius: 12px; font-family: 'Nasalization'; text-transform: uppercase; transition: 0.3s; }
         .submit-score-btn:hover { filter: brightness(1.1); box-shadow: 0 0 15px rgba(255, 215, 0, 0.4); transform: translateY(-2px); }
         
-        /* Stylish Select Dropdown */
         .match-selector { 
             width: 100%; padding: 10px; 
             background: #1a1a1a; color: white; 
@@ -420,7 +421,7 @@
             cursor: pointer;
             outline: none;
             transition: border-color 0.3s;
-            appearance: none; /* Remove default arrow */
+            appearance: none; 
             background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23FFD700%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
             background-repeat: no-repeat;
             background-position: right 10px top 50%;
@@ -431,10 +432,51 @@
         .clear-score-btn { width: 100%; padding: 8px; margin-top: 5px; background: rgba(255, 68, 68, 0.1); border: 1px solid rgba(255, 68, 68, 0.3); color: #ff6666; cursor: pointer; font-size: 0.8rem; border-radius: 12px; transition: 0.3s; font-weight: bold; }
         .clear-score-btn:hover { background: rgba(255, 68, 68, 0.8); color: white; }
 
+        /* --- MOBILE RESPONSIVE --- */
         @media (max-width: 768px) {
-            .tm-container { grid-template-columns: 1fr; grid-template-rows: auto; height: auto; display: flex; flex-direction: column; }
-            #tm-rankings, #tm-schedule, #tm-tools { grid-column: 1 / -1; height: auto; min-height: 400px; }
-            #tm-tools { grid-template-columns: 1fr; grid-template-rows: auto; }
+            .hero-content h1 { font-size: 3rem; }
+            .team-grid { grid-template-columns: 1fr; gap: 40px; }
+            .mentor-wrapper { margin-bottom: 40px; }
+            .gallery-grid { grid-template-columns: 1fr; }
+            .about-row, .about-row:nth-child(even) { flex-direction: column !important; gap: 30px; }
+            .about-text-content { text-align: left; }
+            .timeline::before { left: 20px; }
+            .event-card { width: 85%; margin-left: 50px !important; margin-right: 0 !important; text-align: left !important; border-left: 3px solid var(--primary-color) !important; border-right: none !important; }
+            .event-card::after { left: -38px !important; right: auto !important; }
+            .nav-logo img { height: 40px; }
+
+            .menu-toggle { display: block; }
+            .menu-toggle.active .bar:nth-child(2) { opacity: 0; }
+            .menu-toggle.active .bar:nth-child(1) { transform: translateY(8px) rotate(45deg); }
+            .menu-toggle.active .bar:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+
+            .nav-menu {
+                position: fixed; left: -100%; top: 60px; gap: 0; flex-direction: column;
+                background-color: rgba(0,0,0,0.98); width: 100%; text-align: center;
+                transition: 0.3s; border-bottom: 2px solid var(--primary-color); z-index: 1001;
+                padding-bottom: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+            }
+            .nav-menu.active { left: 0; }
+            nav ul { flex-direction: column; padding: 20px 0; width: 100%; gap: 0; }
+            .nav-item { display: block; font-size: 1.5rem; padding: 20px 0; border-bottom: 1px solid #222; width: 100%; }
+            .nav-item:hover, .nav-item.active { background: #111; border-bottom: 1px solid var(--primary-color); }
+            
+            .countdown-number { font-size: 1.5rem; }
+            .countdown-item { padding: 8px 10px; min-width: 60px; }
+
+            .tm-container { 
+                grid-template-columns: 1fr; 
+                grid-template-rows: auto; 
+                height: auto; 
+                display: flex; flex-direction: column; 
+            }
+            #tm-rankings, #tm-schedule, #tm-tools { 
+                grid-column: 1 / -1; 
+                max-height: 80vh;
+            }
+            #tm-tools { 
+                display: flex; flex-direction: column; gap: 15px; height: auto;
+            }
             .input-row { flex-direction: column; }
             .add-btn { width: 100%; padding: 15px !important; }
         }
@@ -523,8 +565,8 @@
         </div>
         <div class="section-header scroll-hidden"><h2>The <span>Mentors</span></h2></div>
         <div class="mentor-wrapper">
-            <div class="member-card scroll-hidden"><div class="member-photo" style="background-image: url('members/justin.jpg');"></div><div class="member-info"><div class="info-text"><div class="member-name">Justin</div><div class="member-role">Coach, Mentor</div></div><img src="members/logo-1.png" class="member-logo" style="bottom: 0px;" alt="Logo"></div></div>
-            <div class="member-card scroll-hidden"><div class="member-photo" style="background-image: url('members/mentor-2.jpg');"></div><div class="member-info"><div class="info-text"><div class="member-name">肉包</div><div class="member-role">Coach, Mentor</div></div><img src="members/logo-2.png" class="member-logo" style="width: 150px; height: 150px; bottom: -35px;" alt="Logo"></div></div>
+            <div class="member-card scroll-hidden"><div class="member-photo" style="background-image: url('members/justin.jpg');"></div><div class="member-info"><div class="info-text"><div class="member-name">Justin</div><div class="member-role">Coach, Mentor</div></div><img src="members/logo-1.png" class="member-logo" style="bottom: 5px;" alt="Logo"></div></div>
+            <div class="member-card scroll-hidden"><div class="member-photo" style="background-image: url('members/mentor-2.jpg');"></div><div class="member-info"><div class="info-text"><div class="member-name">肉包</div><div class="member-role">Coach, Mentor</div></div><img src="members/logo-2.png" class="member-logo" style="width: 150px; height: 150px; bottom: -25px;" alt="Logo"></div></div>
         </div>
     </div>
 
@@ -538,10 +580,10 @@
     <div id="events" class="page-section">
         <div class="section-header scroll-hidden"><h2>Season <span>Timeline</span></h2><p>Push Back 2025-2026 Season Plan</p></div>
         <div class="timeline">
-            <a href="#" class="event-card scroll-hidden"><div class="event-image"><img src="event/tai.jpg" alt="TAI-VEX Scrimmage" class="square-img"></div><div class="event-content"><span class="event-date">SEP 2025</span><h3>TAI-VEX 25-26 Push Back Scrimmage</h3><p>The first scrimmage of the new season! A great opportunity to test our initial robot design and strategy against other local teams in a friendly environment.</p></div></a>
-            <a href="#" class="event-card scroll-hidden"><div class="event-image"><img src="event/tai.jpg" alt="TAI-VEX Tournament" class="square-img"></div><div class="event-content"><span class="event-date">OCT 2025</span><h3>TAI-VEX Tournament MS 25-26 Push Back</h3><p>Participating in the TAI-VEX Tournament. Our goal is to refine our autonomous routines and driver skills, aiming for excellence in the qualification matches.</p></div></a>
-            <a href="#" class="event-card scroll-hidden"><div class="event-image"><img src="event/pas.jpg" alt="PAS-VEX Signature"></div><div class="event-content"><span class="event-date">DEC 2025</span><h3>2025-2026 PAS-VEX V5RC Signature Event</h3><p>Competing in the prestigious PAS-VEX Signature Event. We will face top-tier teams from around the region, striving to secure an early qualification for Worlds.</p></div></a>
-            <a href="#" class="event-card scroll-hidden"><div class="event-image"><img src="event/vto.jpg" alt="VEX Taiwan Open" class="square-img"></div><div class="event-content"><span class="event-date">FEB 2026</span><h3>2025-2026 VEX TAIWAN OPEN V5RC HS</h3><p>The VEX Taiwan Open Championship. This is the final regional showdown to secure our spot at the World Championship. All systems go!</p></div></a>
+            <a href="https://www.robotevents.com/zh-TW/robot-competitions/vex-robotics-competition/RE-V5RC-25-0319.html#%E5%9F%BA%E6%9C%AC%E8%A8%8A%E6%81%AF" target="_blank" class="event-card scroll-hidden"><div class="event-image"><img src="event/tai.jpg" alt="TAI-VEX Scrimmage" class="square-img"></div><div class="event-content"><span class="event-date">SEP 2025</span><h3>TAI-VEX 25-26 Push Back Scrimmage</h3><p>The first scrimmage of the new season! A great opportunity to test our initial robot design and strategy against other local teams in a friendly environment.</p></div></a>
+            <a href="https://www.robotevents.com/zh-TW/robot-competitions/vex-robotics-competition/RE-V5RC-25-0321.html#%E5%9F%BA%E6%9C%AC%E8%A8%8A%E6%81%AF" target="_blank" class="event-card scroll-hidden"><div class="event-image"><img src="event/tai.jpg" alt="TAI-VEX Tournament" class="square-img"></div><div class="event-content"><span class="event-date">OCT 2025</span><h3>TAI-VEX Tournament HS 25-26 Push Back</h3><p>Participating in the TAI-VEX Tournament. Our goal is to refine our autonomous routines and driver skills, aiming for excellence in the qualification matches.</p></div></a>
+            <a href="https://www.robotevents.com/zh-TW/robot-competitions/vex-robotics-competition/RE-V5RC-25-0121.html#%E5%9F%BA%E6%9C%AC%E8%A8%8A%E6%81%AF" target="_blank" class="event-card scroll-hidden"><div class="event-image"><img src="event/pas.jpg" alt="PAS-VEX Signature"></div><div class="event-content"><span class="event-date">DEC 2025</span><h3>2025-2026 PAS-VEX V5RC Signature Event</h3><p>Competing in the prestigious PAS-VEX Signature Event. We will face top-tier teams from around the region, striving to secure an early qualification for Worlds.</p></div></a>
+            <a href="https://www.robotevents.com/zh-TW/robot-competitions/vex-robotics-competition/RE-V5RC-25-0059.html#%E5%9F%BA%E6%9C%AC%E8%A8%8A%E6%81%AF" target="_blank" class="event-card scroll-hidden"><div class="event-image"><img src="event/vto.jpg" alt="VEX Taiwan Open" class="square-img"></div><div class="event-content"><span class="event-date">FEB 2026</span><h3>2025-2026 VEX TAIWAN OPEN V5RC HS</h3><p>The VEX Taiwan Open Championship. This is the final regional showdown to secure our spot at the World Championship. All systems go!</p></div></a>
         </div>
     </div>
 
