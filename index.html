@@ -147,7 +147,7 @@
         }
         .member-logo {
             position: absolute; 
-            bottom: 0px; 
+            bottom: 5px; 
             right: 15px;
             width: 100px; 
             height: 100px;
@@ -212,7 +212,7 @@
             display: grid; 
             grid-template-columns: 32fr 38fr 30fr; 
             /* Fix: auto 1fr allows title to take space, and content to take rest or expand */
-            grid-template-rows: auto 1fr; 
+            grid-template-rows: auto minmax(0, 1fr); 
             gap: 15px;
             margin-bottom: 80px; /* Buffer for footer */
         }
@@ -751,12 +751,17 @@
             const targetDate = new Date('Feb 03, 2026 09:00:00').getTime();
             const timerInterval = setInterval(() => {
                 const now = new Date().getTime();
-                const distance = targetDate - now;
+                let distance = targetDate - now;
+                
                 if (distance < 0) {
-                    clearInterval(timerInterval);
-                    document.getElementById("countdown").innerHTML = "EVENT STARTED!";
-                    return;
+                    distance = Math.abs(distance);
+                    const titleEl = document.querySelector('.countdown-title');
+                    if(titleEl && !titleEl.innerText.includes('STARTED')) {
+                        titleEl.innerText = "EVENT STARTED (T+)";
+                        titleEl.style.color = "#E74C3C";
+                    }
                 }
+
                 const days = Math.floor(distance / (1000 * 60 * 60 * 24));
                 const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
                 const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
@@ -1101,24 +1106,11 @@
                     el.currentTime = 0;
                     el.play().catch(e => {
                         console.warn("Audio play failed", e);
-                        // Fallback beep
-                        playTone(type === 'start' ? 600 : 200, 'square', 0.5);
                     });
                 }
             }
         }
         
-        // Fallback tone generator
-        const audioCtx = new (window.AudioContext || window.webkitAudioContext)();
-        function playTone(freq, type, duration) {
-            if (audioCtx.state === 'suspended') audioCtx.resume();
-            const osc = audioCtx.createOscillator(); const gain = audioCtx.createGain();
-            osc.type = type; osc.frequency.setValueAtTime(freq, audioCtx.currentTime);
-            gain.gain.setValueAtTime(0.1, audioCtx.currentTime);
-            osc.connect(gain); gain.connect(audioCtx.destination);
-            osc.start(); osc.stop(audioCtx.currentTime + duration);
-        }
-
         // --- TIMER (REVISED WORKFLOW) ---
         let timerInterval; let timeLeft = 0; let currentMode = 'match'; 
         let matchState = 'ready'; // ready, auto, ended_auto, ready_driver, driver, paused, ended_match
@@ -1144,6 +1136,8 @@
                 if(matchState === 'driver' && timeLeft <= 20 && timeLeft > 0) {
                     display.classList.add('timer-warning');
                     if(timeLeft === 20) document.body.classList.add('flash-active');
+                    // Warning sound check
+                    if(timeLeft === 20) playSound('warning');
                 }
                 
                 if(matchState === 'driver' && timeLeft <= 10) display.style.color = '#E74C3C'; 
@@ -1250,11 +1244,6 @@
 
             timerInterval = setInterval(() => {
                 if (timeLeft > 0) {
-                    // Check for warning at 20s left
-                    if(currentMode === 'match' && matchState === 'driver' && timeLeft === 20) {
-                        playSound('warning');
-                    }
-                    
                     timeLeft--;
                     updateTimerDisplay();
                 } else {
