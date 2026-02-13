@@ -1,27 +1,31 @@
 <!DOCTYPE html>
 <html lang="zh-TW">
+
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Team 23083Z | REAPER</title>
-    
+
     <!-- 設定網站圖示 (Favicon) -->
     <link rel="icon" type="image/svg+xml" href="reaper.svg">
 
     <!-- 1. 引入 Rajdhani (內文) -->
     <link href="https://fonts.googleapis.com/css2?family=Rajdhani:wght@400;600;700&display=swap" rel="stylesheet">
-    
+
     <!-- 2. 引入 Nasalization (NASA Font) -->
     <link href="https://fonts.cdnfonts.com/css/nasalization-2" rel="stylesheet">
-    
+
     <!-- 3. Font Awesome -->
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
-    
+
     <style>
         :root {
-            --primary-color: #FFD700; /* Reaper Gold */
-            --dark-bg: #000000;       /* Pure Black */
-            --card-bg: #0f0f0f;       /* Dark Grey */
+            --primary-color: #FFD700;
+            /* Reaper Gold */
+            --dark-bg: #000000;
+            /* Pure Black */
+            --card-bg: #0f0f0f;
+            /* Dark Grey */
             --text-color: #ffffff;
             --text-muted: #cccccc;
             --border-color: #333;
@@ -32,8 +36,12 @@
             --vex-orange: #F39C12;
         }
 
-        * { margin: 0; padding: 0; box-sizing: border-box; }
-        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+
         body {
             font-family: 'Rajdhani', sans-serif;
             background-color: var(--dark-bg);
@@ -47,436 +55,1665 @@
             background-attachment: fixed;
         }
 
-        body.no-scroll { overflow: hidden; }
+        body.no-scroll {
+            overflow: hidden;
+        }
 
         /* Scrollbar */
-        ::-webkit-scrollbar { width: 10px; }
-        ::-webkit-scrollbar-track { background: #050505; }
-        ::-webkit-scrollbar-thumb { background: rgba(255, 215, 0, 0.2); border-radius: 5px; border: 2px solid #050505; }
-        ::-webkit-scrollbar-thumb:hover { background: var(--primary-color); }
+        ::-webkit-scrollbar {
+            width: 10px;
+        }
+
+        ::-webkit-scrollbar-track {
+            background: #050505;
+        }
+
+        ::-webkit-scrollbar-thumb {
+            background: rgba(255, 215, 0, 0.2);
+            border-radius: 5px;
+            border: 2px solid #050505;
+        }
+
+        ::-webkit-scrollbar-thumb:hover {
+            background: var(--primary-color);
+        }
 
         /* Fonts */
-        h1, h2, h3, .nav-item, .btn, .stat-number, .event-date, .countdown-number, .tm-header, .timer-display, .timer-phase-indicator, .fs-event-title, .calc-score {
-            font-family: 'Nasalization', sans-serif; text-transform: uppercase; letter-spacing: 1px;
+        h1,
+        h2,
+        h3,
+        .nav-item,
+        .btn,
+        .stat-number,
+        .event-date,
+        .tm-header,
+        .timer-display,
+        .timer-phase-indicator,
+        .fs-event-title,
+        .calc-score {
+            font-family: 'Nasalization', sans-serif;
+            text-transform: uppercase;
+            letter-spacing: 1px;
         }
 
         /* Animations */
-        .typewriter-cursor { display: inline-block; color: var(--primary-color); margin-left: 2px; animation: blink-cursor 0.8s step-end infinite; font-weight: bold; }
-        @keyframes blink-cursor { 0%, 100% { opacity: 1; } 50% { opacity: 0; } }
-        .scroll-hidden { opacity: 0; transform: translateY(40px); transition: opacity 0.8s ease-out, transform 0.8s ease-out; }
-        .scroll-visible { opacity: 1; transform: translateY(0); }
+        .typewriter-cursor {
+            display: inline-block;
+            color: var(--primary-color);
+            margin-left: 2px;
+            animation: blink-cursor 0.8s step-end infinite;
+            font-weight: bold;
+        }
+
+        @keyframes blink-cursor {
+
+            0%,
+            100% {
+                opacity: 1;
+            }
+
+            50% {
+                opacity: 0;
+            }
+        }
+
+        .scroll-hidden {
+            opacity: 0;
+            transform: translateY(40px);
+            transition: opacity 0.8s ease-out, transform 0.8s ease-out;
+        }
+
+        .scroll-visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
 
         /* Flash Animation for 20s Warning */
         @keyframes flash-warning {
-            0%, 100% { background-color: var(--dark-bg); }
-            50% { background-color: #333; }
+
+            0%,
+            100% {
+                background-color: var(--dark-bg);
+            }
+
+            50% {
+                background-color: #333;
+            }
         }
+
         .flash-active {
-            animation: flash-warning 0.2s 5; /* Flash 5 times in 1 second */
+            animation: flash-warning 0.2s 5;
+            /* Flash 5 times in 1 second */
         }
 
         /* Navigation */
-        header { position: fixed; top: 0; width: 100%; background: rgba(0, 0, 0, 0.95); padding: 10px 5%; display: flex; justify-content: space-between; align-items: center; z-index: 1000; border-bottom: 2px solid #222; }
-        .nav-logo { text-decoration: none; display: flex; align-items: center; z-index: 1002; }
-        .nav-logo img { height: 55px; width: auto; transition: filter 0.3s; }
-        .nav-logo:hover img { filter: drop-shadow(0 0 8px var(--primary-color)); }
-        .nav-menu { display: flex; align-items: center; }
-        nav ul { display: flex; list-style: none; gap: 30px; }
-        .nav-item { color: white; text-decoration: none; font-weight: 700; font-size: 0.9rem; cursor: pointer; padding-bottom: 5px; border-bottom: 2px solid transparent; transition: all 0.3s; }
-        .nav-item:hover, .nav-item.active { color: var(--primary-color); border-bottom: 2px solid var(--primary-color); text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
-        .menu-toggle { display: none; cursor: pointer; z-index: 1002; }
-        .bar { display: block; width: 25px; height: 3px; margin: 5px auto; transition: all 0.3s ease-in-out; background-color: white; }
+        header {
+            position: fixed;
+            top: 0;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            padding: 10px 5%;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            z-index: 1000;
+            border-bottom: 2px solid #222;
+        }
+
+        .nav-logo {
+            text-decoration: none;
+            display: flex;
+            align-items: center;
+            z-index: 1002;
+        }
+
+        .nav-logo img {
+            height: 55px;
+            width: auto;
+            transition: filter 0.3s;
+        }
+
+        .nav-logo:hover img {
+            filter: drop-shadow(0 0 8px var(--primary-color));
+        }
+
+        .nav-menu {
+            display: flex;
+            align-items: center;
+        }
+
+        nav ul {
+            display: flex;
+            list-style: none;
+            gap: 30px;
+        }
+
+        .nav-item {
+            color: white;
+            text-decoration: none;
+            font-weight: 700;
+            font-size: 0.9rem;
+            cursor: pointer;
+            padding-bottom: 5px;
+            border-bottom: 2px solid transparent;
+            transition: all 0.3s;
+        }
+
+        .nav-item:hover,
+        .nav-item.active {
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+        }
+
+        .menu-toggle {
+            display: none;
+            cursor: pointer;
+            z-index: 1002;
+        }
+
+        .bar {
+            display: block;
+            width: 25px;
+            height: 3px;
+            margin: 5px auto;
+            transition: all 0.3s ease-in-out;
+            background-color: white;
+        }
 
         /* Page Layout */
-        .page-section { display: none; min-height: 100vh; padding-top: 80px; opacity: 0; transform: translateY(20px); transition: opacity 0.4s ease-out, transform 0.4s ease-out; }
-        .page-section.active-page { display: block; }
-        .page-section.visible { opacity: 1; transform: translateY(0); }
-        .section-header { text-align: center; padding: 60px 20px 40px; }
-        .section-header h2 { font-size: 2.8rem; color: white; margin-bottom: 10px; line-height: 1.4; }
-        .section-header span { color: var(--primary-color); }
-        .section-header p { color: var(--text-muted); max-width: 800px; margin: 0 auto; font-size: 1.1rem; }
-        .section-logo { width: 100px; height: auto; margin: 0 auto 20px; display: block; filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.3)); }
+        .page-section {
+            display: none;
+            min-height: 100vh;
+            padding-top: 80px;
+            opacity: 0;
+            transform: translateY(20px);
+            transition: opacity 0.4s ease-out, transform 0.4s ease-out;
+        }
+
+        .page-section.active-page {
+            display: block;
+        }
+
+        .page-section.visible {
+            opacity: 1;
+            transform: translateY(0);
+        }
+
+        .section-header {
+            text-align: center;
+            padding: 60px 20px 40px;
+        }
+
+        .section-header h2 {
+            font-size: 2.8rem;
+            color: white;
+            margin-bottom: 10px;
+            line-height: 1.4;
+        }
+
+        .section-header span {
+            color: var(--primary-color);
+        }
+
+        .section-header p {
+            color: var(--text-muted);
+            max-width: 800px;
+            margin: 0 auto;
+            font-size: 1.1rem;
+        }
+
+        .section-logo {
+            width: 100px;
+            height: auto;
+            margin: 0 auto 20px;
+            display: block;
+            filter: drop-shadow(0 0 5px rgba(255, 215, 0, 0.3));
+        }
 
         /* Content Sections */
-        #home { padding-top: 0; flex-direction: column; justify-content: center; align-items: center; text-align: center; background: linear-gradient(rgba(0,0,0,0.3), rgba(0,0,0,0.6)), url('team.jpg'); background-size: cover; background-position: center; padding-bottom: 0; }
-        .home-active { display: flex !important; }
-        .hero-content { margin-top: 300px; width: 100%; padding: 0 20px; display: flex; flex-direction: column; align-items: center; }
-        .hero-content h1 { font-size: 5rem; margin-bottom: 10px; text-shadow: 3px 3px 0px rgba(0, 0, 0, 0.8), 0 0 20px var(--primary-color), 0 0 40px var(--primary-color); line-height: 1; color: white; position: relative; display: inline-block; }
-        .hero-content h1:hover { animation: glitch-skew 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite; color: var(--primary-color); }
-        .hero-content h1:hover::before, .hero-content h1:hover::after { content: "REAPER"; position: absolute; top: 0; left: 0; width: 100%; height: 100%; background: transparent; }
-        .hero-content h1:hover::before { left: 4px; text-shadow: 4px 0 #ff00c1; clip: rect(44px, 450px, 56px, 0); animation: glitch-anim 1.5s infinite linear alternate-reverse; }
-        .hero-content h1:hover::after { left: -4px; text-shadow: -4px 0 #00fff9; clip: rect(44px, 450px, 56px, 0); animation: glitch-anim2 1.5s infinite linear alternate-reverse; }
-        @keyframes glitch-anim { 0% { clip: rect(30px, 9999px, 10px, 0); } 100% { clip: rect(90px, 9999px, 30px, 0); } }
-        @keyframes glitch-anim2 { 0% { clip: rect(10px, 9999px, 80px, 0); } 100% { clip: rect(20px, 9999px, 90px, 0); } }
-        @keyframes glitch-skew { 0% { transform: skew(0deg); } 20% { transform: skew(-10deg); } 40% { transform: skew(10deg); } 60% { transform: skew(-5deg); } 80% { transform: skew(5deg); } 100% { transform: skew(0deg); } }
-        .hero-content h2 { font-size: 1.8rem; color: var(--primary-color); margin-bottom: 5px; text-shadow: 2px 2px 4px rgba(0,0,0,0.8); min-height: 1.8rem; }
-        .countdown-wrapper { margin-top: 25px; animation: fadeIn 1s ease-out 0.5s backwards; }
-        .countdown-container { display: flex; justify-content: center; gap: 15px; margin-top: 10px; flex-wrap: wrap; }
-        .countdown-item { background: rgba(0, 0, 0, 0.5); padding: 8px 12px; border: 1px solid var(--primary-color); min-width: 70px; backdrop-filter: blur(3px); border-radius: 8px; }
-        .countdown-number { display: block; font-size: 1.5rem; color: var(--primary-color); font-weight: bold; line-height: 1; }
-        .countdown-label { font-size: 0.75rem; color: #ccc; text-transform: uppercase; }
-        .countdown-title { color: #eee; font-size: 0.9rem; letter-spacing: 2px; text-shadow: 1px 1px 3px black; font-weight: bold; text-transform: uppercase; text-decoration: none; display: inline-block; margin-bottom: 10px; transition: all 0.3s ease; border-bottom: 1px solid transparent; }
-        .countdown-title:hover { color: var(--primary-color); border-bottom: 1px solid var(--primary-color); text-shadow: 0 0 10px rgba(255, 215, 0, 0.5); }
-        .btn { display: inline-block; padding: 15px 40px; border: 2px solid var(--primary-color); color: var(--primary-color); text-decoration: none; font-weight: 900; margin-top: 10px; transition: 0.3s; background: rgba(0,0,0,0.6); cursor: pointer; border-radius: 8px; }
-        .btn:hover { background: var(--primary-color); color: black; box-shadow: 0 0 30px var(--primary-color); }
+        #home {
+            padding-top: 0;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            background: linear-gradient(rgba(0, 0, 0, 0.3), rgba(0, 0, 0, 0.6)), url('team.jpg');
+            background-size: cover;
+            background-position: center;
+            padding-bottom: 0;
+        }
 
-        .about-container { max-width: 1200px; margin: 0 auto 80px; padding: 0 20px; display: flex; flex-direction: column; gap: 100px; }
-        .about-row { display: flex; align-items: center; gap: 60px; }
-        .about-row:nth-child(even) { flex-direction: row-reverse; }
-        .about-image-wrapper { flex: 1; min-width: 300px; }
-        .about-image-wrapper img { width: 100%; height: auto; border-radius: 8px; border: 2px solid var(--primary-color); box-shadow: 0 0 20px rgba(255, 215, 0, 0.15); display: block; }
-        .about-text-content { flex: 1; min-width: 300px; font-size: 1.15rem; color: #ddd; }
-        .about-text-content h3 { color: white; font-size: 2rem; margin-bottom: 1.5rem; border-left: 4px solid var(--primary-color); padding-left: 15px; line-height: 1.2; }
-        .about-text-content p { margin-bottom: 1.5rem; }
+        .home-active {
+            display: flex !important;
+        }
 
-        .team-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 30px; max-width: 1200px; margin: 0 auto 80px; padding: 0 20px; }
-        .mentor-wrapper { display: flex; justify-content: center; padding: 0 20px; margin-bottom: 80px; gap: 30px; flex-wrap: wrap; }
-        .mentor-wrapper .member-card { width: 100%; max-width: 380px; }
-        .member-card { background: var(--card-bg); border: 1px solid #222; overflow: hidden; transition: 0.3s; position: relative; border-radius: 12px; }
-        .member-card:hover { transform: translateY(-10px); border-color: var(--primary-color); box-shadow: 0 10px 30px rgba(0,0,0,0.5); }
-        .member-photo { width: 100%; height: 350px; background-color: #222; background-size: cover; background-position: center; transition: 0.5s; }
-        .member-info { padding: 20px; text-align: left; border-top: 1px solid #222; }
-        .member-name { font-size: 1.3rem; color: white; margin-bottom: 5px; font-weight: 700; font-family: 'Nasalization', sans-serif; }
-        .member-role { color: var(--primary-color); font-size: 0.9rem; text-transform: uppercase; font-weight: 500; font-family: 'Rajdhani', sans-serif; letter-spacing: 2px;}
+        .hero-content {
+            margin-top: 300px;
+            width: 100%;
+            padding: 0 20px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .hero-content h1 {
+            font-size: 5rem;
+            margin-bottom: 10px;
+            text-shadow: 3px 3px 0px rgba(0, 0, 0, 0.8), 0 0 20px var(--primary-color), 0 0 40px var(--primary-color);
+            line-height: 1;
+            color: white;
+            position: relative;
+            display: inline-block;
+        }
+
+        .hero-content h1:hover {
+            animation: glitch-skew 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94) both infinite;
+            color: var(--primary-color);
+        }
+
+        .hero-content h1:hover::before,
+        .hero-content h1:hover::after {
+            content: "REAPER";
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: transparent;
+        }
+
+        .hero-content h1:hover::before {
+            left: 4px;
+            text-shadow: 4px 0 #ff00c1;
+            clip: rect(44px, 450px, 56px, 0);
+            animation: glitch-anim 1.5s infinite linear alternate-reverse;
+        }
+
+        .hero-content h1:hover::after {
+            left: -4px;
+            text-shadow: -4px 0 #00fff9;
+            clip: rect(44px, 450px, 56px, 0);
+            animation: glitch-anim2 1.5s infinite linear alternate-reverse;
+        }
+
+        @keyframes glitch-anim {
+            0% {
+                clip: rect(30px, 9999px, 10px, 0);
+            }
+
+            100% {
+                clip: rect(90px, 9999px, 30px, 0);
+            }
+        }
+
+        @keyframes glitch-anim2 {
+            0% {
+                clip: rect(10px, 9999px, 80px, 0);
+            }
+
+            100% {
+                clip: rect(20px, 9999px, 90px, 0);
+            }
+        }
+
+        @keyframes glitch-skew {
+            0% {
+                transform: skew(0deg);
+            }
+
+            20% {
+                transform: skew(-10deg);
+            }
+
+            40% {
+                transform: skew(10deg);
+            }
+
+            60% {
+                transform: skew(-5deg);
+            }
+
+            80% {
+                transform: skew(5deg);
+            }
+
+            100% {
+                transform: skew(0deg);
+            }
+        }
+
+        .hero-content h2 {
+            font-size: 1.8rem;
+            color: var(--primary-color);
+            margin-bottom: 5px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.8);
+            min-height: 1.8rem;
+        }
+
+        .btn {
+            display: inline-block;
+            padding: 15px 40px;
+            border: 2px solid var(--primary-color);
+            color: var(--primary-color);
+            text-decoration: none;
+            font-weight: 900;
+            margin-top: 10px;
+            transition: 0.3s;
+            background: rgba(0, 0, 0, 0.6);
+            cursor: pointer;
+            border-radius: 8px;
+        }
+
+        .btn:hover {
+            background: var(--primary-color);
+            color: black;
+            box-shadow: 0 0 30px var(--primary-color);
+        }
+
+        .about-container {
+            max-width: 1200px;
+            margin: 0 auto 80px;
+            padding: 0 20px;
+            display: flex;
+            flex-direction: column;
+            gap: 100px;
+        }
+
+        .about-row {
+            display: flex;
+            align-items: center;
+            gap: 60px;
+        }
+
+        .about-row:nth-child(even) {
+            flex-direction: row-reverse;
+        }
+
+        .about-image-wrapper {
+            flex: 1;
+            min-width: 300px;
+        }
+
+        .about-image-wrapper img {
+            width: 100%;
+            height: auto;
+            border-radius: 8px;
+            border: 2px solid var(--primary-color);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.15);
+            display: block;
+        }
+
+        .about-text-content {
+            flex: 1;
+            min-width: 300px;
+            font-size: 1.15rem;
+            color: #ddd;
+        }
+
+        .about-text-content h3 {
+            color: white;
+            font-size: 2rem;
+            margin-bottom: 1.5rem;
+            border-left: 4px solid var(--primary-color);
+            padding-left: 15px;
+            line-height: 1.2;
+        }
+
+        .about-text-content p {
+            margin-bottom: 1.5rem;
+        }
+
+        .team-grid {
+            display: grid;
+            grid-template-columns: repeat(3, 1fr);
+            gap: 30px;
+            max-width: 1200px;
+            margin: 0 auto 80px;
+            padding: 0 20px;
+        }
+
+        .mentor-wrapper {
+            display: flex;
+            justify-content: center;
+            padding: 0 20px;
+            margin-bottom: 80px;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+
+        .mentor-wrapper .member-card {
+            width: 100%;
+            max-width: 380px;
+        }
+
+        .member-card {
+            background: var(--card-bg);
+            border: 1px solid #222;
+            overflow: hidden;
+            transition: 0.3s;
+            position: relative;
+            border-radius: 12px;
+        }
+
+        .member-card:hover {
+            transform: translateY(-10px);
+            border-color: var(--primary-color);
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.5);
+        }
+
+        .member-photo {
+            width: 100%;
+            height: 350px;
+            background-color: #222;
+            background-size: cover;
+            background-position: center;
+            transition: 0.5s;
+        }
+
+        .member-info {
+            padding: 20px;
+            text-align: left;
+            border-top: 1px solid #222;
+        }
+
+        .member-name {
+            font-size: 1.3rem;
+            color: white;
+            margin-bottom: 5px;
+            font-weight: 700;
+            font-family: 'Nasalization', sans-serif;
+        }
+
+        .member-role {
+            color: var(--primary-color);
+            font-size: 0.9rem;
+            text-transform: uppercase;
+            font-weight: 500;
+            font-family: 'Rajdhani', sans-serif;
+            letter-spacing: 2px;
+        }
 
         /* --- Mentor Card Style --- */
         .mentor-wrapper .member-info {
-            display: block; 
+            display: block;
             position: relative;
-            z-index: 2; 
+            z-index: 2;
         }
+
         .member-logo {
-            position: absolute; 
-            bottom: 5px; 
+            position: absolute;
+            bottom: 5px;
             right: 15px;
-            width: 100px; 
+            width: 100px;
             height: 100px;
             object-fit: contain;
-            z-index: 1; 
+            z-index: 1;
             opacity: 0.9;
-            pointer-events: none; 
+            pointer-events: none;
         }
 
-        .gallery-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(350px, 1fr)); gap: 20px; padding: 20px 5%; max-width: 1400px; margin: 0 auto; }
-        .gallery-item { height: 250px; background: #222; overflow: hidden; position: relative; border: 1px solid #333; cursor: zoom-in; transition: transform 0.3s ease; border-radius: 8px; }
-        .gallery-item img { width: 100%; height: 100%; object-fit: cover; transition: 0.5s; }
-        .gallery-item:hover { transform: scale(1.02); border-color: var(--primary-color); z-index: 10; }
-        .gallery-item:hover img { opacity: 1; }
+        .gallery-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(350px, 1fr));
+            gap: 20px;
+            padding: 20px 5%;
+            max-width: 1400px;
+            margin: 0 auto;
+        }
 
-        #lightbox { position: fixed; top: 0; left: 0; width: 100%; height: 100%; background: rgba(0, 0, 0, 0.95); display: none; justify-content: center; align-items: center; z-index: 2000; opacity: 0; transition: opacity 0.3s ease; }
-        #lightbox.active { display: flex; opacity: 1; }
-        #lightbox img { max-width: 90%; max-height: 90%; border: 2px solid var(--primary-color); box-shadow: 0 0 30px rgba(255, 215, 0, 0.3); object-fit: contain; border-radius: 8px; }
-        #lightbox-close { position: absolute; top: 20px; right: 40px; color: white; font-size: 3rem; cursor: pointer; font-family: sans-serif; transition: color 0.3s; }
-        #lightbox-close:hover { color: var(--primary-color); }
+        .gallery-item {
+            height: 250px;
+            background: #222;
+            overflow: hidden;
+            position: relative;
+            border: 1px solid #333;
+            cursor: zoom-in;
+            transition: transform 0.3s ease;
+            border-radius: 8px;
+        }
 
-        #back-to-top { position: fixed; bottom: 30px; right: 30px; background-color: var(--primary-color); color: black; width: 50px; height: 50px; border-radius: 50%; border: none; cursor: pointer; display: flex; justify-content: center; align-items: center; z-index: 1000; box-shadow: 0 0 10px rgba(255, 215, 0, 0.5); opacity: 0; pointer-events: none; transition: opacity 0.5s ease, transform 0.3s ease, box-shadow 0.3s ease; }
-        #back-to-top.show { opacity: 0.6; pointer-events: auto; }
-        #back-to-top:hover { opacity: 1; transform: translateY(-5px); box-shadow: 0 0 20px rgba(255, 215, 0, 0.8); }
-        #back-to-top svg { width: 24px; height: 24px; fill: black; }
+        .gallery-item img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: 0.5s;
+        }
 
-        .timeline { max-width: 900px; margin: 40px auto; padding: 0 20px; position: relative; }
-        .timeline::before { content: ''; position: absolute; left: 50%; top: 0; bottom: 0; width: 2px; background: var(--primary-color); transform: translateX(-50%); opacity: 0.3; }
-        .event-card { width: 45%; background: var(--card-bg); margin-bottom: 50px; border: 1px solid #333; position: relative; transition: 0.3s; display: block; text-decoration: none; color: inherit; padding: 0; overflow: hidden; border-radius: 12px; }
-        .event-card:hover { border-color: var(--primary-color); box-shadow: 0 0 20px rgba(255, 215, 0, 0.1); transform: translateY(-5px); }
-        .event-image { width: 100%; height: 200px; overflow: hidden; border-bottom: 1px solid #222; background: #000; }
-        .event-image img { width: 100%; height: 100%; object-fit: cover; transition: transform 0.5s ease; }
-        .event-image img.square-img { object-fit: contain; }
-        .event-card:hover .event-image img { transform: scale(1.1); }
-        .event-content { padding: 25px; text-align: inherit; }
-        .event-card:nth-child(odd) { margin-left: auto; text-align: left; border-left: 3px solid var(--primary-color); }
-        .event-card:nth-child(even) { margin-right: auto; text-align: right; border-left: none; border-right: 3px solid var(--primary-color); }
-        .event-card::after { content: ''; position: absolute; top: 20px; width: 15px; height: 15px; background: var(--primary-color); border-radius: 50%; box-shadow: 0 0 10px var(--primary-color); }
-        .event-card:nth-child(odd)::after { left: -59px; }
-        .event-card:nth-child(even)::after { right: -59px; }
-        .event-date { color: var(--primary-color); font-weight: 900; font-size: 1.2rem; margin-bottom: 10px; display: block; }
-        .event-card h3 { font-size: 1.3rem; margin-bottom: 10px; line-height: 1.4; color: white;}
-        .event-card p { font-size: 1rem; color: #aaa; }
+        .gallery-item:hover {
+            transform: scale(1.02);
+            border-color: var(--primary-color);
+            z-index: 10;
+        }
 
-        footer { background: #050505; padding: 40px; text-align: center; border-top: 1px solid #222; margin-top: 50px; }
-        footer p { color: #666; margin-bottom: 5px; }
-        .contact-link { display: flex; align-items: center; justify-content: center; gap: 10px; color: #ccc; text-decoration: none; margin-bottom: 12px; transition: color 0.3s, transform 0.2s; font-size: 1.1rem; }
-        .contact-link:hover { color: var(--primary-color); transform: translateX(5px); }
-        .contact-icon { width: 24px; height: 24px; fill: currentColor; }
-        .footer-logo { max-width: 250px; height: auto; margin-bottom: 30px; display: inline-block; }
+        .gallery-item:hover img {
+            opacity: 1;
+        }
+
+        #lightbox {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.95);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 2000;
+            opacity: 0;
+            transition: opacity 0.3s ease;
+        }
+
+        #lightbox.active {
+            display: flex;
+            opacity: 1;
+        }
+
+        #lightbox img {
+            max-width: 90%;
+            max-height: 90%;
+            border: 2px solid var(--primary-color);
+            box-shadow: 0 0 30px rgba(255, 215, 0, 0.3);
+            object-fit: contain;
+            border-radius: 8px;
+        }
+
+        #lightbox-close {
+            position: absolute;
+            top: 20px;
+            right: 40px;
+            color: white;
+            font-size: 3rem;
+            cursor: pointer;
+            font-family: sans-serif;
+            transition: color 0.3s;
+        }
+
+        #lightbox-close:hover {
+            color: var(--primary-color);
+        }
+
+        #back-to-top {
+            position: fixed;
+            bottom: 30px;
+            right: 30px;
+            background-color: var(--primary-color);
+            color: black;
+            width: 50px;
+            height: 50px;
+            border-radius: 50%;
+            border: none;
+            cursor: pointer;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            z-index: 1000;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.5);
+            opacity: 0;
+            pointer-events: none;
+            transition: opacity 0.5s ease, transform 0.3s ease, box-shadow 0.3s ease;
+        }
+
+        #back-to-top.show {
+            opacity: 0.6;
+            pointer-events: auto;
+        }
+
+        #back-to-top:hover {
+            opacity: 1;
+            transform: translateY(-5px);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.8);
+        }
+
+        #back-to-top svg {
+            width: 24px;
+            height: 24px;
+            fill: black;
+        }
+
+        .timeline {
+            max-width: 900px;
+            margin: 40px auto;
+            padding: 0 20px;
+            position: relative;
+        }
+
+        .timeline::before {
+            content: '';
+            position: absolute;
+            left: 50%;
+            top: 0;
+            bottom: 0;
+            width: 2px;
+            background: var(--primary-color);
+            transform: translateX(-50%);
+            opacity: 0.3;
+        }
+
+        .event-card {
+            width: 45%;
+            background: var(--card-bg);
+            margin-bottom: 50px;
+            border: 1px solid #333;
+            position: relative;
+            transition: 0.3s;
+            display: block;
+            text-decoration: none;
+            color: inherit;
+            padding: 0;
+            overflow: hidden;
+            border-radius: 12px;
+        }
+
+        .event-card:hover {
+            border-color: var(--primary-color);
+            box-shadow: 0 0 20px rgba(255, 215, 0, 0.1);
+            transform: translateY(-5px);
+        }
+
+        .event-image {
+            width: 100%;
+            height: 200px;
+            overflow: hidden;
+            border-bottom: 1px solid #222;
+            background: #000;
+        }
+
+        .event-image img {
+            width: 100%;
+            height: 100%;
+            object-fit: cover;
+            transition: transform 0.5s ease;
+        }
+
+        .event-image img.square-img {
+            object-fit: contain;
+        }
+
+        .event-card:hover .event-image img {
+            transform: scale(1.1);
+        }
+
+        .event-content {
+            padding: 25px;
+            text-align: inherit;
+        }
+
+        .event-card:nth-child(odd) {
+            margin-left: auto;
+            text-align: left;
+            border-left: 3px solid var(--primary-color);
+        }
+
+        .event-card:nth-child(even) {
+            margin-right: auto;
+            text-align: right;
+            border-left: none;
+            border-right: 3px solid var(--primary-color);
+        }
+
+        .event-card::after {
+            content: '';
+            position: absolute;
+            top: 20px;
+            width: 15px;
+            height: 15px;
+            background: var(--primary-color);
+            border-radius: 50%;
+            box-shadow: 0 0 10px var(--primary-color);
+        }
+
+        .event-card:nth-child(odd)::after {
+            left: -59px;
+        }
+
+        .event-card:nth-child(even)::after {
+            right: -59px;
+        }
+
+        .event-date {
+            color: var(--primary-color);
+            font-weight: 900;
+            font-size: 1.2rem;
+            margin-bottom: 10px;
+            display: block;
+        }
+
+        .event-card h3 {
+            font-size: 1.3rem;
+            margin-bottom: 10px;
+            line-height: 1.4;
+            color: white;
+        }
+
+        .event-card p {
+            font-size: 1rem;
+            color: #aaa;
+        }
+
+        footer {
+            background: #050505;
+            padding: 40px;
+            text-align: center;
+            border-top: 1px solid #222;
+            margin-top: 50px;
+        }
+
+        footer p {
+            color: #666;
+            margin-bottom: 5px;
+        }
+
+        .contact-link {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            color: #ccc;
+            text-decoration: none;
+            margin-bottom: 12px;
+            transition: color 0.3s, transform 0.2s;
+            font-size: 1.1rem;
+        }
+
+        .contact-link:hover {
+            color: var(--primary-color);
+            transform: translateX(5px);
+        }
+
+        .contact-icon {
+            width: 24px;
+            height: 24px;
+            fill: currentColor;
+        }
+
+        .footer-logo {
+            max-width: 250px;
+            height: auto;
+            margin-bottom: 30px;
+            display: inline-block;
+        }
 
         /* =========================================
            HOST GAME STYLES
            ========================================= */
-        #tm-title { font-size: 2.2rem; color: var(--primary-color); text-align: center; margin-bottom: 20px; padding-top: 40px; text-shadow: 0 0 10px rgba(255, 215, 0, 0.3); }
+        #tm-title {
+            font-size: 2.2rem;
+            color: var(--primary-color);
+            text-align: center;
+            margin-bottom: 20px;
+            padding-top: 40px;
+            text-shadow: 0 0 10px rgba(255, 215, 0, 0.3);
+        }
 
         .tm-container {
-            max-width: 1600px; margin: 0 auto; padding: 0 10px; 
+            max-width: 1600px;
+            margin: 0 auto;
+            padding: 0 10px;
             /* Fix: Height is auto to allow growing, min-height to take up screen */
             height: auto;
             min-height: calc(100vh - 120px);
-            display: grid; 
-            grid-template-columns: 32fr 38fr 30fr; 
+            display: grid;
+            grid-template-columns: 32fr 38fr 30fr;
             /* Fix: auto 1fr allows title to take space, and content to take rest or expand */
-            grid-template-rows: auto minmax(0, 1fr); 
+            grid-template-rows: auto minmax(0, 1fr);
             gap: 15px;
-            margin-bottom: 80px; /* Buffer for footer */
+            margin-bottom: 80px;
+            /* Buffer for footer */
         }
-        
-        #tm-setup { display: flex; flex-direction: column; align-items: center; justify-content: center; height: 80vh; text-align: center; width: 100%; }
-        .setup-form-container { display: flex; flex-direction: column; gap: 15px; width: 100%; max-width: 500px; }
-        .tm-input { background: #111; border: 1px solid #444; color: white; padding: 12px; border-radius: 12px; font-size: 1rem; font-family: 'Rajdhani', sans-serif; transition: border-color 0.3s; }
-        .tm-input:focus { border-color: var(--primary-color); outline: none; box-shadow: 0 0 10px rgba(255, 215, 0, 0.2); }
-        .full-width { width: 100%; }
-        .input-row { display: flex; gap: 10px; width: 100%; }
-        #team-number { flex: 1.5; min-width: 150px; text-transform: uppercase; }
-        #team-name { flex: 2; }
-        .add-btn { margin-top: 0 !important; padding: 0 20px !important; display: flex; align-items: center; justify-content: center; font-size: 1.5rem; border-radius: 12px; }
-        .team-list-preview { display: flex; flex-wrap: wrap; gap: 8px; max-width: 800px; margin: 20px 0; justify-content: center; }
-        .team-tag { background: #222; border: 1px solid #444; color: #ddd; padding: 6px 12px; border-radius: 20px; font-size: 0.9rem; display: flex; align-items: center; gap: 8px; animation: fadeIn 0.3s ease; }
-        .team-tag span.num { color: var(--primary-color); font-weight: bold; }
-        .delete-btn { cursor: pointer; margin-left: 5px; color: #ff4444; transition: 0.2s; }
-        .delete-btn:hover { color: #ff0000; transform: scale(1.2); }
+
+        #tm-setup {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            height: 80vh;
+            text-align: center;
+            width: 100%;
+        }
+
+        .setup-form-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+            width: 100%;
+            max-width: 500px;
+        }
+
+        .tm-input {
+            background: #111;
+            border: 1px solid #444;
+            color: white;
+            padding: 12px;
+            border-radius: 12px;
+            font-size: 1rem;
+            font-family: 'Rajdhani', sans-serif;
+            transition: border-color 0.3s;
+        }
+
+        .tm-input:focus {
+            border-color: var(--primary-color);
+            outline: none;
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+        }
+
+        .full-width {
+            width: 100%;
+        }
+
+        .input-row {
+            display: flex;
+            gap: 10px;
+            width: 100%;
+        }
+
+        #team-number {
+            flex: 1.5;
+            min-width: 150px;
+            text-transform: uppercase;
+        }
+
+        #team-name {
+            flex: 2;
+        }
+
+        .add-btn {
+            margin-top: 0 !important;
+            padding: 0 20px !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-size: 1.5rem;
+            border-radius: 12px;
+        }
+
+        .team-list-preview {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 8px;
+            max-width: 800px;
+            margin: 20px 0;
+            justify-content: center;
+        }
+
+        .team-tag {
+            background: #222;
+            border: 1px solid #444;
+            color: #ddd;
+            padding: 6px 12px;
+            border-radius: 20px;
+            font-size: 0.9rem;
+            display: flex;
+            align-items: center;
+            gap: 8px;
+            animation: fadeIn 0.3s ease;
+        }
+
+        .team-tag span.num {
+            color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        .delete-btn {
+            cursor: pointer;
+            margin-left: 5px;
+            color: #ff4444;
+            transition: 0.2s;
+        }
+
+        .delete-btn:hover {
+            color: #ff0000;
+            transform: scale(1.2);
+        }
 
         /* Panels & Boxes */
-        .tm-panel { 
-            background: #111; 
-            border: 1px solid #333; 
-            border-radius: 16px; 
-            overflow: hidden; 
-            display: flex; flex-direction: column; position: relative; 
-            height: 100%; /* Keep panels filling their grid area */
+        .tm-panel {
+            background: #111;
+            border: 1px solid #333;
+            border-radius: 16px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            height: 100%;
+            /* Keep panels filling their grid area */
         }
-        .tm-header { background: #1a1a1a; padding: 10px 15px; border-bottom: 1px solid #333; display: flex; justify-content: space-between; align-items: center; color: var(--primary-color); font-size: 1rem; letter-spacing: 1px; border-radius: 16px 16px 0 0; }
-        .tm-content { padding: 10px; overflow-y: auto; flex: 1; position: relative; scroll-behavior: smooth; }
-        
+
+        .tm-header {
+            background: #1a1a1a;
+            padding: 10px 15px;
+            border-bottom: 1px solid #333;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            color: var(--primary-color);
+            font-size: 1rem;
+            letter-spacing: 1px;
+            border-radius: 16px 16px 0 0;
+        }
+
+        .tm-content {
+            padding: 10px;
+            overflow-y: auto;
+            flex: 1;
+            position: relative;
+            scroll-behavior: smooth;
+        }
+
         /* Ranking */
-        #tm-rankings { grid-column: 1 / 2; max-height: 80vh; /* Limit height to allow scrolling if needed, but not page-breaking */ }
-        .ranking-table { width: 100%; border-collapse: separate; border-spacing: 0; font-size: 0.85rem; }
-        .ranking-table th { text-align: center; padding: 8px; color: #888; border-bottom: 1px solid #444; position: sticky; top: 0; background: #111; z-index: 10; font-size: 0.8rem; }
-        .ranking-table td { padding: 8px; border-bottom: 1px solid #222; text-align: center; }
-        .rank-num { font-weight: bold; color: var(--primary-color); font-size: 1rem; }
-        .team-cell { text-align: left !important; }
-        .ranking-controls { display: flex; background: #000; border-bottom: 1px solid #333; }
-        .rank-tab { flex: 1; padding: 6px; text-align: center; cursor: pointer; color: #888; font-size: 0.8rem; text-transform: uppercase; font-weight: bold; transition: 0.3s; }
-        .rank-tab.active { background: #111; color: var(--primary-color); border-bottom: 2px solid var(--primary-color); }
+        #tm-rankings {
+            grid-column: 1 / 2;
+            max-height: 80vh;
+            /* Limit height to allow scrolling if needed, but not page-breaking */
+        }
+
+        .ranking-table {
+            width: 100%;
+            border-collapse: separate;
+            border-spacing: 0;
+            font-size: 0.85rem;
+        }
+
+        .ranking-table th {
+            text-align: center;
+            padding: 8px;
+            color: #888;
+            border-bottom: 1px solid #444;
+            position: sticky;
+            top: 0;
+            background: #111;
+            z-index: 10;
+            font-size: 0.8rem;
+        }
+
+        .ranking-table td {
+            padding: 8px;
+            border-bottom: 1px solid #222;
+            text-align: center;
+        }
+
+        .rank-num {
+            font-weight: bold;
+            color: var(--primary-color);
+            font-size: 1rem;
+        }
+
+        .team-cell {
+            text-align: left !important;
+        }
+
+        .ranking-controls {
+            display: flex;
+            background: #000;
+            border-bottom: 1px solid #333;
+        }
+
+        .rank-tab {
+            flex: 1;
+            padding: 6px;
+            text-align: center;
+            cursor: pointer;
+            color: #888;
+            font-size: 0.8rem;
+            text-transform: uppercase;
+            font-weight: bold;
+            transition: 0.3s;
+        }
+
+        .rank-tab.active {
+            background: #111;
+            color: var(--primary-color);
+            border-bottom: 2px solid var(--primary-color);
+        }
 
         /* Schedule */
-        #tm-schedule { grid-column: 2 / 3; max-height: 80vh; }
-        #match-list { max-height: 100%; padding: 10px; } 
-        .match-row { 
-            display: grid; 
-            grid-template-columns: 50px 1fr 100px; 
-            align-items: center; 
-            padding: 12px 15px; 
-            margin-bottom: 10px; 
-            border: 1px solid #222; 
-            background: #161616; 
-            border-radius: 12px; 
-            transition: 0.2s; 
-            font-size: 0.95rem; 
-            cursor: pointer; 
+        #tm-schedule {
+            grid-column: 2 / 3;
+            max-height: 80vh;
         }
-        .match-row:hover { background: #1f1f1f; border-color: #444; transform: translateY(-2px); box-shadow: 0 4px 15px rgba(0,0,0,0.3); }
-        .match-row.active { border-color: var(--primary-color); background: #1f1f1f; box-shadow: 0 0 15px rgba(255, 215, 0, 0.1); }
-        .match-row.completed { opacity: 0.6; }
-        .match-name { font-weight: bold; color: #aaa; text-align: center; font-size: 0.9rem; }
-        .alliance { display: flex; justify-content: center; align-items: center; font-weight: bold; }
-        .red-alliance { color: var(--vex-red); text-align: right; }
-        .blue-alliance { color: var(--vex-blue); text-align: left; }
-        .match-score { text-align: center; color: white; background: #000; padding: 4px 8px; border-radius: 6px; font-family: monospace; font-size: 0.9rem; border: 1px solid #333; }
 
-        /* Tools */
-        #tm-tools { 
-            grid-column: 3 / 4; 
-            display: flex; /* Flex column to stack them */
-            flex-direction: column;
-            gap: 15px; 
-            border: none; 
-            background: transparent;
-            height: auto; /* Allow growing */
+        #match-list {
+            max-height: 100%;
+            padding: 10px;
         }
-        .tool-box { 
-            background: #111; 
-            border: 1px solid #333; 
-            border-radius: 16px; 
-            overflow: hidden; 
-            display: flex; flex-direction: column; position: relative; transition: all 0.3s; 
-            height: auto; /* Allow calc to grow */
-            flex-shrink: 0; /* Prevent shrinking */
+
+        .match-row {
+            display: grid;
+            grid-template-columns: 50px 1fr 100px;
+            align-items: center;
+            padding: 12px 15px;
+            margin-bottom: 10px;
+            border: 1px solid #222;
+            background: #161616;
+            border-radius: 12px;
+            transition: 0.2s;
+            font-size: 0.95rem;
+            cursor: pointer;
         }
-        
-        /* Fullscreen Fix */
-        .tool-box.fullscreen, .tm-panel.fullscreen { 
-            position: fixed !important; 
-            top: 0; left: 0; 
-            width: 100%; height: 100vh; 
-            z-index: 99999; background: #000; 
-            border: none; border-radius: 0; 
-            padding: 20px; 
-            padding-top: 100px !important; 
-            display: flex; flex-direction: column;
-            overflow-x: hidden; 
-            box-sizing: border-box; 
-            max-height: none !important;
+
+        .match-row:hover {
+            background: #1f1f1f;
+            border-color: #444;
+            transform: translateY(-2px);
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
         }
-        .tm-panel.fullscreen .tm-content { font-size: 1.2rem; padding: 20px; }
-        .tm-panel.fullscreen .ranking-table th, .tm-panel.fullscreen .ranking-table td { padding: 15px; font-size: 1.2rem; }
-        .tm-panel.fullscreen .match-row { padding: 20px; font-size: 1.5rem; margin-bottom: 15px; border-radius: 15px; grid-template-columns: 80px 1fr 150px; }
-        
-        .fs-btn { cursor: pointer; color: #666; transition: 0.3s; padding: 5px; }
-        .fs-btn:hover { color: white; transform: scale(1.1); }
 
-        /* Fullscreen Event Title */
-        .fs-event-title { 
-            display: none; 
-            width: 100%; 
-            text-align: center; 
-            color: var(--primary-color); 
-            font-size: 2rem; 
-            margin-bottom: 20px; 
-            text-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+        .match-row.active {
+            border-color: var(--primary-color);
+            background: #1f1f1f;
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.1);
         }
-        .tm-panel.fullscreen .fs-event-title { display: block; }
 
-        /* Timer */
-        .timer-display { font-size: 3.5rem; font-family: monospace; text-align: center; margin: 10px 0; font-weight: bold; color: white; line-height: 1; transition: color 0.3s; text-shadow: 0 0 20px rgba(0,0,0,0.5); }
-        .tool-box.fullscreen .timer-display { 
-            font-size: 18rem; 
-            margin-top: 0; 
-            width: 100%; 
-            overflow: hidden; 
+        .match-row.completed {
+            opacity: 0.6;
         }
-        .tool-box.fullscreen .timer-mode-container { margin-top: 80px; transform: scale(1.5); } 
-        .timer-warning { color: yellow !important; }
 
-        .timer-controls { display: flex; justify-content: center; gap: 10px; margin-bottom: 10px; flex-wrap: wrap; }
-        .timer-btn { padding: 8px 15px; border: none; border-radius: 8px; font-weight: bold; cursor: pointer; text-transform: uppercase; font-family: 'Rajdhani'; font-size: 1rem; flex: 1; min-width: 80px; transition: 0.2s;}
-        .timer-btn:hover { transform: translateY(-2px); filter: brightness(1.1); }
-        .btn-start { background: var(--vex-green); color: black; }
-        .btn-start:disabled { background: #444; color: #888; cursor: not-allowed; border: 1px solid #555; transform: none; }
-        .btn-pause { background: var(--vex-orange); color: black; display: none;}
-        .btn-skip { background: #E67E22; color: black; } 
-        .btn-switch { background: transparent; color: var(--primary-color); border: 2px solid var(--primary-color); display: none; }
-        .btn-switch:hover { background: var(--primary-color); color: black; }
-        .btn-stop { background: var(--vex-red); color: white; }
-        .btn-reset { background: #f39c12; color: black; }
-        
-        .timer-phase-indicator { text-align: center; color: var(--primary-color); font-weight: bold; font-size: 1.2rem; margin-bottom: 5px; letter-spacing: 2px; }
-        .mode-btn { background: #222; color: #666; border: 1px solid #333; padding: 4px 12px; border-radius: 20px; cursor: pointer; margin: 0 5px; font-size: 0.8rem; transition: 0.3s; }
-        .mode-btn:hover { border-color: #666; color: #aaa; }
-        .mode-btn.active { background: var(--primary-color); color: black; border-color: var(--primary-color); font-weight: bold; }
-
-        /* Calculator */
-        #calc-box .tm-content { overflow: visible !important; height: auto; } /* Force visible overflow */
-
-        .calc-header { 
-            display: flex; justify-content: space-between; align-items: center; 
-            margin-bottom: 8px; 
-            background: #000; 
-            padding: 5px; 
-            border-radius: 12px; 
-            border: 1px solid #333; 
+        .match-name {
+            font-weight: bold;
+            color: #aaa;
+            text-align: center;
             font-size: 0.9rem;
         }
-        .calc-score { font-size: 2rem; font-weight: bold; font-family: monospace; min-width: 50px; text-align: center; }
-        .score-red { color: var(--vex-red); }
-        .score-blue { color: var(--vex-blue); }
-        
-        .alliance-badge { flex: 1; text-align: center; padding: 5px; border-radius: 8px; font-weight: bold; font-size: 1rem; }
-        .badge-red { background: rgba(231, 76, 60, 0.1); color: var(--vex-red); border: 1px solid rgba(231, 76, 60, 0.3); }
-        .badge-blue { background: rgba(52, 152, 219, 0.1); color: var(--vex-blue); border: 1px solid rgba(52, 152, 219, 0.3); }
 
-        .calc-body { display: grid; grid-template-columns: 1fr 1fr; gap: 8px; overflow-y: visible; padding: 0 2px; }
-        .calc-col { padding: 8px; border-radius: 12px; }
-        .col-red { background: rgba(231, 76, 60, 0.05); border: 1px solid rgba(231, 76, 60, 0.2); }
-        .col-blue { background: rgba(52, 152, 219, 0.05); border: 1px solid rgba(52, 152, 219, 0.2); }
-        
-        .calc-input-group { margin-bottom: 5px; display: flex; flex-direction: column; align-items: center; }
-        .calc-input-group label { font-size: 0.8rem; margin-bottom: 3px; color: #ccc; text-transform: uppercase; letter-spacing: 1px; }
-        .score-input { 
-            width: 80%; padding: 8px; 
-            background: #000; 
-            border: 1px solid #444; 
-            color: white; 
-            font-size: 1.5rem; 
-            text-align: center; 
-            border-radius: 10px; 
-            font-weight: bold; 
+        .alliance {
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            font-weight: bold;
+        }
+
+        .red-alliance {
+            color: var(--vex-red);
+            text-align: right;
+        }
+
+        .blue-alliance {
+            color: var(--vex-blue);
+            text-align: left;
+        }
+
+        .match-score {
+            text-align: center;
+            color: white;
+            background: #000;
+            padding: 4px 8px;
+            border-radius: 6px;
+            font-family: monospace;
+            font-size: 0.9rem;
+            border: 1px solid #333;
+        }
+
+        /* Tools */
+        #tm-tools {
+            grid-column: 3 / 4;
+            display: flex;
+            /* Flex column to stack them */
+            flex-direction: column;
+            gap: 15px;
+            border: none;
+            background: transparent;
+            height: auto;
+            /* Allow growing */
+        }
+
+        .tool-box {
+            background: #111;
+            border: 1px solid #333;
+            border-radius: 16px;
+            overflow: hidden;
+            display: flex;
+            flex-direction: column;
+            position: relative;
+            transition: all 0.3s;
+            height: auto;
+            /* Allow calc to grow */
+            flex-shrink: 0;
+            /* Prevent shrinking */
+        }
+
+        /* Fullscreen Fix */
+        .tool-box.fullscreen,
+        .tm-panel.fullscreen {
+            position: fixed !important;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100vh;
+            z-index: 99999;
+            background: #000;
+            border: none;
+            border-radius: 0;
+            padding: 20px;
+            padding-top: 100px !important;
+            display: flex;
+            flex-direction: column;
+            overflow-x: hidden;
+            box-sizing: border-box;
+            max-height: none !important;
+        }
+
+        .tm-panel.fullscreen .tm-content {
+            font-size: 1.2rem;
+            padding: 20px;
+        }
+
+        .tm-panel.fullscreen .ranking-table th,
+        .tm-panel.fullscreen .ranking-table td {
+            padding: 15px;
+            font-size: 1.2rem;
+        }
+
+        .tm-panel.fullscreen .match-row {
+            padding: 20px;
+            font-size: 1.5rem;
+            margin-bottom: 15px;
+            border-radius: 15px;
+            grid-template-columns: 80px 1fr 150px;
+        }
+
+        .fs-btn {
+            cursor: pointer;
+            color: #666;
+            transition: 0.3s;
+            padding: 5px;
+        }
+
+        .fs-btn:hover {
+            color: white;
+            transform: scale(1.1);
+        }
+
+        /* Fullscreen Event Title */
+        .fs-event-title {
+            display: none;
+            width: 100%;
+            text-align: center;
+            color: var(--primary-color);
+            font-size: 2rem;
+            margin-bottom: 20px;
+            text-shadow: 0 0 15px rgba(255, 215, 0, 0.3);
+        }
+
+        .tm-panel.fullscreen .fs-event-title {
+            display: block;
+        }
+
+        /* Timer */
+        .timer-display {
+            font-size: 3.5rem;
+            font-family: monospace;
+            text-align: center;
+            margin: 10px 0;
+            font-weight: bold;
+            color: white;
+            line-height: 1;
+            transition: color 0.3s;
+            text-shadow: 0 0 20px rgba(0, 0, 0, 0.5);
+        }
+
+        .tool-box.fullscreen .timer-display {
+            font-size: 18rem;
+            margin-top: 0;
+            width: 100%;
+            overflow: hidden;
+        }
+
+        .tool-box.fullscreen .timer-mode-container {
+            margin-top: 80px;
+            transform: scale(1.5);
+        }
+
+        .timer-warning {
+            color: yellow !important;
+        }
+
+        .timer-controls {
+            display: flex;
+            justify-content: center;
+            gap: 10px;
+            margin-bottom: 10px;
+            flex-wrap: wrap;
+        }
+
+        .timer-btn {
+            padding: 8px 15px;
+            border: none;
+            border-radius: 8px;
+            font-weight: bold;
+            cursor: pointer;
+            text-transform: uppercase;
+            font-family: 'Rajdhani';
+            font-size: 1rem;
+            flex: 1;
+            min-width: 80px;
+            transition: 0.2s;
+        }
+
+        .timer-btn:hover {
+            transform: translateY(-2px);
+            filter: brightness(1.1);
+        }
+
+        .btn-start {
+            background: var(--vex-green);
+            color: black;
+        }
+
+        .btn-start:disabled {
+            background: #444;
+            color: #888;
+            cursor: not-allowed;
+            border: 1px solid #555;
+            transform: none;
+        }
+
+        .btn-pause {
+            background: var(--vex-orange);
+            color: black;
+            display: none;
+        }
+
+        .btn-skip {
+            background: #E67E22;
+            color: black;
+        }
+
+        .btn-switch {
+            background: transparent;
+            color: var(--primary-color);
+            border: 2px solid var(--primary-color);
+            display: none;
+        }
+
+        .btn-switch:hover {
+            background: var(--primary-color);
+            color: black;
+        }
+
+        .btn-stop {
+            background: var(--vex-red);
+            color: white;
+        }
+
+        .btn-reset {
+            background: #f39c12;
+            color: black;
+        }
+
+        .timer-phase-indicator {
+            text-align: center;
+            color: var(--primary-color);
+            font-weight: bold;
+            font-size: 1.2rem;
+            margin-bottom: 5px;
+            letter-spacing: 2px;
+        }
+
+        .mode-btn {
+            background: #222;
+            color: #666;
+            border: 1px solid #333;
+            padding: 4px 12px;
+            border-radius: 20px;
+            cursor: pointer;
+            margin: 0 5px;
+            font-size: 0.8rem;
+            transition: 0.3s;
+        }
+
+        .mode-btn:hover {
+            border-color: #666;
+            color: #aaa;
+        }
+
+        .mode-btn.active {
+            background: var(--primary-color);
+            color: black;
+            border-color: var(--primary-color);
+            font-weight: bold;
+        }
+
+        /* Calculator */
+        #calc-box .tm-content {
+            overflow: visible !important;
+            height: auto;
+        }
+
+        /* Force visible overflow */
+
+        .calc-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 8px;
+            background: #000;
+            padding: 5px;
+            border-radius: 12px;
+            border: 1px solid #333;
+            font-size: 0.9rem;
+        }
+
+        .calc-score {
+            font-size: 2rem;
+            font-weight: bold;
+            font-family: monospace;
+            min-width: 50px;
+            text-align: center;
+        }
+
+        .score-red {
+            color: var(--vex-red);
+        }
+
+        .score-blue {
+            color: var(--vex-blue);
+        }
+
+        .alliance-badge {
+            flex: 1;
+            text-align: center;
+            padding: 5px;
+            border-radius: 8px;
+            font-weight: bold;
+            font-size: 1rem;
+        }
+
+        .badge-red {
+            background: rgba(231, 76, 60, 0.1);
+            color: var(--vex-red);
+            border: 1px solid rgba(231, 76, 60, 0.3);
+        }
+
+        .badge-blue {
+            background: rgba(52, 152, 219, 0.1);
+            color: var(--vex-blue);
+            border: 1px solid rgba(52, 152, 219, 0.3);
+        }
+
+        .calc-body {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 8px;
+            overflow-y: visible;
+            padding: 0 2px;
+        }
+
+        .calc-col {
+            padding: 8px;
+            border-radius: 12px;
+        }
+
+        .col-red {
+            background: rgba(231, 76, 60, 0.05);
+            border: 1px solid rgba(231, 76, 60, 0.2);
+        }
+
+        .col-blue {
+            background: rgba(52, 152, 219, 0.05);
+            border: 1px solid rgba(52, 152, 219, 0.2);
+        }
+
+        .calc-input-group {
+            margin-bottom: 5px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+        }
+
+        .calc-input-group label {
+            font-size: 0.8rem;
+            margin-bottom: 3px;
+            color: #ccc;
+            text-transform: uppercase;
+            letter-spacing: 1px;
+        }
+
+        .score-input {
+            width: 80%;
+            padding: 8px;
+            background: #000;
+            border: 1px solid #444;
+            color: white;
+            font-size: 1.5rem;
+            text-align: center;
+            border-radius: 10px;
+            font-weight: bold;
             font-family: monospace;
         }
-        .score-input:focus { outline: none; border-color: var(--primary-color); box-shadow: 0 0 10px rgba(255, 215, 0, 0.2); }
-        
-        .calc-item { display: flex; justify-content: space-between; align-items: center; margin-bottom: 5px; font-size: 0.85rem; background: rgba(0,0,0,0.3); padding: 5px 8px; border-radius: 6px; }
-        
-        .submit-score-btn { width: 100%; padding: 12px; margin-top: 10px; background: linear-gradient(45deg, var(--primary-color), #d4b000); border: none; color: black; font-weight: 900; font-size: 1rem; cursor: pointer; border-radius: 12px; font-family: 'Nasalization'; text-transform: uppercase; transition: 0.3s; }
-        .submit-score-btn:hover { filter: brightness(1.1); box-shadow: 0 0 15px rgba(255, 215, 0, 0.4); transform: translateY(-2px); }
-        
-        .match-selector { 
-            width: 100%; padding: 10px; 
-            background: #1a1a1a; color: white; 
-            border: 1px solid #444; 
-            margin-bottom: 10px; 
-            border-radius: 10px; 
-            font-size: 0.95rem; 
+
+        .score-input:focus {
+            outline: none;
+            border-color: var(--primary-color);
+            box-shadow: 0 0 10px rgba(255, 215, 0, 0.2);
+        }
+
+        .calc-item {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 5px;
+            font-size: 0.85rem;
+            background: rgba(0, 0, 0, 0.3);
+            padding: 5px 8px;
+            border-radius: 6px;
+        }
+
+        .submit-score-btn {
+            width: 100%;
+            padding: 12px;
+            margin-top: 10px;
+            background: linear-gradient(45deg, var(--primary-color), #d4b000);
+            border: none;
+            color: black;
+            font-weight: 900;
+            font-size: 1rem;
+            cursor: pointer;
+            border-radius: 12px;
+            font-family: 'Nasalization';
+            text-transform: uppercase;
+            transition: 0.3s;
+        }
+
+        .submit-score-btn:hover {
+            filter: brightness(1.1);
+            box-shadow: 0 0 15px rgba(255, 215, 0, 0.4);
+            transform: translateY(-2px);
+        }
+
+        .match-selector {
+            width: 100%;
+            padding: 10px;
+            background: #1a1a1a;
+            color: white;
+            border: 1px solid #444;
+            margin-bottom: 10px;
+            border-radius: 10px;
+            font-size: 0.95rem;
             cursor: pointer;
             outline: none;
             transition: border-color 0.3s;
-            appearance: none; 
+            appearance: none;
             background-image: url("data:image/svg+xml;charset=US-ASCII,%3Csvg%20xmlns%3D%22http%3A%2F%2Fwww.w3.org%2F2000%2Fsvg%22%20width%3D%22292.4%22%20height%3D%22292.4%22%3E%3Cpath%20fill%3D%22%23FFD700%22%20d%3D%22M287%2069.4a17.6%2017.6%200%200%200-13-5.4H18.4c-5%200-9.3%201.8-12.9%205.4A17.6%2017.6%200%200%200%200%2082.2c0%205%201.8%209.3%205.4%2012.9l128%20127.9c3.6%203.6%207.8%205.4%2012.8%205.4s9.2-1.8%2012.8-5.4L287%2095c3.5-3.5%205.4-7.8%205.4-12.8%200-5-1.9-9.2-5.5-12.8z%22%2F%3E%3C%2Fsvg%3E");
             background-repeat: no-repeat;
             background-position: right 10px top 50%;
             background-size: 12px auto;
         }
-        .match-selector:hover, .match-selector:focus { border-color: var(--primary-color); }
-        
-        .clear-score-btn { width: 100%; padding: 8px; margin-top: 5px; background: rgba(255, 68, 68, 0.1); border: 1px solid rgba(255, 68, 68, 0.3); color: #ff6666; cursor: pointer; font-size: 0.8rem; border-radius: 12px; transition: 0.3s; font-weight: bold; }
-        .clear-score-btn:hover { background: rgba(255, 68, 68, 0.8); color: white; }
+
+        .match-selector:hover,
+        .match-selector:focus {
+            border-color: var(--primary-color);
+        }
+
+        .clear-score-btn {
+            width: 100%;
+            padding: 8px;
+            margin-top: 5px;
+            background: rgba(255, 68, 68, 0.1);
+            border: 1px solid rgba(255, 68, 68, 0.3);
+            color: #ff6666;
+            cursor: pointer;
+            font-size: 0.8rem;
+            border-radius: 12px;
+            transition: 0.3s;
+            font-weight: bold;
+        }
+
+        .clear-score-btn:hover {
+            background: rgba(255, 68, 68, 0.8);
+            color: white;
+        }
 
         /* --- MOBILE RESPONSIVE --- */
         @media (max-width: 768px) {
-            .hero-content h1 { font-size: 3rem; }
-            .team-grid { grid-template-columns: 1fr; gap: 40px; }
-            .mentor-wrapper { margin-bottom: 40px; }
-            .gallery-grid { grid-template-columns: 1fr; }
-            .about-row, .about-row:nth-child(even) { flex-direction: column !important; gap: 30px; }
-            .about-text-content { text-align: left; }
-            .timeline::before { left: 20px; }
-            .event-card { width: 85%; margin-left: 50px !important; margin-right: 0 !important; text-align: left !important; border-left: 3px solid var(--primary-color) !important; border-right: none !important; }
-            .event-card::after { left: -38px !important; right: auto !important; }
-            .nav-logo img { height: 40px; }
+            .hero-content h1 {
+                font-size: 3rem;
+            }
 
-            .menu-toggle { display: block; }
-            .menu-toggle.active .bar:nth-child(2) { opacity: 0; }
-            .menu-toggle.active .bar:nth-child(1) { transform: translateY(8px) rotate(45deg); }
-            .menu-toggle.active .bar:nth-child(3) { transform: translateY(-8px) rotate(-45deg); }
+            .team-grid {
+                grid-template-columns: 1fr;
+                gap: 40px;
+            }
+
+            .mentor-wrapper {
+                margin-bottom: 40px;
+            }
+
+            .gallery-grid {
+                grid-template-columns: 1fr;
+            }
+
+            .about-row,
+            .about-row:nth-child(even) {
+                flex-direction: column !important;
+                gap: 30px;
+            }
+
+            .about-text-content {
+                text-align: left;
+            }
+
+            .timeline::before {
+                left: 20px;
+            }
+
+            .event-card {
+                width: 85%;
+                margin-left: 50px !important;
+                margin-right: 0 !important;
+                text-align: left !important;
+                border-left: 3px solid var(--primary-color) !important;
+                border-right: none !important;
+            }
+
+            .event-card::after {
+                left: -38px !important;
+                right: auto !important;
+            }
+
+            .nav-logo img {
+                height: 40px;
+            }
+
+            .menu-toggle {
+                display: block;
+            }
+
+            .menu-toggle.active .bar:nth-child(2) {
+                opacity: 0;
+            }
+
+            .menu-toggle.active .bar:nth-child(1) {
+                transform: translateY(8px) rotate(45deg);
+            }
+
+            .menu-toggle.active .bar:nth-child(3) {
+                transform: translateY(-8px) rotate(-45deg);
+            }
 
             .nav-menu {
-                position: fixed; left: -100%; top: 60px; gap: 0; flex-direction: column;
-                background-color: rgba(0,0,0,0.98); width: 100%; text-align: center;
-                transition: 0.3s; border-bottom: 2px solid var(--primary-color); z-index: 1001;
-                padding-bottom: 20px; box-shadow: 0 10px 20px rgba(0,0,0,0.5);
+                position: fixed;
+                left: -100%;
+                top: 60px;
+                gap: 0;
+                flex-direction: column;
+                background-color: rgba(0, 0, 0, 0.98);
+                width: 100%;
+                text-align: center;
+                transition: 0.3s;
+                border-bottom: 2px solid var(--primary-color);
+                z-index: 1001;
+                padding-bottom: 20px;
+                box-shadow: 0 10px 20px rgba(0, 0, 0, 0.5);
             }
-            .nav-menu.active { left: 0; }
-            nav ul { flex-direction: column; padding: 20px 0; width: 100%; gap: 0; }
-            .nav-item { display: block; font-size: 1.5rem; padding: 20px 0; border-bottom: 1px solid #222; width: 100%; }
-            .nav-item:hover, .nav-item.active { background: #111; border-bottom: 1px solid var(--primary-color); }
-            
-            .countdown-number { font-size: 1.5rem; }
-            .countdown-item { padding: 8px 10px; min-width: 60px; }
 
-            .tm-container { 
-                grid-template-columns: 1fr; 
-                grid-template-rows: auto; 
-                height: auto; 
-                display: flex; flex-direction: column; 
+            .nav-menu.active {
+                left: 0;
             }
-            #tm-rankings, #tm-schedule { 
-                grid-column: 1 / -1; 
-                max-height: 80vh; 
+
+            nav ul {
+                flex-direction: column;
+                padding: 20px 0;
+                width: 100%;
+                gap: 0;
             }
-            #tm-tools { 
-                display: flex; flex-direction: column; gap: 15px; height: auto;
+
+            .nav-item {
+                display: block;
+                font-size: 1.5rem;
+                padding: 20px 0;
+                border-bottom: 1px solid #222;
+                width: 100%;
             }
-            .input-row { flex-direction: column; }
-            .add-btn { width: 100%; padding: 15px !important; }
+
+            .nav-item:hover,
+            .nav-item.active {
+                background: #111;
+                border-bottom: 1px solid var(--primary-color);
+            }
+
+            .countdown-number {
+                font-size: 1.5rem;
+            }
+
+            .countdown-item {
+                padding: 8px 10px;
+                min-width: 60px;
+            }
+
+            .tm-container {
+                grid-template-columns: 1fr;
+                grid-template-rows: auto;
+                height: auto;
+                display: flex;
+                flex-direction: column;
+            }
+
+            #tm-rankings,
+            #tm-schedule {
+                grid-column: 1 / -1;
+                max-height: 80vh;
+            }
+
+            #tm-tools {
+                display: flex;
+                flex-direction: column;
+                gap: 15px;
+                height: auto;
+            }
+
+            .input-row {
+                flex-direction: column;
+            }
+
+            .add-btn {
+                width: 100%;
+                padding: 15px !important;
+            }
         }
     </style>
 </head>
+
 <body>
 
     <!-- Audio Elements (HTML5 Recommended method) -->
@@ -490,7 +1727,7 @@
         <a href="#home" class="nav-logo" onclick="switchTab('home')">
             <img src="logo.png" alt="23083Z Reaper Logo">
         </a>
-        
+
         <div class="menu-toggle" id="mobile-menu-btn">
             <span class="bar"></span>
             <span class="bar"></span>
@@ -516,75 +1753,184 @@
             <h2><span id="typewriter-text"></span><span class="typewriter-cursor">_</span></h2>
             <h1>REAPER</h1>
             <a onclick="switchTab('about')" class="btn">MEET THE TEAM</a>
-            <div class="countdown-wrapper">
-                <a href="https://www.robotevents.com/zh-TW/robot-competitions/vex-robotics-competition/RE-V5RC-25-0059.html#%E5%9F%BA%E6%9C%AC%E8%A8%8A%E6%81%AF" target="_blank" class="countdown-title">2025-2026 VEX TAIWAN OPEN V5RC HS</a>
-                <div class="countdown-container" id="countdown">
-                    <div class="countdown-item"><span class="countdown-number" id="days">00</span><span class="countdown-label">Days</span></div>
-                    <div class="countdown-item"><span class="countdown-number" id="hours">00</span><span class="countdown-label">Hrs</span></div>
-                    <div class="countdown-item"><span class="countdown-number" id="minutes">00</span><span class="countdown-label">Mins</span></div>
-                    <div class="countdown-item"><span class="countdown-number" id="seconds">00</span><span class="countdown-label">Secs</span></div>
-                </div>
-            </div>
+
         </div>
     </div>
 
     <!-- 2. ABOUT & TEAM PAGE -->
     <div id="about" class="page-section">
-        <div class="section-header scroll-hidden"><h2>About <span>Reaper</span></h2><p>23083Z is a VEX robotics team striving for perfection. Black represents calm, Gold represents glory.</p></div>
+        <div class="section-header scroll-hidden">
+            <h2>About <span>Reaper</span></h2>
+            <p>23083Z is a VEX robotics team striving for perfection. Black represents calm, Gold represents glory.</p>
+        </div>
         <div class="about-container">
             <div class="about-row scroll-hidden">
                 <div class="about-image-wrapper"><img src="about-1.jpg" alt="Team 23083Z Origin"></div>
                 <div class="about-text-content">
                     <h3>Our Origin</h3>
-                    <p>Welcome to the official website of <strong>Team <span style="color: var(--primary-color);">Reaper</span> (23083Z)</strong>, a competitive VEX Robotics team representing <strong>Wego High School</strong> in Taipei, Taiwan. Founded in 2023, our team consists of six passionate students dedicated to pushing the boundaries of engineering, design, and programming.</p>
-                    <p>Inspired by the precision of a "Reaper," we approach every challenge with strategic focus and unwavering determination. Following the VRC Over Under and High Stakes seasons, we have honed our skills and built a strong foundation in the VEX V5 system. Our goal is not just to build efficient robots, but to represent Taiwan on the global stage at the VEX Robotics World Championship.</p>
+                    <p>Welcome to the official website of <strong>Team <span
+                                style="color: var(--primary-color);">Reaper</span> (23083Z)</strong>, a competitive VEX
+                        Robotics team representing <strong>Wego High School</strong> in Taipei, Taiwan. Founded in 2023,
+                        our team consists of six passionate students dedicated to pushing the boundaries of engineering,
+                        design, and programming.</p>
+                    <p>Inspired by the precision of a "Reaper," we approach every challenge with strategic focus and
+                        unwavering determination. Following the VRC Over Under and High Stakes seasons, we have honed
+                        our skills and built a strong foundation in the VEX V5 system. Our goal is not just to build
+                        efficient robots, but to represent Taiwan on the global stage at the VEX Robotics World
+                        Championship.</p>
                 </div>
             </div>
             <div class="about-row scroll-hidden">
                 <div class="about-image-wrapper"><img src="about-2.jpg" alt="Team 23083Z Mission"></div>
                 <div class="about-text-content">
                     <h3>COLLABORATIVE ATMOSPHERE</h3>
-                    <p>Our team members are all from the same class, but the club, with three VEX teams this year are composed of different classes and across different grades. Some have participated in previous VEX seasons and some have not. Because our school emphasizes academic performances and have strict rules of when we can practice robotics and have club time, like previous years, we would often only have 2 or 3 people at the room practicing because everyone’s schedule is different. We set rules so that everyone would follow and prevent mistakes and conflicts that have happened in previous seasons.</p>
-                    <p>We believe that robotics is more than just building machines; it is about building character, resilience, and a future where technology serves humanity. Every gear we place and every line of code we write brings us one step closer to that future.</p>
+                    <p>Our team members are all from the same class, but the club, with three VEX teams this year are
+                        composed of different classes and across different grades. Some have participated in previous
+                        VEX seasons and some have not. Because our school emphasizes academic performances and have
+                        strict rules of when we can practice robotics and have club time, like previous years, we would
+                        often only have 2 or 3 people at the room practicing because everyone’s schedule is different.
+                        We set rules so that everyone would follow and prevent mistakes and conflicts that have happened
+                        in previous seasons.</p>
+                    <p>We believe that robotics is more than just building machines; it is about building character,
+                        resilience, and a future where technology serves humanity. Every gear we place and every line of
+                        code we write brings us one step closer to that future.</p>
                 </div>
             </div>
         </div>
-        <div class="section-header scroll-hidden"><img src="reaper.svg" alt="Reaper Logo" class="section-logo"><h2>The <span>Team Members</span></h2></div>
-        <div class="team-grid">
-            <div class="member-card scroll-hidden"><div class="member-photo" style="background-image: url('members/pennlaine.jpg');"></div><div class="member-info"><div class="member-name">Pennlaine</div><div class="member-role">Club President & Team Leader</div></div></div>
-            <div class="member-card scroll-hidden"><div class="member-photo" style="background-image: url('members/adam.jpg');"></div><div class="member-info"><div class="member-name">Adam</div><div class="member-role">Programmer/main driver</div></div></div>
-            <div class="member-card scroll-hidden"><div class="member-photo" style="background-image: url('members/anthony.jpg');"></div><div class="member-info"><div class="member-name">Anthony</div><div class="member-role">Builder/CAD/Art Lead</div></div></div>
-            <div class="member-card scroll-hidden"><div class="member-photo" style="background-image: url('members/benjamin.jpg');"></div><div class="member-info"><div class="member-name">Benjamin</div><div class="member-role"> Builder/Planning/Programming  </div></div></div>
-            <div class="member-card scroll-hidden"><div class="member-photo" style="background-image: url('members/jefferson.jpg');"></div><div class="member-info"><div class="member-name">Jefferson</div><div class="member-role">Builder</div></div></div>
-            <div class="member-card scroll-hidden"><div class="member-photo" style="background-image: url('members/cecilia.jpg');"></div><div class="member-info"><div class="member-name">Cecilia</div><div class="member-role">Scout/PR/Notebook taker</div></div></div>
+        <div class="section-header scroll-hidden"><img src="reaper.svg" alt="Reaper Logo" class="section-logo">
+            <h2>The <span>Team Members</span></h2>
         </div>
-        <div class="section-header scroll-hidden"><h2>The <span>Mentors</span></h2></div>
+        <div class="team-grid">
+            <div class="member-card scroll-hidden">
+                <div class="member-photo" style="background-image: url('members/pennlaine.jpg');"></div>
+                <div class="member-info">
+                    <div class="member-name">Pennlaine</div>
+                    <div class="member-role">Club President & Team Leader</div>
+                </div>
+            </div>
+            <div class="member-card scroll-hidden">
+                <div class="member-photo" style="background-image: url('members/adam.jpg');"></div>
+                <div class="member-info">
+                    <div class="member-name">Adam</div>
+                    <div class="member-role">Programmer/main driver</div>
+                </div>
+            </div>
+            <div class="member-card scroll-hidden">
+                <div class="member-photo" style="background-image: url('members/anthony.jpg');"></div>
+                <div class="member-info">
+                    <div class="member-name">Anthony</div>
+                    <div class="member-role">Builder/CAD/Art Lead</div>
+                </div>
+            </div>
+            <div class="member-card scroll-hidden">
+                <div class="member-photo" style="background-image: url('members/benjamin.jpg');"></div>
+                <div class="member-info">
+                    <div class="member-name">Benjamin</div>
+                    <div class="member-role"> Builder/Planning/Programming </div>
+                </div>
+            </div>
+            <div class="member-card scroll-hidden">
+                <div class="member-photo" style="background-image: url('members/jefferson.jpg');"></div>
+                <div class="member-info">
+                    <div class="member-name">Jefferson</div>
+                    <div class="member-role">Builder</div>
+                </div>
+            </div>
+            <div class="member-card scroll-hidden">
+                <div class="member-photo" style="background-image: url('members/cecilia.jpg');"></div>
+                <div class="member-info">
+                    <div class="member-name">Cecilia</div>
+                    <div class="member-role">Scout/PR/Notebook taker</div>
+                </div>
+            </div>
+        </div>
+        <div class="section-header scroll-hidden">
+            <h2>The <span>Mentors</span></h2>
+        </div>
         <div class="mentor-wrapper">
-            <div class="member-card scroll-hidden"><div class="member-photo" style="background-image: url('members/justin.jpg');"></div><div class="member-info"><div class="info-text"><div class="member-name">Justin</div><div class="member-role">Coach, Mentor</div></div><img src="members/logo-1.png" class="member-logo" style="bottom: 5px;" alt="Logo"></div></div>
-            <div class="member-card scroll-hidden"><div class="member-photo" style="background-image: url('members/mentor-2.jpg');"></div><div class="member-info"><div class="info-text"><div class="member-name">肉包</div><div class="member-role">Coach, Mentor</div></div><img src="members/logo-2.png" class="member-logo" style="width: 150px; height: 150px; bottom: -25px;" alt="Logo"></div></div>
+            <div class="member-card scroll-hidden">
+                <div class="member-photo" style="background-image: url('members/justin.jpg');"></div>
+                <div class="member-info">
+                    <div class="info-text">
+                        <div class="member-name">Justin</div>
+                        <div class="member-role">Coach, Mentor</div>
+                    </div><img src="members/logo-1.png" class="member-logo" style="bottom: 5px;" alt="Logo">
+                </div>
+            </div>
+            <div class="member-card scroll-hidden">
+                <div class="member-photo" style="background-image: url('members/mentor-2.jpg');"></div>
+                <div class="member-info">
+                    <div class="info-text">
+                        <div class="member-name">肉包</div>
+                        <div class="member-role">Coach, Mentor</div>
+                    </div><img src="members/logo-2.png" class="member-logo"
+                        style="width: 150px; height: 150px; bottom: -25px;" alt="Logo">
+                </div>
+            </div>
         </div>
     </div>
 
     <!-- 3. MEDIA PAGE -->
     <div id="media" class="page-section">
-        <div class="section-header scroll-hidden"><h2>Media <span>Gallery</span></h2><p>Documenting our journey and every exciting moment.</p></div>
+        <div class="section-header scroll-hidden">
+            <h2>Media <span>Gallery</span></h2>
+            <p>Documenting our journey and every exciting moment.</p>
+        </div>
         <div id="media-gallery" class="gallery-grid"></div>
     </div>
 
     <!-- 4. EVENTS PAGE -->
     <div id="events" class="page-section">
-        <div class="section-header scroll-hidden"><h2>Season <span>Timeline</span></h2><p>Push Back 2025-2026 Season Plan</p></div>
+        <div class="section-header scroll-hidden">
+            <h2>Season <span>Timeline</span></h2>
+            <p>Push Back 2025-2026 Season Plan</p>
+        </div>
         <div class="timeline">
-            <a href="https://www.robotevents.com/zh-TW/robot-competitions/vex-robotics-competition/RE-V5RC-25-0319.html#%E5%9F%BA%E6%9C%AC%E8%A8%8A%E6%81%AF" target="_blank" class="event-card scroll-hidden"><div class="event-image"><img src="event/tai.jpg" alt="TAI-VEX Scrimmage" class="square-img"></div><div class="event-content"><span class="event-date">SEP 2025</span><h3>TAI-VEX 25-26 Push Back Scrimmage</h3><p>The first scrimmage of the new season! A great opportunity to test our initial robot design and strategy against other local teams in a friendly environment.</p></div></a>
-            <a href="https://www.robotevents.com/zh-TW/robot-competitions/vex-robotics-competition/RE-V5RC-25-0321.html#%E5%9F%BA%E6%9C%AC%E8%A8%8A%E6%81%AF" target="_blank" class="event-card scroll-hidden"><div class="event-image"><img src="event/tai.jpg" alt="TAI-VEX Tournament" class="square-img"></div><div class="event-content"><span class="event-date">OCT 2025</span><h3>TAI-VEX Tournament HS 25-26 Push Back</h3><p>Participating in the TAI-VEX Tournament. Our goal is to refine our autonomous routines and driver skills, aiming for excellence in the qualification matches.</p></div></a>
-            <a href="https://www.robotevents.com/zh-TW/robot-competitions/vex-robotics-competition/RE-V5RC-25-0121.html#%E5%9F%BA%E6%9C%AC%E8%A8%8A%E6%81%AF" target="_blank" class="event-card scroll-hidden"><div class="event-image"><img src="event/pas.jpg" alt="PAS-VEX Signature"></div><div class="event-content"><span class="event-date">DEC 2025</span><h3>2025-2026 PAS-VEX V5RC Signature Event</h3><p>Competing in the prestigious PAS-VEX Signature Event. We will face top-tier teams from around the region, striving to secure an early qualification for Worlds.</p></div></a>
-            <a href="https://www.robotevents.com/zh-TW/robot-competitions/vex-robotics-competition/RE-V5RC-25-0059.html#%E5%9F%BA%E6%9C%AC%E8%A8%8A%E6%81%AF" target="_blank" class="event-card scroll-hidden"><div class="event-image"><img src="event/vto.jpg" alt="VEX Taiwan Open" class="square-img"></div><div class="event-content"><span class="event-date">FEB 2026</span><h3>2025-2026 VEX TAIWAN OPEN V5RC HS</h3><p>The VEX Taiwan Open Championship. This is the final regional showdown to secure our spot at the World Championship. All systems go!</p></div></a>
+            <a href="https://www.robotevents.com/zh-TW/robot-competitions/vex-robotics-competition/RE-V5RC-25-0319.html#%E5%9F%BA%E6%9C%AC%E8%A8%8A%E6%81%AF"
+                target="_blank" class="event-card scroll-hidden">
+                <div class="event-image"><img src="event/tai.jpg" alt="TAI-VEX Scrimmage" class="square-img"></div>
+                <div class="event-content"><span class="event-date">SEP 2025</span>
+                    <h3>TAI-VEX 25-26 Push Back Scrimmage</h3>
+                    <p>The first scrimmage of the new season! A great opportunity to test our initial robot design and
+                        strategy against other local teams in a friendly environment.</p>
+                </div>
+            </a>
+            <a href="https://www.robotevents.com/zh-TW/robot-competitions/vex-robotics-competition/RE-V5RC-25-0321.html#%E5%9F%BA%E6%9C%AC%E8%A8%8A%E6%81%AF"
+                target="_blank" class="event-card scroll-hidden">
+                <div class="event-image"><img src="event/tai.jpg" alt="TAI-VEX Tournament" class="square-img"></div>
+                <div class="event-content"><span class="event-date">OCT 2025</span>
+                    <h3>TAI-VEX Tournament HS 25-26 Push Back</h3>
+                    <p>Participating in the TAI-VEX Tournament. Our goal is to refine our autonomous routines and driver
+                        skills, aiming for excellence in the qualification matches.</p>
+                </div>
+            </a>
+            <a href="https://www.robotevents.com/zh-TW/robot-competitions/vex-robotics-competition/RE-V5RC-25-0121.html#%E5%9F%BA%E6%9C%AC%E8%A8%8A%E6%81%AF"
+                target="_blank" class="event-card scroll-hidden">
+                <div class="event-image"><img src="event/pas.jpg" alt="PAS-VEX Signature"></div>
+                <div class="event-content"><span class="event-date">DEC 2025</span>
+                    <h3>2025-2026 PAS-VEX V5RC Signature Event</h3>
+                    <p>Competing in the prestigious PAS-VEX Signature Event. We will face top-tier teams from around the
+                        region, striving to secure an early qualification for Worlds.</p>
+                </div>
+            </a>
+            <a href="https://www.robotevents.com/zh-TW/robot-competitions/vex-robotics-competition/RE-V5RC-25-0059.html#%E5%9F%BA%E6%9C%AC%E8%A8%8A%E6%81%AF"
+                target="_blank" class="event-card scroll-hidden">
+                <div class="event-image"><img src="event/vto.jpg" alt="VEX Taiwan Open" class="square-img"></div>
+                <div class="event-content"><span class="event-date">FEB 2026</span>
+                    <h3>2025-2026 VEX TAIWAN OPEN V5RC HS</h3>
+                    <p>The VEX Taiwan Open Championship. This is the final regional showdown to secure our spot at the
+                        World Championship. All systems go!</p>
+                </div>
+            </a>
         </div>
     </div>
 
     <!-- 5. ROBOT PAGE -->
     <div id="specs" class="page-section">
-        <div class="section-header scroll-hidden"><h2>Our <span>Robot</span></h2><p>Engineering perfection in detail.</p></div>
+        <div class="section-header scroll-hidden">
+            <h2>Our <span>Robot</span></h2>
+            <p>Engineering perfection in detail.</p>
+        </div>
         <div id="robot-gallery" class="gallery-grid"></div>
     </div>
 
@@ -596,16 +1942,20 @@
                 <input type="text" id="event-name" class="tm-input full-width" placeholder="Enter Event Name...">
                 <div class="input-row">
                     <!-- Adjusted onkeypress to focus name input -->
-                    <input type="text" id="team-number" class="tm-input" maxlength="6" placeholder="No. (e.g. 23083Z)" onkeypress="if(event.key==='Enter') document.getElementById('team-name').focus()">
+                    <input type="text" id="team-number" class="tm-input" maxlength="6" placeholder="No. (e.g. 23083Z)"
+                        onkeypress="if(event.key==='Enter') document.getElementById('team-name').focus()">
                     <!-- Adjusted onkeypress to call addTeam -->
-                    <input type="text" id="team-name" class="tm-input" placeholder="Name (e.g. Reaper)" onkeypress="if(event.key==='Enter') addTeam()">
+                    <input type="text" id="team-name" class="tm-input" placeholder="Name (e.g. Reaper)"
+                        onkeypress="if(event.key==='Enter') addTeam()">
                     <button onclick="addTeam()" class="btn add-btn">+</button>
                 </div>
             </div>
             <div class="team-list-preview" id="team-list-display"></div>
             <div style="display: flex; gap: 10px; width: 100%; max-width: 500px;">
-                <button onclick="startTournament()" class="btn full-width" style="font-size: 1.5rem; flex: 2;">START EVENT</button>
-                <button onclick="loadFromStorage()" class="btn full-width" style="font-size: 1rem; flex: 1; border-color: #666; color: #aaa;">LOAD SAVED</button>
+                <button onclick="startTournament()" class="btn full-width" style="font-size: 1.5rem; flex: 2;">START
+                    EVENT</button>
+                <button onclick="loadFromStorage()" class="btn full-width"
+                    style="font-size: 1rem; flex: 1; border-color: #666; color: #aaa;">LOAD SAVED</button>
             </div>
             <p id="setup-error" style="color: #e74c3c; margin-top: 10px; display: none;">Need at least 4 teams!</p>
         </div>
@@ -614,7 +1964,7 @@
             <div style="grid-column: 1 / -1; width: 100%;">
                 <h2 id="tm-title">Event Name</h2>
             </div>
-            
+
             <!-- RANKINGS -->
             <div id="tm-rankings" class="tm-panel">
                 <div class="tm-header">
@@ -623,12 +1973,22 @@
                 </div>
                 <div class="fs-event-title" id="rank-fs-title">EVENT NAME</div>
                 <div class="ranking-controls">
-                    <div class="rank-tab active" id="tab-practice" onclick="switchRankingMode('Practice')">Practice</div>
+                    <div class="rank-tab active" id="tab-practice" onclick="switchRankingMode('Practice')">Practice
+                    </div>
                     <div class="rank-tab" id="tab-qual" onclick="switchRankingMode('Qualification')">Qualification</div>
                 </div>
                 <div class="tm-content" id="ranking-container">
                     <table class="ranking-table" id="ranking-table">
-                        <thead><tr><th>Rank</th><th class="team-cell">Team</th><th>Avg WP</th><th>Avg AP</th><th>Avg SP</th><th>W-L-T</th></tr></thead>
+                        <thead>
+                            <tr>
+                                <th>Rank</th>
+                                <th class="team-cell">Team</th>
+                                <th>Avg WP</th>
+                                <th>Avg AP</th>
+                                <th>Avg SP</th>
+                                <th>W-L-T</th>
+                            </tr>
+                        </thead>
                         <tbody id="ranking-body"></tbody>
                     </table>
                 </div>
@@ -663,8 +2023,10 @@
                         <div class="timer-controls">
                             <button id="btn-start" class="timer-btn btn-start" onclick="toggleTimer()">Start</button>
                             <button id="btn-pause" class="timer-btn btn-pause" onclick="pauseTimer()">Pause</button>
-                            <button id="btn-reset" class="timer-btn btn-reset" onclick="handleResetSkip()">Reset</button>
-                            <button id="btn-switch" class="timer-btn btn-switch" onclick="switchToDriver()">SWITCH TO DRIVER</button>
+                            <button id="btn-reset" class="timer-btn btn-reset"
+                                onclick="handleResetSkip()">Reset</button>
+                            <button id="btn-switch" class="timer-btn btn-switch" onclick="switchToDriver()">SWITCH TO
+                                DRIVER</button>
                         </div>
                     </div>
                 </div>
@@ -687,13 +2049,19 @@
                         </div>
                         <div class="calc-body">
                             <div class="calc-col col-red">
-                                <div class="calc-input-group"><label>Total Score</label><input type="number" id="red-score-input" class="score-input" value="0" min="0" oninput="calculateTotal()"></div>
-                                <div class="calc-item"><label>Auto Bonus</label><input type="checkbox" id="red-auto"></div>
+                                <div class="calc-input-group"><label>Total Score</label><input type="number"
+                                        id="red-score-input" class="score-input" value="0" min="0"
+                                        oninput="calculateTotal()"></div>
+                                <div class="calc-item"><label>Auto Bonus</label><input type="checkbox" id="red-auto">
+                                </div>
                                 <div class="calc-item"><label>AWP</label><input type="checkbox" id="red-wp"></div>
                             </div>
                             <div class="calc-col col-blue">
-                                <div class="calc-input-group"><label>Total Score</label><input type="number" id="blue-score-input" class="score-input" value="0" min="0" oninput="calculateTotal()"></div>
-                                <div class="calc-item"><label>Auto Bonus</label><input type="checkbox" id="blue-auto"></div>
+                                <div class="calc-input-group"><label>Total Score</label><input type="number"
+                                        id="blue-score-input" class="score-input" value="0" min="0"
+                                        oninput="calculateTotal()"></div>
+                                <div class="calc-item"><label>Auto Bonus</label><input type="checkbox" id="blue-auto">
+                                </div>
                                 <div class="calc-item"><label>AWP</label><input type="checkbox" id="blue-wp"></div>
                             </div>
                         </div>
@@ -710,12 +2078,16 @@
         <h2 style="color: white; margin-bottom: 1.5rem;">Contact Us</h2>
         <div style="display: flex; flex-direction: column; align-items: center;">
             <a href="mailto:wegorobotics@gmail.com" class="contact-link">
-                <svg class="contact-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z"/></svg>
+                <svg class="contact-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                    <path
+                        d="M20 4H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V6c0-1.1-.9-2-2-2zm0 4l-8 5-8-5V6l8 5 8-5v2z" />
+                </svg>
                 <span>Gmail: wegorobotics@gmail.com</span>
             </a>
             <a href="https://www.instagram.com/23083_wego_robotics/" target="_blank" class="contact-link">
                 <svg class="contact-icon" viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-                    <path d="M7.8,2H16.2C19.4,2 22,4.6 22,7.8V16.2A5.8,5.8 0 0,1 16.2,22H7.8C4.6,22 2,19.4 2,16.2V7.8A5.8,5.8 0 0,1 7.8,2M7.6,4A3.6,3.6 0 0,0 4,7.6V16.4C4,18.39 5.61,20 7.6,20H16.4A3.6,3.6 0 0,0 20,16.4V7.6C20,5.61 18.39,4 16.4,4H7.6M17.25,5.5A1.25,1.25 0 0,1 18.5,6.75A1.25,1.25 0 0,1 17.25,8A1.25,1.25 0 0,1 16,6.75A1.25,1.25 0 0,1 17.25,5.5M12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9Z"/>
+                    <path
+                        d="M7.8,2H16.2C19.4,2 22,4.6 22,7.8V16.2A5.8,5.8 0 0,1 16.2,22H7.8C4.6,22 2,19.4 2,16.2V7.8A5.8,5.8 0 0,1 7.8,2M7.6,4A3.6,3.6 0 0,0 4,7.6V16.4C4,18.39 5.61,20 7.6,20H16.4A3.6,3.6 0 0,0 20,16.4V7.6C20,5.61 18.39,4 16.4,4H7.6M17.25,5.5A1.25,1.25 0 0,1 18.5,6.75A1.25,1.25 0 0,1 17.25,8A1.25,1.25 0 0,1 16,6.75A1.25,1.25 0 0,1 17.25,5.5M12,7A5,5 0 0,1 17,12A5,5 0 0,1 12,17A5,5 0 0,1 7,12A5,5 0 0,1 12,7M12,9A3,3 0 0,0 9,12A3,3 0 0,0 12,15A3,3 0 0,0 15,12A3,3 0 0,0 12,9Z" />
                 </svg>
                 <span>Instagram: @23083_wego_robotics</span>
             </a>
@@ -727,7 +2099,7 @@
     <!-- Back to Top Button -->
     <button id="back-to-top" title="Go to top">
         <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
-            <path d="M12 4l-8 8h6v8h4v-8h6z"/>
+            <path d="M12 4l-8 8h6v8h4v-8h6z" />
         </svg>
     </button>
 
@@ -742,37 +2114,12 @@
             if (typeIndex < textToType.length) {
                 typeWriterElement.textContent += textToType.charAt(typeIndex);
                 typeIndex++;
-                setTimeout(typeWriter, 100); 
+                setTimeout(typeWriter, 100);
             }
         }
 
         // 2. Countdown Timer Logic (Original)
-        function startCountdown() {
-            const targetDate = new Date('Feb 03, 2026 09:00:00').getTime();
-            const timerInterval = setInterval(() => {
-                const now = new Date().getTime();
-                let distance = targetDate - now;
-                
-                if (distance < 0) {
-                    distance = Math.abs(distance);
-                    const titleEl = document.querySelector('.countdown-title');
-                    if(titleEl && !titleEl.innerText.includes('STARTED')) {
-                        titleEl.innerText = "EVENT STARTED (T+)";
-                        titleEl.style.color = "#E74C3C";
-                    }
-                }
 
-                const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-                const hours = Math.floor((distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-                const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-                const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-                document.getElementById("days").innerText = days < 10 ? '0' + days : days;
-                document.getElementById("hours").innerText = hours < 10 ? '0' + hours : hours;
-                document.getElementById("minutes").innerText = minutes < 10 ? '0' + minutes : minutes;
-                document.getElementById("seconds").innerText = seconds < 10 ? '0' + seconds : seconds;
-            }, 1000);
-        }
-        startCountdown();
 
         // 3. Scroll Animation (Original)
         const observerOptions = { threshold: 0.1 };
@@ -802,23 +2149,23 @@
                 const navItems = document.querySelectorAll('.nav-item');
                 navItems.forEach(item => item.classList.remove('active'));
                 const clickedLink = document.querySelector(`.nav-item[onclick="switchTab('${tabId}')"]`);
-                if(clickedLink) clickedLink.classList.add('active');
+                if (clickedLink) clickedLink.classList.add('active');
 
                 const menuToggle = document.getElementById('mobile-menu-btn');
                 const navMenu = document.getElementById('nav-menu');
-                if(menuToggle && navMenu) {
+                if (menuToggle && navMenu) {
                     menuToggle.classList.remove('active');
                     navMenu.classList.remove('active');
                     document.body.classList.remove('no-scroll');
                 }
 
-                if(tabId === 'home') {
+                if (tabId === 'home') {
                     targetSection.classList.add('home-active');
                 } else {
                     document.querySelectorAll('.home-active').forEach(el => el.classList.remove('home-active'));
-                    if(tabId === 'home') targetSection.classList.add('home-active');
+                    if (tabId === 'home') targetSection.classList.add('home-active');
                 }
-                if(updateHistory) { history.pushState({tabId: tabId}, null, `#${tabId}`); }
+                if (updateHistory) { history.pushState({ tabId: tabId }, null, `#${tabId}`); }
             };
 
             if (currentSection) {
@@ -850,11 +2197,11 @@
         lightbox.addEventListener('click', e => { if (e.target !== lightboxImg) lightbox.classList.remove('active'); });
 
         // Fullscreen ESC handler (Shared)
-        document.addEventListener('keydown', (e) => { 
-            if(e.key === 'Escape') {
-                if(lightbox.classList.contains('active')) lightbox.classList.remove('active');
+        document.addEventListener('keydown', (e) => {
+            if (e.key === 'Escape') {
+                if (lightbox.classList.contains('active')) lightbox.classList.remove('active');
                 const fs = document.querySelector('.fullscreen');
-                if(fs) toggleFullScreen(fs.id);
+                if (fs) toggleFullScreen(fs.id);
             }
         });
 
@@ -873,7 +2220,7 @@
         // --- 7. TOURNAMENT MANAGER LOGIC (Host Game Feature) ---
         let teamData = []; let matches = []; let currentEventName = ""; let currentRankingMode = 'Practice';
         const teamNumInput = document.getElementById('team-number');
-        if(teamNumInput) { teamNumInput.addEventListener('input', function() { this.value = this.value.replace(/[^A-Za-z0-9]/g, '').toUpperCase().slice(0, 6); }); }
+        if (teamNumInput) { teamNumInput.addEventListener('input', function () { this.value = this.value.replace(/[^A-Za-z0-9]/g, '').toUpperCase().slice(0, 6); }); }
 
         function saveToStorage() {
             const data = { teams: teamData, matches: matches, eventName: currentEventName, mode: currentRankingMode };
@@ -885,11 +2232,11 @@
                 const parsed = JSON.parse(data);
                 teamData = parsed.teams || []; matches = parsed.matches || [];
                 currentEventName = parsed.eventName || "Restored Event"; currentRankingMode = parsed.mode || 'Practice';
-                document.getElementById('event-name').value = currentEventName; 
+                document.getElementById('event-name').value = currentEventName;
                 document.getElementById('tm-title').innerText = currentEventName;
                 document.getElementById('rank-fs-title').innerText = currentEventName;
                 document.getElementById('sched-fs-title').innerText = currentEventName;
-                
+
                 document.getElementById('tm-setup').style.display = 'none'; document.getElementById('tm-dashboard').style.display = 'grid';
                 renderTeamList(); renderMatches(); updateRankings(); populateMatchSelector(); switchRankingMode(currentRankingMode);
             } else { alert("No saved tournament found."); }
@@ -898,19 +2245,19 @@
             const num = document.getElementById('team-number').value.trim().toUpperCase();
             const name = document.getElementById('team-name').value.trim();
             if (num && !teamData.find(t => t.number === num)) {
-                teamData.push({ 
-                    number: num, name: name, 
-                    p_wp:0, p_ap:0, p_sp:0, p_wins:0, p_losses:0, p_ties:0, p_matches:0,
-                    q_wp:0, q_ap:0, q_sp:0, q_wins:0, q_losses:0, q_ties:0, q_matches:0
+                teamData.push({
+                    number: num, name: name,
+                    p_wp: 0, p_ap: 0, p_sp: 0, p_wins: 0, p_losses: 0, p_ties: 0, p_matches: 0,
+                    q_wp: 0, q_ap: 0, q_sp: 0, q_wins: 0, q_losses: 0, q_ties: 0, q_matches: 0
                 });
-                renderTeamList(); document.getElementById('team-number').value=''; document.getElementById('team-name').value='';
+                renderTeamList(); document.getElementById('team-number').value = ''; document.getElementById('team-name').value = '';
                 // Set focus back to number input for quick adding
                 document.getElementById('team-number').focus();
             }
         }
         function renderTeamList() { document.getElementById('team-list-display').innerHTML = teamData.map(t => `<div class="team-tag"><span class="num">${t.number}</span>${t.name ? `<span style="color:#aaa; font-size:0.8em; border-left:1px solid #444; padding-left:5px;">${t.name}</span>` : ''}<i class="fa-solid fa-times delete-btn" onclick="removeTeam('${t.number}')"></i></div>`).join(''); }
         function removeTeam(number) { teamData = teamData.filter(t => t.number !== number); renderTeamList(); }
-        
+
         function startTournament() {
             // Require at least 4 teams as requested
             if (teamData.length < 4) { document.getElementById('setup-error').style.display = 'block'; return; }
@@ -918,7 +2265,7 @@
             document.getElementById('tm-title').innerText = currentEventName;
             document.getElementById('rank-fs-title').innerText = currentEventName;
             document.getElementById('sched-fs-title').innerText = currentEventName;
-            
+
             generateSchedule(); updateRankings(); renderMatches(); saveToStorage();
             document.getElementById('tm-setup').style.display = 'none'; document.getElementById('tm-dashboard').style.display = 'grid';
         }
@@ -926,28 +2273,28 @@
         function generateSchedule() {
             matches = []; let matchId = 1;
             if (teamData.length < 4) {
-                 const totalMatches = teamData.length * 2;
-                 for(let i=0; i<totalMatches; i++) {
-                     let s = [...teamData].sort(() => 0.5 - Math.random());
-                     matches.push(createMatch(matchId++, 'P' + (i+1), 'Practice', s[0], null, s[1], null));
-                 }
-            } else {
-                const practiceMatchCount = Math.ceil(teamData.length / 4); 
-                for(let i=0; i<practiceMatchCount; i++) { 
-                    let s = [...teamData].sort(() => 0.5 - Math.random()); 
-                    matches.push(createMatch(matchId++, 'P' + (i+1), 'Practice', s[0], s[1], s[2], s[3])); 
+                const totalMatches = teamData.length * 2;
+                for (let i = 0; i < totalMatches; i++) {
+                    let s = [...teamData].sort(() => 0.5 - Math.random());
+                    matches.push(createMatch(matchId++, 'P' + (i + 1), 'Practice', s[0], null, s[1], null));
                 }
-                const totalQuals = teamData.length; 
-                for(let i=0; i<totalQuals; i++) { let s = [...teamData].sort(() => 0.5 - Math.random()); matches.push(createMatch(matchId++, 'Q' + (i+1), 'Qualification', s[0], s[1], s[2], s[3])); }
+            } else {
+                const practiceMatchCount = Math.ceil(teamData.length / 4);
+                for (let i = 0; i < practiceMatchCount; i++) {
+                    let s = [...teamData].sort(() => 0.5 - Math.random());
+                    matches.push(createMatch(matchId++, 'P' + (i + 1), 'Practice', s[0], s[1], s[2], s[3]));
+                }
+                const totalQuals = teamData.length;
+                for (let i = 0; i < totalQuals; i++) { let s = [...teamData].sort(() => 0.5 - Math.random()); matches.push(createMatch(matchId++, 'Q' + (i + 1), 'Qualification', s[0], s[1], s[2], s[3])); }
             }
             populateMatchSelector();
         }
         function createMatch(id, label, type, r1, r2, b1, b2) {
-            return { id, label, type, red1: r1?r1.number:'', red2: r2?r2.number:'', blue1: b1?b1.number:'', blue2: b2?b2.number:'', redScore: 0, blueScore: 0, status: "scheduled" };
+            return { id, label, type, red1: r1 ? r1.number : '', red2: r2 ? r2.number : '', blue1: b1 ? b1.number : '', blue2: b2 ? b2.number : '', redScore: 0, blueScore: 0, status: "scheduled" };
         }
         function renderMatches() {
             document.getElementById('match-list').innerHTML = matches.map(m => `
-                <div class="match-row ${m.status === 'completed' ? 'completed' : ''}" id="match-row-${m.label}" onclick="loadMatchIntoCalc('${m.label}')" style="opacity: ${m.status==='completed'?0.5:1}">
+                <div class="match-row ${m.status === 'completed' ? 'completed' : ''}" id="match-row-${m.label}" onclick="loadMatchIntoCalc('${m.label}')" style="opacity: ${m.status === 'completed' ? 0.5 : 1}">
                     <div class="match-name">${m.label}</div>
                     <div class="alliance">
                         <span class="red-alliance">${m.red1}${m.red2 ? ' / ' + m.red2 : ''}</span>
@@ -967,25 +2314,25 @@
         function updateRankings() {
             const prefix = currentRankingMode === 'Practice' ? 'p_' : 'q_';
             teamData.sort((a, b) => {
-                const aAvgWP = a[prefix+'matches'] > 0 ? a[prefix+'wp'] / a[prefix+'matches'] : 0;
-                const bAvgWP = b[prefix+'matches'] > 0 ? b[prefix+'wp'] / b[prefix+'matches'] : 0;
+                const aAvgWP = a[prefix + 'matches'] > 0 ? a[prefix + 'wp'] / a[prefix + 'matches'] : 0;
+                const bAvgWP = b[prefix + 'matches'] > 0 ? b[prefix + 'wp'] / b[prefix + 'matches'] : 0;
                 if (bAvgWP !== aAvgWP) return bAvgWP - aAvgWP;
-                
-                const aAvgAP = a[prefix+'matches'] > 0 ? a[prefix+'ap'] / a[prefix+'matches'] : 0;
-                const bAvgAP = b[prefix+'matches'] > 0 ? b[prefix+'ap'] / b[prefix+'matches'] : 0;
+
+                const aAvgAP = a[prefix + 'matches'] > 0 ? a[prefix + 'ap'] / a[prefix + 'matches'] : 0;
+                const bAvgAP = b[prefix + 'matches'] > 0 ? b[prefix + 'ap'] / b[prefix + 'matches'] : 0;
                 if (bAvgAP !== aAvgAP) return bAvgAP - aAvgAP;
-                
-                const aAvgSP = a[prefix+'matches'] > 0 ? a[prefix+'sp'] / a[prefix+'matches'] : 0;
-                const bAvgSP = b[prefix+'matches'] > 0 ? b[prefix+'sp'] / b[prefix+'matches'] : 0;
+
+                const aAvgSP = a[prefix + 'matches'] > 0 ? a[prefix + 'sp'] / a[prefix + 'matches'] : 0;
+                const bAvgSP = b[prefix + 'matches'] > 0 ? b[prefix + 'sp'] / b[prefix + 'matches'] : 0;
                 return bAvgSP - aAvgSP;
             });
-            
+
             document.getElementById('ranking-body').innerHTML = teamData.map((t, index) => {
-                const matches = t[prefix+'matches'] || 1; // Prevent div by zero for display if 0
-                const avgWP = (t[prefix+'wp'] / (t[prefix+'matches'] || 1)).toFixed(2);
-                const avgAP = (t[prefix+'ap'] / (t[prefix+'matches'] || 1)).toFixed(2);
-                const avgSP = (t[prefix+'sp'] / (t[prefix+'matches'] || 1)).toFixed(2);
-                return `<tr><td class="rank-num">${index + 1}</td><td class="team-cell"><span style="font-weight:bold">${t.number}</span> <span style="font-size:0.85em;color:#aaa">${t.name||''}</span></td><td>${t[prefix+'matches']>0?avgWP:'-'}</td><td>${t[prefix+'matches']>0?avgAP:'-'}</td><td>${t[prefix+'matches']>0?avgSP:'-'}</td><td>${t[prefix+'wins']}-${t[prefix+'losses']}-${t[prefix+'ties']}</td></tr>`;
+                const matches = t[prefix + 'matches'] || 1; // Prevent div by zero for display if 0
+                const avgWP = (t[prefix + 'wp'] / (t[prefix + 'matches'] || 1)).toFixed(2);
+                const avgAP = (t[prefix + 'ap'] / (t[prefix + 'matches'] || 1)).toFixed(2);
+                const avgSP = (t[prefix + 'sp'] / (t[prefix + 'matches'] || 1)).toFixed(2);
+                return `<tr><td class="rank-num">${index + 1}</td><td class="team-cell"><span style="font-weight:bold">${t.number}</span> <span style="font-size:0.85em;color:#aaa">${t.name || ''}</span></td><td>${t[prefix + 'matches'] > 0 ? avgWP : '-'}</td><td>${t[prefix + 'matches'] > 0 ? avgAP : '-'}</td><td>${t[prefix + 'matches'] > 0 ? avgSP : '-'}</td><td>${t[prefix + 'wins']}-${t[prefix + 'losses']}-${t[prefix + 'ties']}</td></tr>`;
             }).join('');
         }
 
@@ -995,10 +2342,10 @@
         }
         function calculateTotal() {
             let rScore = parseInt(document.getElementById('red-score-input').value) || 0;
-            if(rScore < 0) { rScore = 0; document.getElementById('red-score-input').value = 0; }
+            if (rScore < 0) { rScore = 0; document.getElementById('red-score-input').value = 0; }
             let bScore = parseInt(document.getElementById('blue-score-input').value) || 0;
-            if(bScore < 0) { bScore = 0; document.getElementById('blue-score-input').value = 0; }
-            
+            if (bScore < 0) { bScore = 0; document.getElementById('blue-score-input').value = 0; }
+
             document.getElementById('score-red-display').innerText = rScore;
             document.getElementById('score-blue-display').innerText = bScore;
         }
@@ -1014,10 +2361,10 @@
         function loadMatchForScoring() {
             const label = document.getElementById('calc-match-select').value;
             document.querySelectorAll('.match-row').forEach(r => r.classList.remove('active'));
-            const row = document.getElementById(`match-row-${label}`); if(row) row.classList.add('active');
-            
+            const row = document.getElementById(`match-row-${label}`); if (row) row.classList.add('active');
+
             const match = matches.find(m => m.label === label);
-            if(match) {
+            if (match) {
                 const rTeamText = match.red2 ? `${match.red1} / ${match.red2}` : match.red1;
                 const bTeamText = match.blue2 ? `${match.blue1} / ${match.blue2}` : match.blue1;
                 document.getElementById('score-red-team').innerText = rTeamText;
@@ -1038,7 +2385,7 @@
             match.redScore = parseInt(document.getElementById('score-red-display').innerText);
             match.blueScore = parseInt(document.getElementById('score-blue-display').innerText);
             match.status = 'completed';
-            
+
             // Save checkbox states for WP/AP calc
             match.flags = {
                 rWP: document.getElementById('red-wp').checked,
@@ -1046,45 +2393,45 @@
                 rBonus: document.getElementById('red-auto').checked,
                 bBonus: document.getElementById('blue-auto').checked
             };
-            
-            if(match.type === 'Qualification' && currentRankingMode !== 'Qualification') switchRankingMode('Qualification');
+
+            if (match.type === 'Qualification' && currentRankingMode !== 'Qualification') switchRankingMode('Qualification');
             recalculateAllRankings(); renderMatches(); updateRankings(); saveToStorage();
-            
+
             clearScores();
-            
+
             const nextMatch = matches.find(m => m.id === match.id + 1);
             if (nextMatch) loadMatchIntoCalc(nextMatch.label);
         }
         function recalculateAllRankings() {
-            teamData.forEach(t => { 
-                t.p_wp=0; t.p_ap=0; t.p_sp=0; t.p_wins=0; t.p_losses=0; t.p_ties=0; t.p_matches=0;
-                t.q_wp=0; t.q_ap=0; t.q_sp=0; t.q_wins=0; t.q_losses=0; t.q_ties=0; t.q_matches=0;
+            teamData.forEach(t => {
+                t.p_wp = 0; t.p_ap = 0; t.p_sp = 0; t.p_wins = 0; t.p_losses = 0; t.p_ties = 0; t.p_matches = 0;
+                t.q_wp = 0; t.q_ap = 0; t.q_sp = 0; t.q_wins = 0; t.q_losses = 0; t.q_ties = 0; t.q_matches = 0;
             });
             matches.forEach(m => {
                 if (m.status === 'completed') {
                     const prefix = m.type === 'Practice' ? 'p_' : 'q_';
-                    const r = [teamData.find(t=>t.number===m.red1), teamData.find(t=>t.number===m.red2)].filter(x=>x);
-                    const b = [teamData.find(t=>t.number===m.blue1), teamData.find(t=>t.number===m.blue2)].filter(x=>x);
-                    
-                    r.forEach(t=>t[prefix+'matches']++);
-                    b.forEach(t=>t[prefix+'matches']++);
-                    
+                    const r = [teamData.find(t => t.number === m.red1), teamData.find(t => t.number === m.red2)].filter(x => x);
+                    const b = [teamData.find(t => t.number === m.blue1), teamData.find(t => t.number === m.blue2)].filter(x => x);
+
+                    r.forEach(t => t[prefix + 'matches']++);
+                    b.forEach(t => t[prefix + 'matches']++);
+
                     let rWP = 0; let bWP = 0;
-                    if (m.redScore > m.blueScore) { rWP+=2; r.forEach(t=>t[prefix+'wins']++); b.forEach(t=>t[prefix+'losses']++); }
-                    else if (m.blueScore > m.redScore) { bWP+=2; b.forEach(t=>t[prefix+'wins']++); r.forEach(t=>t[prefix+'losses']++); }
-                    else { rWP+=1; bWP+=1; r.forEach(t=>t[prefix+'ties']++); b.forEach(t=>t[prefix+'ties']++); }
-                    
-                    if(m.flags) {
-                        if(m.flags.rWP) rWP+=1;
-                        if(m.flags.bWP) bWP+=1;
-                        if(m.flags.rBonus && m.flags.bBonus) { r.forEach(t=>t[prefix+'ap']+=5); b.forEach(t=>t[prefix+'ap']+=5); }
-                        else if(m.flags.rBonus) { r.forEach(t=>t[prefix+'ap']+=10); }
-                        else if(m.flags.bBonus) { b.forEach(t=>t[prefix+'ap']+=10); }
+                    if (m.redScore > m.blueScore) { rWP += 2; r.forEach(t => t[prefix + 'wins']++); b.forEach(t => t[prefix + 'losses']++); }
+                    else if (m.blueScore > m.redScore) { bWP += 2; b.forEach(t => t[prefix + 'wins']++); r.forEach(t => t[prefix + 'losses']++); }
+                    else { rWP += 1; bWP += 1; r.forEach(t => t[prefix + 'ties']++); b.forEach(t => t[prefix + 'ties']++); }
+
+                    if (m.flags) {
+                        if (m.flags.rWP) rWP += 1;
+                        if (m.flags.bWP) bWP += 1;
+                        if (m.flags.rBonus && m.flags.bBonus) { r.forEach(t => t[prefix + 'ap'] += 5); b.forEach(t => t[prefix + 'ap'] += 5); }
+                        else if (m.flags.rBonus) { r.forEach(t => t[prefix + 'ap'] += 10); }
+                        else if (m.flags.bBonus) { b.forEach(t => t[prefix + 'ap'] += 10); }
                     }
 
                     let loserScore = Math.min(m.redScore, m.blueScore);
-                    r.forEach(t=>{ t[prefix+'wp']+=rWP; t[prefix+'sp']+=loserScore; }); 
-                    b.forEach(t=>{ t[prefix+'wp']+=bWP; t[prefix+'sp']+=loserScore; });
+                    r.forEach(t => { t[prefix + 'wp'] += rWP; t[prefix + 'sp'] += loserScore; });
+                    b.forEach(t => { t[prefix + 'wp'] += bWP; t[prefix + 'sp'] += loserScore; });
                 }
             });
         }
@@ -1093,16 +2440,16 @@
         function playSound(type) {
             let id = '';
             // Match sound to audio tag ID
-            switch(type) {
+            switch (type) {
                 case 'start': id = 'sfx-start'; break;
                 case 'pause': id = 'sfx-pause'; break;
                 case 'abort': id = 'sfx-abort'; break;
                 case 'stop': id = 'sfx-stop'; break;
                 case 'warning': id = 'sfx-warning'; break;
             }
-            if(id) {
+            if (id) {
                 const el = document.getElementById(id);
-                if(el) {
+                if (el) {
                     el.currentTime = 0;
                     el.play().catch(e => {
                         console.warn("Audio play failed", e);
@@ -1110,54 +2457,54 @@
                 }
             }
         }
-        
+
         // --- TIMER (REVISED WORKFLOW) ---
-        let timerInterval; let timeLeft = 0; let currentMode = 'match'; 
+        let timerInterval; let timeLeft = 0; let currentMode = 'match';
         let matchState = 'ready'; // ready, auto, ended_auto, ready_driver, driver, paused, ended_match
-        
+
         function updateTimerDisplay() {
             const m = Math.floor(timeLeft / 60); const s = timeLeft % 60;
             const display = document.getElementById('timer-val');
             display.innerText = `${m}:${s < 10 ? '0' : ''}${s}`;
-            
+
             const phaseText = document.getElementById('timer-phase');
-            if(matchState === 'ready') phaseText.innerText = currentMode === 'match' ? "AUTONOMOUS READY" : "SKILLS READY";
-            else if(matchState === 'auto') phaseText.innerText = "AUTONOMOUS";
-            else if(matchState === 'ended_auto') phaseText.innerText = "AUTO ENDED";
-            else if(matchState === 'ready_driver') phaseText.innerText = "DRIVER READY";
-            else if(matchState === 'driver') phaseText.innerText = "DRIVER CONTROL";
-            else if(matchState === 'paused') phaseText.innerText = "PAUSED";
-            else if(matchState === 'ended_match') phaseText.innerText = "MATCH ENDED";
+            if (matchState === 'ready') phaseText.innerText = currentMode === 'match' ? "AUTONOMOUS READY" : "SKILLS READY";
+            else if (matchState === 'auto') phaseText.innerText = "AUTONOMOUS";
+            else if (matchState === 'ended_auto') phaseText.innerText = "AUTO ENDED";
+            else if (matchState === 'ready_driver') phaseText.innerText = "DRIVER READY";
+            else if (matchState === 'driver') phaseText.innerText = "DRIVER CONTROL";
+            else if (matchState === 'paused') phaseText.innerText = "PAUSED";
+            else if (matchState === 'ended_match') phaseText.innerText = "MATCH ENDED";
 
             display.classList.remove('timer-warning');
             document.body.classList.remove('flash-active');
 
-            if(currentMode === 'match') {
-                if(matchState === 'driver' && timeLeft <= 20 && timeLeft > 0) {
+            if (currentMode === 'match') {
+                if (matchState === 'driver' && timeLeft <= 20 && timeLeft > 0) {
                     display.classList.add('timer-warning');
-                    if(timeLeft === 20) document.body.classList.add('flash-active');
+                    if (timeLeft === 20) document.body.classList.add('flash-active');
                     // Warning sound check
-                    if(timeLeft === 20) playSound('warning');
+                    if (timeLeft === 20) playSound('warning');
                 }
-                
-                if(matchState === 'driver' && timeLeft <= 10) display.style.color = '#E74C3C'; 
-                else if(matchState === 'driver') display.style.color = 'white';
-                else if(matchState === 'paused') display.style.color = '#F39C12';
+
+                if (matchState === 'driver' && timeLeft <= 10) display.style.color = '#E74C3C';
+                else if (matchState === 'driver') display.style.color = 'white';
+                else if (matchState === 'paused') display.style.color = '#F39C12';
                 else display.style.color = 'white';
             }
         }
-        
+
         function updateButtons() {
             const btnStart = document.getElementById('btn-start');
             const btnPause = document.getElementById('btn-pause');
             const btnSwitch = document.getElementById('btn-switch');
             const btnReset = document.getElementById('btn-reset');
-            
+
             btnStart.style.display = 'inline-block';
             btnPause.style.display = 'none';
             btnSwitch.style.display = 'none';
             btnStart.disabled = false;
-            
+
             // Logic for Reset/Skip button
             if (matchState === 'auto' || matchState === 'driver') {
                 btnReset.innerText = "SKIP";
@@ -1168,7 +2515,7 @@
                 btnReset.className = "timer-btn btn-reset";
                 btnReset.onclick = resetTimer;
             }
-            
+
             if (matchState === 'ready' || matchState === 'ready_driver') {
                 btnStart.innerText = "START";
             } else if (matchState === 'auto' || matchState === 'driver') {
@@ -1189,21 +2536,21 @@
         }
 
         function setTimerMode(mode) {
-            currentMode = mode; 
-            document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active')); 
+            currentMode = mode;
+            document.querySelectorAll('.mode-btn').forEach(b => b.classList.remove('active'));
             event.target.classList.add('active');
             resetTimer();
         }
 
         function resetTimer() {
             clearInterval(timerInterval); timerInterval = null;
-            if (currentMode === 'skills') { timeLeft = 60; } 
+            if (currentMode === 'skills') { timeLeft = 60; }
             else { timeLeft = 15; }
             matchState = 'ready';
             updateTimerDisplay();
             updateButtons();
         }
-        
+
         function skipTimer() {
             // Skips current phase
             if (matchState === 'auto') {
@@ -1218,7 +2565,7 @@
             updateTimerDisplay();
             updateButtons();
         }
-        
+
         function handleResetSkip() {
             if (document.getElementById('btn-reset').innerText === "SKIP") {
                 skipTimer();
@@ -1228,17 +2575,17 @@
         }
 
         function toggleTimer() {
-            if(matchState === 'ready' || matchState === 'ready_driver') {
+            if (matchState === 'ready' || matchState === 'ready_driver') {
                 startTimerInterval();
             }
         }
 
         function startTimerInterval() {
             playSound('start');
-            
-            if(matchState === 'ready') matchState = currentMode === 'skills' ? 'driver' : 'auto';
-            else if(matchState === 'ready_driver') matchState = 'driver';
-            
+
+            if (matchState === 'ready') matchState = currentMode === 'skills' ? 'driver' : 'auto';
+            else if (matchState === 'ready_driver') matchState = 'driver';
+
             updateButtons();
             updateTimerDisplay();
 
@@ -1248,8 +2595,8 @@
                     updateTimerDisplay();
                 } else {
                     clearInterval(timerInterval);
-                    
-                    if(currentMode === 'match' && matchState === 'auto') {
+
+                    if (currentMode === 'match' && matchState === 'auto') {
                         playSound('pause');
                         matchState = 'ended_auto';
                     } else {
@@ -1263,16 +2610,16 @@
         }
 
         function pauseTimer() {
-            if(timerInterval) {
+            if (timerInterval) {
                 clearInterval(timerInterval);
                 timerInterval = null;
                 matchState = 'paused';
                 playSound('abort');
             } else {
-                if(currentMode === 'match' && timeLeft <= 15 && timeLeft > 0 && matchState !== 'driver') matchState = 'auto'; 
+                if (currentMode === 'match' && timeLeft <= 15 && timeLeft > 0 && matchState !== 'driver') matchState = 'auto';
                 else matchState = 'driver';
                 startTimerInterval();
-                return; 
+                return;
             }
             updateButtons();
             updateTimerDisplay();
@@ -1285,19 +2632,19 @@
             updateButtons();
         }
 
-        function toggleFullScreen(id) { 
-            const el = document.getElementById(id); el.classList.toggle('fullscreen'); 
-            if(el.classList.contains('fullscreen')) document.body.classList.add('no-scroll');
+        function toggleFullScreen(id) {
+            const el = document.getElementById(id); el.classList.toggle('fullscreen');
+            if (el.classList.contains('fullscreen')) document.body.classList.add('no-scroll');
             else document.body.classList.remove('no-scroll');
         }
 
         // --- 8. DOM LOADED & INIT (Merged) ---
-        const mediaCount = 12; 
-        const robotCount = 22; 
+        const mediaCount = 12;
+        const robotCount = 22;
 
         document.addEventListener('DOMContentLoaded', () => {
-            setTimeout(typeWriter, 500); 
-            startCountdown();
+            setTimeout(typeWriter, 500);
+
             loadGallery('media-gallery', 'media', mediaCount, 'media');
             loadGallery('robot-gallery', 'robot', robotCount, 'robot');
             bindLightboxEvents();
@@ -1308,22 +2655,22 @@
                 menuToggle.classList.toggle('active');
                 navMenu.classList.toggle('active');
                 // Added no-scroll toggle for mobile menu consistency with original styles
-                if(navMenu.classList.contains('active')) document.body.classList.add('no-scroll'); 
+                if (navMenu.classList.contains('active')) document.body.classList.add('no-scroll');
                 else document.body.classList.remove('no-scroll');
             });
 
             // Handle Hash Navigation
-            const hash = window.location.hash.substring(1); 
-            if (hash) { switchTab(hash, false); } 
-            else { 
+            const hash = window.location.hash.substring(1);
+            if (hash) { switchTab(hash, false); }
+            else {
                 const home = document.getElementById('home');
-                if(home) { home.classList.add('active-page', 'visible'); }
+                if (home) { home.classList.add('active-page', 'visible'); }
             }
 
             // Scroll Back To Top
             const backToTopBtn = document.getElementById('back-to-top');
             window.addEventListener('scroll', () => {
-                if (window.scrollY > 300) { backToTopBtn.classList.add('show'); } 
+                if (window.scrollY > 300) { backToTopBtn.classList.add('show'); }
                 else { backToTopBtn.classList.remove('show'); }
             });
             backToTopBtn.addEventListener('click', () => {
@@ -1337,10 +2684,11 @@
                     clearTimeout(scrollTimeout);
                 });
             }
-            
+
             // Initialize Timer
             resetTimer();
         });
     </script>
 </body>
+
 </html>
